@@ -1,3 +1,5 @@
+package plan;
+
 
 public class Intersection {
 	String id;

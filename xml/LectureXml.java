@@ -1,3 +1,6 @@
+package xml;
+
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,6 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import plan.Intersection;
+import plan.Plan;
+import plan.Troncon;
 
 public class LectureXml {
 	
@@ -24,6 +31,10 @@ public class LectureXml {
 			InputStreamReader lecture=new InputStreamReader(flux);
 			BufferedReader buff=new BufferedReader(lecture);
 			String ligne;
+			float longitudeMax = -181;
+			float longitudeMin = 181;
+			float lattitudeMax = -91;
+			float lattitudeMin = 91;
 			
 			Map<String, Intersection> intersections = new HashMap<String, Intersection>();
 			List<Troncon> troncons = new ArrayList<Troncon>();
@@ -42,6 +53,10 @@ public class LectureXml {
 			/*		System.out.println(id);
 					System.out.println(lattitude);
 					System.out.println(longitude);*/
+					if(lattitude < lattitudeMin) lattitudeMin = lattitude;
+					if(lattitude > lattitudeMax) lattitudeMax = lattitude;
+					if(longitude < longitudeMin) longitudeMin = longitude;
+					if(longitude > longitudeMax) longitudeMax = longitude;
 					
 					Intersection inter = new Intersection(id, lattitude, longitude);
 					intersections.put(id, inter);
@@ -76,6 +91,10 @@ public class LectureXml {
 			}
 			
 			plan = new Plan(intersections, troncons);
+			plan.setLattitudeMax(lattitudeMax);
+			plan.setLattitudeMin(lattitudeMin);
+			plan.setLongitudeMax(longitudeMax);
+			plan.setLongitudeMin(longitudeMin);
 			
 			buff.close(); 
 		} catch (FileNotFoundException e) {
@@ -85,14 +104,5 @@ public class LectureXml {
 		
 		return plan;
 		
-	}
-	
-	
-	public DemandeLivraison creerDemandeLivraison(String path) {
-		
-		
-		DemandeLivraison demandeLivraison = null;
-		
-		return demandeLivraison;
 	}
 }

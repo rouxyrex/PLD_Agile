@@ -1,3 +1,5 @@
+package plan;
+
 
 public class Troncon {
 	Intersection intersectionOrigine;
@@ -20,7 +22,7 @@ public class Troncon {
 	}
 	
 	public Intersection getIntersectionDestination() {
-		return intersectionOrigine;
+		return intersectionDestination;
 	}
 	
 	public float getLongueur() {
