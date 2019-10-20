@@ -1,3 +1,4 @@
+package Modele;
 
 public class Intersection {
 	String id;
