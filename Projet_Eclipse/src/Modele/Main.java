@@ -13,13 +13,11 @@ public class Main {
 		
 		LectureXml l = new LectureXml();
 		
-		String cheminPlan = "\\\\servif-home\\homes\\sthoniel\\Mes documents\\4IF\\PLD_Agile\\XML_Files\\petitPlan.xml";
 		
-		Plan p = l.creerPlan(cheminPlan);
+		Plan p = l.creerPlan();
 		
-		String cheminDemandeLivraison = "\\\\servif-home\\homes\\sthoniel\\Mes documents\\4IF\\PLD_Agile\\XML_Files\\demandePetit2.xml";
 		
-		DemandeLivraison d = l.creerDemandeDeLivraison(cheminDemandeLivraison, p);
+		DemandeLivraison d = l.creerDemandeDeLivraison(p);
 		
 	}
 }

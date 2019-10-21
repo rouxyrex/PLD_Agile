@@ -27,10 +27,10 @@ public class LectureXml {
 	
 	public LectureXml() {}
 	
-	public Plan creerPlan(String path) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+	public Plan creerPlan() throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		Plan plan;
-		File xml = new File(path);
+		File xml = OuvreurDeFichierXML.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
@@ -48,12 +48,45 @@ public class LectureXml {
 	private static Plan construirePlanAPartirDeDOMXML(Element noeudDOMRacine) throws ExceptionXml, NumberFormatException{
 	    	
 		Map<String, Intersection> intersections = new HashMap<String, Intersection>();
-			
+		
+		float latitudeMax = 0;
+		float latitudeMin = 0;
+		float longitudeMax = 0;
+		float longitudeMin = 0;
+		
+		float latitudeTemp;
+		float longitudeTemp;
+		
 	    NodeList listeNoeuds = noeudDOMRacine.getElementsByTagName("noeud");
 	    for (int i = 0; i < listeNoeuds.getLength(); i++) {
 	       		
 	        Intersection inter = creerIntersection((Element) listeNoeuds.item(i));
 			intersections.put(inter.getId(), inter);
+			
+			if(i==0) {
+				latitudeMax = inter.getLattitude();
+				latitudeMin = inter.getLattitude();
+				longitudeMax = inter.getLongitude();
+				longitudeMin = inter.getLongitude();
+			}
+			else {
+				latitudeTemp = inter.getLattitude();
+				longitudeTemp = inter.getLongitude();
+				
+				if(latitudeTemp<latitudeMin) {
+					latitudeMin = latitudeTemp;
+				}
+				else if(latitudeTemp>latitudeMax) {
+					latitudeMax = latitudeTemp;
+				}
+				
+				if(longitudeTemp<longitudeMin) {
+					longitudeMin = longitudeTemp;
+				}
+				else if(longitudeTemp>longitudeMax) {
+					longitudeMax = longitudeTemp;
+				}
+			}
 				
 	    }
 	       	
@@ -68,7 +101,12 @@ public class LectureXml {
 	    }
 	       	
 	    Plan plan = new Plan(intersections, troncons);
-	       	
+	    
+	    plan.setLatitudeMax(latitudeMax);
+	    plan.setLatitudeMin(latitudeMin);
+	    plan.setLongitudeMax(longitudeMax);
+	    plan.setLongitudeMin(longitudeMin);
+	    
 	    return plan;
 	}
 	
@@ -107,10 +145,10 @@ public class LectureXml {
 	
 	
 	
-	public DemandeLivraison creerDemandeDeLivraison(String path, Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+	public DemandeLivraison creerDemandeDeLivraison(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		DemandeLivraison demande;
-		File xml = new File(path);
+		File xml = OuvreurDeFichierXML.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
