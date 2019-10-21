@@ -20,7 +20,7 @@ public class Troncon {
 	}
 	
 	public Intersection getIntersectionDestination() {
-		return intersectionOrigine;
+		return intersectionDestination;
 	}
 	
 	public float getLongueur() {
