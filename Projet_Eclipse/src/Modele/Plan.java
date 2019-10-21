@@ -5,8 +5,8 @@ import java.util.Map;
 public class Plan {
 	Map<String, Intersection> intersections;
 	List<Troncon> troncons;
-	float lattitudeMin;
-	float lattitudeMax;
+	float latitudeMin;
+	float latitudeMax;
 	float longitudeMin;
 	float longitudeMax;
 	
@@ -34,12 +34,12 @@ public class Plan {
 		this.longitudeMin = longitudeMin;
 	}
 
-	public void setLattitudeMax(float lattitudeMax) {
-		this.lattitudeMax = lattitudeMax;
+	public void setLatitudeMax(float latitudeMax) {
+		this.latitudeMax = latitudeMax;
 	}
 
-	public void setLattitudeMin(float lattitudeMin) {
-		this.lattitudeMin = lattitudeMin;
+	public void setLatitudeMin(float latitudeMin) {
+		this.latitudeMin = latitudeMin;
 	}
 
 	public void setLongitudeMax(float longitudeMax) {
@@ -50,12 +50,12 @@ public class Plan {
 		return longitudeMin;
 	}
 
-	public float getLattitudeMax( ) {
-		return lattitudeMax;
+	public float getLatitudeMax( ) {
+		return latitudeMax;
 	}
 
-	public float getLattitudeMin( ) {
-		return lattitudeMin;
+	public float getLatitudeMin( ) {
+		return latitudeMin;
 	}
 
 	public float getLongitudeMax( ) {
