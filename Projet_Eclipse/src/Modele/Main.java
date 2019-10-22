@@ -14,7 +14,7 @@ public class Main {
 		
 		//LectureXml l = new LectureXml();
 		
-		//String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Téléchargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
+		//String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Tï¿½lï¿½chargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
 		
 		//Plan p = l.creerPlan("petitPlan.xml");
 		
