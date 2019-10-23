@@ -1,15 +1,20 @@
 package vue;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import controleur.Controleur;
+import Modele.DemandeLivraison;
 import Modele.Plan;
 
 public class Fenetre extends JFrame {
@@ -20,15 +25,17 @@ public class Fenetre extends JFrame {
 		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
 		private ArrayList<JButton> boutons;
 		private JLabel cadreMessages;
+		private JPanel cadreBoutons;
 		private VuePlan vuePlan;
+		private VueDemandeLivraison demandeLivraison;
 		//private VueTextuelle vueTextuelle;
 		private EcouteurDeBoutons ecouteurDeBoutons;
 		//private EcouteurDeSouris ecouteurDeSouris;
 		//private EcouteurDeClavier ecouteurDeClavier;
 		
-		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
-		private final int hauteurBouton = 40;
-		private final int largeurBouton = 150;
+		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+		private final int hauteurBouton = 50;
+		private final int largeurBouton = 300;
 		private final int hauteurCadreMessages = 80;
 		private final int largeurVueTextuelle = 400;
 		
@@ -42,12 +49,20 @@ public class Fenetre extends JFrame {
 		 * @param controleur le controleur
 		 */
 		public Fenetre(Plan plan, int echelle, Controleur controleur){
-			setLayout(null);
+			setLayout(new BorderLayout());
+			
+			cadreBoutons = new JPanel(); 
+			cadreBoutons.setSize(200, 100); 
+			cadreBoutons.setLayout(new BoxLayout(cadreBoutons, BoxLayout.PAGE_AXIS) );
+		    getContentPane().add(cadreBoutons, BorderLayout.WEST);
+		    
 			creeBoutons(controleur);
+			
 			cadreMessages = new JLabel();
 			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
-			getContentPane().add(cadreMessages);
-			vuePlan = new VuePlan(plan, echelle, this); 
+			getContentPane().add(cadreMessages,  BorderLayout.SOUTH);
+			
+			vuePlan = new VuePlan(1 ,this);
 			//vueTextuelle = new VueTextuelle(plan, this);
 			//ecouteurDeSouris = new EcouteurDeSouris(controleur,vueGraphique,this);
 			//addMouseListener(ecouteurDeSouris);
@@ -56,19 +71,24 @@ public class Fenetre extends JFrame {
 			//addKeyListener(ecouteurDeClavier);
 			setTailleFenetre(); 
 			setVisible(true);
-			vuePlan.afficherPlan( ) ;
 			addComponentListener(new ComponentAdapter() {
 			    public void componentResized(ComponentEvent componentEvent) { 
 					repaint();
 			    }
 			}); 
+		} 
+		
+		public void passerPlan (Plan p/*, DemandeLivraison dl */) {
+			vuePlan.afficherPlan( p/*, dl*/);
+			//demandeLivraison.afficherPlan(dl);
+			repaint();
 		}
 		
-		
-		
-/*		public void passerPlan (Plan plan) {
-			vuePlan.afficherPlan(plan);
-		}*/
+		public void afficherDemandeLivraison(DemandeLivraison dl) {
+			//demandeLivraison.afficherPlan(dl);
+			vuePlan.afficherLivraisonDemande(dl);
+			repaint();
+		}
 		
 		
 		/**
@@ -83,11 +103,12 @@ public class Fenetre extends JFrame {
 				JButton bouton = new JButton(intituleBouton);
 				boutons.add(bouton);
 				bouton.setSize(largeurBouton,hauteurBouton);
+				bouton.setMaximumSize(new Dimension(largeurBouton,hauteurBouton));
 				bouton.setLocation(0,(boutons.size()-1)*hauteurBouton);
 				bouton.setFocusable(false);
 				bouton.setFocusPainted(false);
 				bouton.addActionListener(ecouteurDeBoutons);
-				getContentPane().add(bouton);	
+				cadreBoutons.add(bouton);	
 			}
 		}
 			

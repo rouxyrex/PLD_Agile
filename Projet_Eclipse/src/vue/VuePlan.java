@@ -1,12 +1,15 @@
 package vue;
  
 import java.util.LinkedList;
-import java.util.List; 
+import java.util.List;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
  
 import javax.swing.JPanel;
 
+import Modele.DemandeLivraison;
+import Modele.Livraison;
 import Modele.Plan; 
 import vue.VueTroncon;
 import Modele.Troncon;
@@ -16,6 +19,7 @@ public class VuePlan extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int echelle; 
 	private Plan plan;
+	private DemandeLivraison dl;
 	private Fenetre f; 
 	public static float lattitudeMax;
 	public static float lattitudeMin;
@@ -24,7 +28,11 @@ public class VuePlan extends JPanel {
 	public static float intervalleLattitude;
 	public static float intervalleLongitude; 
 	
+	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
 	LinkedList<VueTroncon> tronconsTraces = null;  
+	LinkedList<VueAdresseDepot> adressesDepot = null;
+	LinkedList<VueAdresseEnlevement> adressesEnlevement = null;
+	VueEntrepot entrepot = null;
 
 	/**
 	 * Cree la vue graphique permettant de dessiner plan avec l'echelle e dans la fenetre f
@@ -32,15 +40,15 @@ public class VuePlan extends JPanel {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(Plan plan, int e, Fenetre f) {
-		super();
-		this.plan = plan;
+	public VuePlan(int e, Fenetre f) {
+		super(); 
 		tronconsTraces = new LinkedList<VueTroncon>(); 
+		adressesDepot = new LinkedList<VueAdresseDepot>();
+		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
 		this.echelle = e; 
 		setLayout(null);
-		setBackground(Color.white);
-		setSize(1366, 723);
-		f.getContentPane().add(this); 
+		setBackground(Color.white); 
+		f.getContentPane().add(this,  BorderLayout.CENTER);  
 		this.f = f;
 		repaint();
 	} 
@@ -53,9 +61,20 @@ public class VuePlan extends JPanel {
 		super.paintComponent(g); 
 		g.setColor(Color.black);
 		for (VueTroncon troncon : tronconsTraces) {   
-	    	troncon.dessiner(g, f.getWidth(), f.getHeight()); 
+	    	troncon.dessiner(g, this.getWidth(), this.getHeight()); 
+	    }   
+		 
+		for(int i = 0; i < adressesDepot.size(); i++) {
+			g.setColor(colors[i]);  
+			adressesDepot.get(i).dessiner(g, this.getWidth(), this.getHeight());
 	    }  
-	//	this.g = g; 
+		
+		for(int i = 0; i < adressesEnlevement.size(); i++) {
+			g.setColor(colors[i]);  
+			adressesEnlevement.get(i).dessiner(g, this.getWidth(), this.getHeight());
+	    }   
+		
+		if(entrepot != null) entrepot.dessiner(g, this.getWidth(), this.getHeight()); 
 
 	}
 
@@ -70,22 +89,19 @@ public class VuePlan extends JPanel {
 		return echelle;
 	}
 
-	public void afficherPlan() {
+	public void afficherPlan(Plan plan) {
+		this.plan = plan;
+		adressesEnlevement.clear();
+		adressesDepot.clear();
+		entrepot = null;
 		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();  
-		/*lattitudeMax = plan.getLattitudeMax();
+		lattitudeMax = plan.getLattitudeMax();
 		lattitudeMin = plan.getLattitudeMin();
 		longitudeMax = plan.getLongitudeMax();
 		longitudeMin = plan.getLongitudeMin();
 		intervalleLattitude = lattitudeMax-lattitudeMin;
-		intervalleLongitude = longitudeMax-longitudeMin;*/
-		
-		lattitudeMax = (float) 45.780518;
-		lattitudeMin = (float) 45.727352;
-		longitudeMax = (float) 4.9075384;
-		longitudeMin = (float) 4.8314376;
-		intervalleLattitude = (float) 0.053165436;
-		intervalleLongitude = (float) 0.076100826; 
+		intervalleLongitude = longitudeMax-longitudeMin; 
 		
 		for(int i= 0; i < troncons.size(); i++) {
 
@@ -94,16 +110,25 @@ public class VuePlan extends JPanel {
 			float x2 = troncons.get(i).getIntersectionDestination().getLattitude();
 			float y2 = troncons.get(i).getIntersectionDestination().getLongitude();
 			tronconsTraces.add(new VueTroncon(x1,y1,x2,y2)); 
+		}   
+	}
+	
+	public void afficherLivraisonDemande(DemandeLivraison dl) {
+		this.dl = dl; 
+		adressesDepot.clear();
+		adressesEnlevement.clear();
+		entrepot = new VueEntrepot(dl.getEntrepot().getLattitude(), dl.getEntrepot().getLongitude());
+		dl.getEntrepot().getLattitude();
+		List<Livraison> livraisons = dl.getLivraisons();    
+		for(int i= 0; i < livraisons.size(); i++) {
+			float xDepot = livraisons.get(i).getAdresseDepot().getLattitude();
+			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
+			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLattitude();
+			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude(); 
+			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));  
+			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
 		}  
-	}
-
-	/*public int getHauteur() {
-		return hauteurVue;
-	}
-
-	public int getLargeur() {
-		return largeurVue;
-	}*/
+	} 
 
 	/**
 	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies

@@ -16,10 +16,15 @@ class VueTroncon{
    } 
    
    public void dessiner(Graphics g, int width, int height) {  
-	   int x11 = (int) ((x1-VuePlan.lattitudeMin)*width/VuePlan.intervalleLattitude);
+	   /*int x11 = (int) ((x1-VuePlan.lattitudeMin)*width/VuePlan.intervalleLattitude);
 	   int x21 = (int) ((x2-VuePlan.lattitudeMin)*width/VuePlan.intervalleLattitude);
 	   int y11 = (int) ((y1-VuePlan.longitudeMin)*height/VuePlan.intervalleLongitude);
 	   int y21 = (int) ((y2-VuePlan.longitudeMin)*height/VuePlan.intervalleLongitude);  
-	   g.drawLine( x11, y11, x21,  y21); 
+	   g.drawLine( x11, y11, x21, y21); */
+	   int x11 = (int) ((x1-VuePlan.lattitudeMin)*height/VuePlan.intervalleLattitude);
+	   int x21 = (int) ((x2-VuePlan.lattitudeMin)*height/VuePlan.intervalleLattitude);
+	   int y11 = (int) ((y1-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);
+	   int y21 = (int) ((y2-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);  
+	   g.drawLine( y11, height-x11, y21, height-x21); 
    }
 }

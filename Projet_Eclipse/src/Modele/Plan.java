@@ -34,14 +34,12 @@ public class Plan {
 		this.longitudeMin = longitudeMin;
 	}
 
-
-	public void setLattitudeMax(float lattitudeMax) {
+	public void setLatitudeMax(float lattitudeMax) {
 		this.lattitudeMax = lattitudeMax;
 	}
 
-	public void setLattitudeMin(float lattitudeMin) {
+	public void setLatitudeMin(float lattitudeMin) {
 		this.lattitudeMin = lattitudeMin;
-
 	}
 
 	public void setLongitudeMax(float longitudeMax) {
@@ -52,14 +50,12 @@ public class Plan {
 		return longitudeMin;
 	}
 
-
 	public float getLattitudeMax( ) {
 		return lattitudeMax;
 	}
 
 	public float getLattitudeMin( ) {
 		return lattitudeMin;
-
 	}
 
 	public float getLongitudeMax( ) {
