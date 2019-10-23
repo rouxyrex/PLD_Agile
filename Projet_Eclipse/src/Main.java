@@ -1,4 +1,4 @@
-package Modele;
+
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;

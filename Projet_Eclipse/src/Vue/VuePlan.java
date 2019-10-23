@@ -102,9 +102,9 @@ public class VuePlan extends JPanel {
 		
 		for(int i= 0; i < troncons.size(); i++) {
 
-			float x1 = troncons.get(i).getIntersectionOrigine().getLattitude();
+			float x1 = troncons.get(i).getIntersectionOrigine().getLatitude();
 			float y1 = troncons.get(i).getIntersectionOrigine().getLongitude();
-			float x2 = troncons.get(i).getIntersectionDestination().getLattitude();
+			float x2 = troncons.get(i).getIntersectionDestination().getLatitude();
 			float y2 = troncons.get(i).getIntersectionDestination().getLongitude();
 			tronconsTraces.add(new VueTroncon(x1,y1,x2,y2)); 
 		}   
@@ -116,9 +116,9 @@ public class VuePlan extends JPanel {
 		adressesEnlevement.clear();
 		List<Livraison> livraisons = dl.getLivraisons();    
 		for(int i= 0; i < livraisons.size(); i++) {
-			float xDepot = livraisons.get(i).getAdresseDepot().getLattitude();
+			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
 			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
-			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLattitude();
+			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLatitude();
 			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude(); 
 			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));  
 			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  

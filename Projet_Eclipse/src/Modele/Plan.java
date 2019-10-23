@@ -19,11 +19,17 @@ public class Plan {
 		return intersections;
 	}
 	
-	public Intersection getIntersectionById(String id) { //Test si rien trouve, renvoyer null
+	public Intersection getIntersectionById(String id) {
 		
 		Intersection inter = intersections.get(id);
 		
-		return inter;
+		if(inter != null) {
+			return inter;
+		}
+		else {
+			return null;
+		}
+		
 	}
 	
 	public List<Troncon> getTroncons() {

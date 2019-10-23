@@ -64,13 +64,13 @@ public class LectureXml {
 			intersections.put(inter.getId(), inter);
 			
 			if(i==0) {
-				latitudeMax = inter.getLattitude();
-				latitudeMin = inter.getLattitude();
+				latitudeMax = inter.getLatitude();
+				latitudeMin = inter.getLatitude();
 				longitudeMax = inter.getLongitude();
 				longitudeMin = inter.getLongitude();
 			}
 			else {
-				latitudeTemp = inter.getLattitude();
+				latitudeTemp = inter.getLatitude();
 				longitudeTemp = inter.getLongitude();
 				
 				if(latitudeTemp<latitudeMin) {
@@ -117,6 +117,15 @@ public class LectureXml {
 	   	float latitude = Float.parseFloat(elt.getAttribute("latitude"));
 	   	float longitude = Float.parseFloat(elt.getAttribute("longitude"));
 	   	
+	   	if() {
+	   		
+	   	}
+	   	
+	   	if() {
+	   		
+	   	}
+	   	
+	   	
 	   	//System.out.println("Intersection: longitude= "+longitude+" latitude= "+latitude+" id= "+id);
 	   	
 	   	Intersection inter = new Intersection(id, latitude, longitude);
@@ -135,14 +144,21 @@ public class LectureXml {
 	   	//System.out.println("Troncon: origine= "+idOrigine+" nomRue= "+nomRue+" longueur= "+longueur+" destination= "+idDestination);
 	   	
 	   	Intersection interOrigine = intersections.get(idOrigine);
+	   	
+	   	if(interOrigine == null) {
+	   		throw new ExceptionXml("L'intersection origine du troncon \""+nomRue+"\" n'existe pas dans la liste des intersections.");
+	   	}
+	   	
 	   	Intersection interDestination = intersections.get(idDestination);
+	   	
+	   	if(interDestination == null) {
+	   		throw new ExceptionXml("L'intersection destination du troncon \""+nomRue+"\" n'existe pas dans la liste des intersections.");
+	   	}
 	   	
 	   	Troncon t = new Troncon(interOrigine, interDestination, longueur, nomRue);
 	   	
 	   	return t;
 	}
-	
-	
 	
 	
 	public DemandeLivraison creerDemandeDeLivraison(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
@@ -178,10 +194,14 @@ public class LectureXml {
 		   	heureDepart = elt.getAttribute("heureDepart");
 		   	
 		   	//Bien faire une copie!
-		   	Intersection entrepotACopier = plan.getIntersectionById(idAdresse);// Tester si null + exception
+		   	Intersection entrepotACopier = plan.getIntersectionById(idAdresse);
 	    	
-		   	entrepot = new Intersection(entrepotACopier.getId(), entrepotACopier.getLattitude(), entrepotACopier.getLongitude());
-	        
+		   	if(entrepotACopier == null) {
+		   		throw new ExceptionXml("L'entrepot ne correspond a aucune intersection du plan.");
+		   	}
+		   	
+		   	entrepot = new Intersection(entrepotACopier.getId(), entrepotACopier.getLatitude(), entrepotACopier.getLongitude());
+		   	
 		   	//System.out.println("Entrepot: heureDepart= "+heureDepart+" adresse= "+idAdresse);
 
 	    }
@@ -192,11 +212,20 @@ public class LectureXml {
 	    List<Livraison> livraisons = new ArrayList<Livraison>();
 	       	
 	    NodeList listeLivraisons = noeudDOMRacine.getElementsByTagName("livraison");
-	    for (int i = 0; i < listeLivraisons.getLength(); i++) {
+	    
+	    int tailleListeLivraisons = listeLivraisons.getLength();
+	    
+	    if(tailleListeLivraisons > 0) {
+	    	
+	    	for (int i = 0; i < tailleListeLivraisons; i++) {
 	       		
-	    	Livraison l = creerLivraison((Element) listeLivraisons.item(i), plan);
-			livraisons.add(l);
-	       		
+		    	Livraison l = creerLivraison((Element) listeLivraisons.item(i), plan);
+				livraisons.add(l);
+		       	
+		    }
+	    }
+	    else {
+	    	throw new ExceptionXml("Le document ne comporte aucun entrepot ou plusieurs.");
 	    }
 	       	
 	    DemandeLivraison demande = new DemandeLivraison(livraisons, entrepot, heureDepart);
@@ -217,8 +246,23 @@ public class LectureXml {
 	   	Intersection adresseEnlevementACopier = plan.getIntersectionById(idEnlevement);// Tester si null + exception
 	   	Intersection adresseDepotACopier = plan.getIntersectionById(idDepot);// Tester si null + exception
 	   	
-	   	Intersection adresseEnlevement = new Intersection(adresseEnlevementACopier.getId(), adresseEnlevementACopier.getLattitude(), adresseEnlevementACopier.getLongitude());
-	   	Intersection adresseDepot = new Intersection(adresseDepotACopier.getId(), adresseDepotACopier.getLattitude(), adresseDepotACopier.getLongitude());
+	   	Intersection adresseEnlevement;
+	   	
+	   	if(adresseEnlevementACopier != null) {
+	   		adresseEnlevement = new Intersection(adresseEnlevementACopier.getId(), adresseEnlevementACopier.getLatitude(), adresseEnlevementACopier.getLongitude());
+	   	}
+	   	else {
+	   		throw new ExceptionXml("Il y a au moins une adresse d'enlevement qui ne correspond a aucune intersection du plan.");
+	   	}
+	   	
+	   	Intersection adresseDepot;
+	   	
+	   	if(adresseDepotACopier != null) {
+	   		adresseDepot = new Intersection(adresseDepotACopier.getId(), adresseDepotACopier.getLatitude(), adresseDepotACopier.getLongitude());
+	   	}
+	   	else {
+	   		throw new ExceptionXml("Il y a au moins une adresse de depot qui ne correspond a aucune intersection du plan.");
+	   	}
 	   	
 	   	Livraison l = new Livraison(adresseEnlevement, adresseDepot, dureeEnlevement, dureeDepot);
 	   	

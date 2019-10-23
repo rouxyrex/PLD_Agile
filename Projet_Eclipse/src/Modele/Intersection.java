@@ -2,17 +2,17 @@ package Modele;
 
 public class Intersection {
 	String id;
-	float lattitude;
+	float latitude;
 	float longitude;
 	
-	public Intersection(String id, float lattitude, float longitude) {
+	public Intersection(String id, float latitude, float longitude) {
 		this.id = id;
-		this.lattitude = lattitude;
+		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 	
-	public float getLattitude() {
-		return lattitude;
+	public float getLatitude() {
+		return latitude;
 	}
 	
 	public float getLongitude() {
