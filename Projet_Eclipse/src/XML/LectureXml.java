@@ -117,7 +117,7 @@ public class LectureXml {
 	   	float latitude = Float.parseFloat(elt.getAttribute("latitude"));
 	   	float longitude = Float.parseFloat(elt.getAttribute("longitude"));
 	   	
-	   	System.out.println("Intersection: longitude= "+longitude+" latitude= "+latitude+" id= "+id);
+	   	//System.out.println("Intersection: longitude= "+longitude+" latitude= "+latitude+" id= "+id);
 	   	
 	   	Intersection inter = new Intersection(id, latitude, longitude);
 	   		
@@ -132,7 +132,7 @@ public class LectureXml {
 	   	float longueur = Float.parseFloat(elt.getAttribute("longueur"));
 	   	String nomRue = elt.getAttribute("nomRue");
 	   	
-	   	System.out.println("Troncon: origine= "+idOrigine+" nomRue= "+nomRue+" longueur= "+longueur+" destination= "+idDestination);
+	   	//System.out.println("Troncon: origine= "+idOrigine+" nomRue= "+nomRue+" longueur= "+longueur+" destination= "+idDestination);
 	   	
 	   	Intersection interOrigine = intersections.get(idOrigine);
 	   	Intersection interDestination = intersections.get(idDestination);
@@ -182,7 +182,7 @@ public class LectureXml {
 	    	
 		   	entrepot = new Intersection(entrepotACopier.getId(), entrepotACopier.getLattitude(), entrepotACopier.getLongitude());
 	        
-		   	System.out.println("Entrepot: heureDepart= "+heureDepart+" adresse= "+idAdresse);
+		   	//System.out.println("Entrepot: heureDepart= "+heureDepart+" adresse= "+idAdresse);
 
 	    }
 	    else {
@@ -212,7 +212,7 @@ public class LectureXml {
 	   	int dureeEnlevement = Integer.parseInt(elt.getAttribute("dureeEnlevement"));
 	   	int dureeDepot = Integer.parseInt(elt.getAttribute("dureeLivraison"));
 	   	
-	   	System.out.println("Livraison: dureeLivraison= "+dureeDepot+" dureeEnlevement= "+dureeEnlevement+" adresseLivraison= "+idDepot+" adresseEnlevement= "+idEnlevement);
+	   	//System.out.println("Livraison: dureeLivraison= "+dureeDepot+" dureeEnlevement= "+dureeEnlevement+" adresseLivraison= "+idDepot+" adresseEnlevement= "+idEnlevement);
 	   	
 	   	Intersection adresseEnlevementACopier = plan.getIntersectionById(idEnlevement);// Tester si null + exception
 	   	Intersection adresseDepotACopier = plan.getIntersectionById(idDepot);// Tester si null + exception

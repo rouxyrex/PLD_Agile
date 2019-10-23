@@ -7,17 +7,12 @@ import org.xml.sax.SAXException;
 
 import XML.ExceptionXml;
 import XML.LectureXml;
+import Controleur.Controleur;
 
 public class Main {
 	public static void main (String[] args) throws IOException, NumberFormatException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		LectureXml l = new LectureXml();
-		
-		
-		Plan p = l.creerPlan();
-		
-		
-		DemandeLivraison d = l.creerDemandeDeLivraison(p);
-		
+
+		Controleur c = new Controleur(1);
 	}
 }
