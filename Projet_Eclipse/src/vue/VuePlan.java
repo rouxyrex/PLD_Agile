@@ -17,7 +17,9 @@ import modele.Troncon;
 public class VuePlan extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private int echelle; 
+	private int echelle;
+	private int modifLatitude;
+	private int modifLongitude;
 	private Plan plan;
 	private DemandeLivraison dl;
 	private Fenetre f; 
@@ -46,6 +48,8 @@ public class VuePlan extends JPanel {
 		adressesDepot = new LinkedList<VueAdresseDepot>();
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
 		this.echelle = e; 
+		modifLatitude = 0;
+		modifLongitude = 0;
 		setLayout(null);
 		setBackground(Color.white); 
 		f.getContentPane().add(this,  BorderLayout.CENTER);  
@@ -61,20 +65,20 @@ public class VuePlan extends JPanel {
 		super.paintComponent(g); 
 		g.setColor(Color.black);
 		for (VueTroncon troncon : tronconsTraces) {   
-	    	troncon.dessiner(g, this.getWidth(), this.getHeight()); 
+	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
 	    }   
 		 
 		for(int i = 0; i < adressesDepot.size(); i++) {
 			g.setColor(colors[i]);  
-			adressesDepot.get(i).dessiner(g, this.getWidth(), this.getHeight());
+			adressesDepot.get(i).dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
 	    }  
 		
 		for(int i = 0; i < adressesEnlevement.size(); i++) {
 			g.setColor(colors[i]);  
-			adressesEnlevement.get(i).dessiner(g, this.getWidth(), this.getHeight());
+			adressesEnlevement.get(i).dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
 	    }   
 		
-		if(entrepot != null) entrepot.dessiner(g, this.getWidth(), this.getHeight()); 
+		if(entrepot != null) entrepot.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
 
 	}
 
@@ -128,41 +132,35 @@ public class VuePlan extends JPanel {
 			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));  
 			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
 		}  
-	} 
+	}
 
-	/**
-	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
-	 */
-/*	@Override
-	public void update(Observable o, Object arg) {
-		if (arg != null){ // arg est une forme qui vient d'etre ajoutee a plan
-			Forme f = (Forme)arg;
-			f.addObserver(this);  // this observe la forme f
-		}
+	public void zoom() { 
+		echelle = echelle + 1;
 		repaint();
-	}*/
+	} 
+	public void dezoom() { 
+		echelle = echelle - 1;
+		if(echelle <= 0) echelle = 1;
+		repaint();
+	} 
+	public void droite() { 
+		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/5)*getWidth()); 
+		repaint();
+	} 
+	public void gauche() { 
+		modifLongitude = (int) (modifLongitude - ((longitudeMax-longitudeMin)/5)*getWidth()); 
+		repaint();
+	} 
+	public void haut() { 
+		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin)/5)*getHeight()); 
+		repaint();
+		
+	} 
+	public void bas() { 
+		modifLatitude = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight()); 
+		repaint();
+		
+	}  
 
-	/**
-	 * Methode appelee par l'objet visite (un cercle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Cercle c) {
-		int r = echelle*c.getRayon();
-		if (c.getEstSelectionne())
-			g.drawOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-		else
-			g.fillOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un rectangle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Rectangle r) {
-		if (r.getEstSelectionne())
-			g.drawRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-		else
-			g.fillRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-	}*/
 
 }

@@ -13,10 +13,10 @@ class VueEntrepot{
         this.y1 = y1; 
     }       
     
-    public void dessiner(Graphics g, int width, int height) {
+    public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
     	g.setColor(Color.black);
     	int x = (int) ((x1-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
 		int y = (int) ((y1-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);
-		g.fillRect(y-(tailleEntrepot/2), height-x-(tailleEntrepot/2), tailleEntrepot, tailleEntrepot);
+		g.fillRect(y-(tailleEntrepot/2)+modifLongitude, height-x-(tailleEntrepot/2)+modifLatitude, tailleEntrepot, tailleEntrepot);
     }
 }

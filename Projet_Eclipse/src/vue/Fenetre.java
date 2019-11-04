@@ -23,17 +23,20 @@ public class Fenetre extends JFrame {
 		protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
 		protected static final String CALCULER_TOURNEE = "Calculer la tournée";
 		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
+		protected static final String ZOOM = "Zoom";
+		protected static final String DEZOOM = "Dezoom";
+		protected static final String DROITE = "Droite";
+		protected static final String GAUCHE = "Gauche";
+		protected static final String HAUT = "Haut";
+		protected static final String BAS = "Bas";
 		private ArrayList<JButton> boutons;
 		private JLabel cadreMessages;
 		private JPanel cadreBoutons;
 		private VuePlan vuePlan;
-		private VueDemandeLivraison demandeLivraison;
-		//private VueTextuelle vueTextuelle;
-		private EcouteurDeBoutons ecouteurDeBoutons;
-		//private EcouteurDeSouris ecouteurDeSouris;
-		//private EcouteurDeClavier ecouteurDeClavier;
+		private VueDemandeLivraison demandeLivraison; 
+		private EcouteurDeBoutons ecouteurDeBoutons; 
 		
-		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 		private final int hauteurBouton = 50;
 		private final int largeurBouton = 300;
 		private final int hauteurCadreMessages = 80;
@@ -110,12 +113,7 @@ public class Fenetre extends JFrame {
 				bouton.addActionListener(ecouteurDeBoutons);
 				cadreBoutons.add(bouton);	
 			}
-		}
-			
-			
-			
-			
-			
+		} 
 			
 			/**
 			 * Definit la taille du cadre et de ses composants en fonction de la taille de la vue
@@ -144,6 +142,25 @@ public class Fenetre extends JFrame {
 			 */
 			public void afficheMessage(String m) {
 				cadreMessages.setText(m);
+			}
+
+			public void zoom() { 
+				vuePlan.zoom();
+			}
+			public void dezoom() { 
+				vuePlan.dezoom();
+			}
+			public void haut() { 
+				vuePlan.haut();
+			}
+			public void bas() { 
+				vuePlan.bas();
+			}
+			public void droite() { 
+				vuePlan.droite();
+			}
+			public void gauche() { 
+				vuePlan.gauche();
 			}
 		
 }

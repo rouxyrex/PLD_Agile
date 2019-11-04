@@ -13,9 +13,9 @@ class VueAdresseDepot{
         this.y1 = y1; 
     }             
     
-    public void dessiner(Graphics g, int width, int height) {
+    public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
     	int x = (int) ((x1-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
 		int y = (int) ((y1-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude); 
-    	g.fillOval(y-(tailleDepot/2), height-x-(tailleDepot/2), tailleDepot, tailleDepot);
+    	g.fillOval(y-(tailleDepot/2)+modifLongitude, height-x-(tailleDepot/2)+modifLatitude, tailleDepot, tailleDepot);
     }
 }

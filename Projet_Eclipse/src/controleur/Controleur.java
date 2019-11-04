@@ -26,23 +26,35 @@ public class Controleur {
 	}
 
 
-	public void chargerPlan() throws IOException, NumberFormatException, ParserConfigurationException, SAXException, ExceptionXml {
-
-
-		String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Téléchargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
-		
-		plan = l.creerPlan();
-		
-		fenetre.passerPlan(plan);
-		
-		
+	public void chargerPlan() throws Exception{ 
+		plan = l.creerPlan(); 
+		fenetre.passerPlan(plan); 
 	}
 	
 	
 	public void chargerDemandeLivraison() throws Exception{
 		
-		DemandeLivraison dl = l.creerDemandeDeLivraison(plan);
-		
+		DemandeLivraison dl = l.creerDemandeDeLivraison(plan); 
 		fenetre.afficherDemandeLivraison(dl);
+	}
+
+
+	public void zoom() {
+		fenetre.zoom(); 
+	}
+	public void dezoom() {
+		fenetre.dezoom(); 
+	}
+	public void haut() {
+		fenetre.haut(); 
+	}
+	public void bas() {
+		fenetre.bas(); 
+	}
+	public void droite() {
+		fenetre.droite(); 
+	}
+	public void gauche() {
+		fenetre.gauche(); 
 	}
 }
