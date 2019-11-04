@@ -20,10 +20,7 @@ public class VuePlan extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int echelle;
 	private int modifLatitude;
-	private int modifLongitude;
-	private Plan plan;
-	private DemandeLivraison dl;
-	private Fenetre f; 
+	private int modifLongitude; 
 	public static float latitudeMax;
 	public static float latitudeMin;
 	public static float longitudeMax;
@@ -50,13 +47,12 @@ public class VuePlan extends JPanel {
 		tronconsTournee = new LinkedList<VueTroncon>(); 
 		adressesDepot = new LinkedList<VueAdresseDepot>();
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
-		this.echelle = e; 
+		echelle = 1; 
 		modifLatitude = 0;
 		modifLongitude = 0;
 		setLayout(null);
 		setBackground(Color.white); 
-		f.getContentPane().add(this,  BorderLayout.CENTER);  
-		this.f = f;
+		f.getContentPane().add(this,  BorderLayout.CENTER);   
 		repaint();
 	} 
 	
@@ -88,24 +84,19 @@ public class VuePlan extends JPanel {
 		
 		if(entrepot != null) entrepot.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
 
-	}
-
-/*	public void setEchelle(int e) {
-		largeurVue = (largeurVue/echelle)*e;
-		hauteurVue = (hauteurVue/echelle)*e;
-		setSize(largeurVue, hauteurVue);
-		echelle = e;
-	}*/
+	} 
 
 	public int getEchelle() {
 		return echelle;
 	}
 
-	public void afficherPlan(Plan plan) {
-		this.plan = plan;
+	public void afficherPlan(Plan plan) { 
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		entrepot = null;
+		echelle = 1; 
+		modifLatitude = 0;
+		modifLongitude = 0;
 		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();  
 		latitudeMax = plan.getLatitudeMax();
@@ -125,8 +116,7 @@ public class VuePlan extends JPanel {
 		}   
 	}
 	
-	public void afficherLivraisonDemande(DemandeLivraison dl) {
-		this.dl = dl; 
+	public void afficherLivraisonDemande(DemandeLivraison dl) { 
 		adressesDepot.clear();
 		adressesEnlevement.clear();
 		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());

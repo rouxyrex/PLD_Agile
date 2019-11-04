@@ -64,7 +64,7 @@ public class Controleur {
  
 	public void calculerTournee() {
 		tournee = new Tournee();
-		List <Trajet> trajets = tournee.getParcours();
+		List <Trajet> trajets = tournee.getParcours(); 
 		fenetre.afficherTournee(trajets);
 	}
 }
