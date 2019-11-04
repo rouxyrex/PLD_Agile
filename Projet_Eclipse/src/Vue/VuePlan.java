@@ -1,5 +1,5 @@
-package Vue;
-
+package vue;
+ 
 import java.util.LinkedList;
 import java.util.List;
 import java.awt.BorderLayout;
@@ -8,11 +8,11 @@ import java.awt.Graphics;
  
 import javax.swing.JPanel;
 
-import Modele.DemandeLivraison;
-import Modele.Livraison;
-import Modele.Plan; 
-import Vue.VueTroncon;
-import Modele.Troncon;
+import modele.DemandeLivraison;
+import modele.Livraison;
+import modele.Plan; 
+import vue.VueTroncon;
+import modele.Troncon;
 
 public class VuePlan extends JPanel {
 
@@ -21,17 +21,18 @@ public class VuePlan extends JPanel {
 	private Plan plan;
 	private DemandeLivraison dl;
 	private Fenetre f; 
-	public static float lattitudeMax;
-	public static float lattitudeMin;
+	public static float latitudeMax;
+	public static float latitudeMin;
 	public static float longitudeMax;
 	public static float longitudeMin;
-	public static float intervalleLattitude;
+	public static float intervalleLatitude;
 	public static float intervalleLongitude; 
 	
-	Color[] colors = {Color.cyan, Color.BLUE, Color.DARK_GRAY, Color.green, Color.LIGHT_GRAY, Color.magenta, Color.RED, Color.ORANGE, Color.YELLOW, Color.WHITE};
+	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
 	LinkedList<VueTroncon> tronconsTraces = null;  
 	LinkedList<VueAdresseDepot> adressesDepot = null;
 	LinkedList<VueAdresseEnlevement> adressesEnlevement = null;
+	VueEntrepot entrepot = null;
 
 	/**
 	 * Cree la vue graphique permettant de dessiner plan avec l'echelle e dans la fenetre f
@@ -39,17 +40,15 @@ public class VuePlan extends JPanel {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(/*Plan plan,*/ int e, Fenetre f) {
-		super();
-	//	this.plan = plan;
+	public VuePlan(int e, Fenetre f) {
+		super(); 
 		tronconsTraces = new LinkedList<VueTroncon>(); 
 		adressesDepot = new LinkedList<VueAdresseDepot>();
-		adressesEnlevement = new LinkedList<VueAdresseEnlevement>(); 
+		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
 		this.echelle = e; 
 		setLayout(null);
-		setBackground(Color.white);
-		setSize(1366, 723);
-		f.getContentPane().add(this,  BorderLayout.CENTER); 
+		setBackground(Color.white); 
+		f.getContentPane().add(this,  BorderLayout.CENTER);  
 		this.f = f;
 		repaint();
 	} 
@@ -62,19 +61,20 @@ public class VuePlan extends JPanel {
 		super.paintComponent(g); 
 		g.setColor(Color.black);
 		for (VueTroncon troncon : tronconsTraces) {   
-	    	troncon.dessiner(g, f.getWidth(), f.getHeight()); 
+	    	troncon.dessiner(g, this.getWidth(), this.getHeight()); 
 	    }   
 		 
 		for(int i = 0; i < adressesDepot.size(); i++) {
 			g.setColor(colors[i]);  
-			adressesDepot.get(i).dessiner(g, f.getWidth(), f.getHeight());
+			adressesDepot.get(i).dessiner(g, this.getWidth(), this.getHeight());
 	    }  
 		
 		for(int i = 0; i < adressesEnlevement.size(); i++) {
 			g.setColor(colors[i]);  
-			adressesEnlevement.get(i).dessiner(g, f.getWidth(), f.getHeight());
+			adressesEnlevement.get(i).dessiner(g, this.getWidth(), this.getHeight());
 	    }   
-	//	this.g = g; 
+		
+		if(entrepot != null) entrepot.dessiner(g, this.getWidth(), this.getHeight()); 
 
 	}
 
@@ -89,15 +89,18 @@ public class VuePlan extends JPanel {
 		return echelle;
 	}
 
-	public void afficherPlan(Plan plan/*, DemandeLivraison dl*/) {
+	public void afficherPlan(Plan plan) {
 		this.plan = plan;
+		adressesEnlevement.clear();
+		adressesDepot.clear();
+		entrepot = null;
 		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();  
-		lattitudeMax = plan.getLatitudeMax();
-		lattitudeMin = plan.getLatitudeMin();
+		latitudeMax = plan.getLatitudeMax();
+		latitudeMin = plan.getLatitudeMin();
 		longitudeMax = plan.getLongitudeMax();
 		longitudeMin = plan.getLongitudeMin();
-		intervalleLattitude = lattitudeMax-lattitudeMin;
+		intervalleLatitude = latitudeMax-latitudeMin;
 		intervalleLongitude = longitudeMax-longitudeMin; 
 		
 		for(int i= 0; i < troncons.size(); i++) {
@@ -114,6 +117,8 @@ public class VuePlan extends JPanel {
 		this.dl = dl; 
 		adressesDepot.clear();
 		adressesEnlevement.clear();
+		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
+		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();    
 		for(int i= 0; i < livraisons.size(); i++) {
 			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();

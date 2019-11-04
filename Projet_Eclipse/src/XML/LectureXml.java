@@ -1,10 +1,10 @@
-package XML;
+package xml;
 
-import Modele.Plan;
-import Modele.DemandeLivraison;
-import Modele.Intersection;
-import Modele.Livraison;
-import Modele.Troncon;
+import modele.Plan;
+import modele.DemandeLivraison;
+import modele.Intersection;
+import modele.Livraison;
+import modele.Troncon;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class LectureXml {
 	public Plan creerPlan() throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		Plan plan;
-		File xml = OuvreurDeFichierXML.getInstance().ouvre(true);
+		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
@@ -181,7 +181,7 @@ public class LectureXml {
 	public DemandeLivraison creerDemandeDeLivraison(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		DemandeLivraison demande;
-		File xml = OuvreurDeFichierXML.getInstance().ouvre(true);
+		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();

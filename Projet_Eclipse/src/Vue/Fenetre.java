@@ -1,8 +1,7 @@
-package Vue;
+package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -14,9 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Controleur.Controleur;
-import Modele.DemandeLivraison;
-import Modele.Plan;
+import controleur.Controleur;
+import modele.DemandeLivraison;
+import modele.Plan;
 
 public class Fenetre extends JFrame {
 	// Intitulés des boutons de la fenêtre
@@ -28,12 +27,13 @@ public class Fenetre extends JFrame {
 		private JLabel cadreMessages;
 		private JPanel cadreBoutons;
 		private VuePlan vuePlan;
+		private VueDemandeLivraison demandeLivraison;
 		//private VueTextuelle vueTextuelle;
 		private EcouteurDeBoutons ecouteurDeBoutons;
 		//private EcouteurDeSouris ecouteurDeSouris;
 		//private EcouteurDeClavier ecouteurDeClavier;
 		
-		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON }; //, , CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 		private final int hauteurBouton = 50;
 		private final int largeurBouton = 300;
 		private final int hauteurCadreMessages = 80;
@@ -52,7 +52,7 @@ public class Fenetre extends JFrame {
 			setLayout(new BorderLayout());
 			
 			cadreBoutons = new JPanel(); 
-			cadreBoutons.setSize(200, 100);
+			cadreBoutons.setSize(200, 100); 
 			cadreBoutons.setLayout(new BoxLayout(cadreBoutons, BoxLayout.PAGE_AXIS) );
 		    getContentPane().add(cadreBoutons, BorderLayout.WEST);
 		    
@@ -76,12 +76,11 @@ public class Fenetre extends JFrame {
 					repaint();
 			    }
 			}); 
-		}
+		} 
 		
-		
-		
-		public void passerPlan (Plan plan) {
-			vuePlan.afficherPlan(plan);
+		public void passerPlan (Plan p/*, DemandeLivraison dl */) {
+			vuePlan.afficherPlan( p/*, dl*/);
+			//demandeLivraison.afficherPlan(dl);
 			repaint();
 		}
 		
@@ -129,8 +128,8 @@ public class Fenetre extends JFrame {
 				//int largeurFenetre = vueGraphique.getLargeur()+largeurBouton+largeurVueTextuelle+10;
 				
 				//setSize(largeurFenetre, hauteurFenetre);
-				setSize(1000, 800);
-				
+				setSize(500, 800);
+		//		vuePlan.setLocation(0, 0);
 				cadreMessages.setSize(500,60);
 				cadreMessages.setLocation(0,800-hauteurCadreMessages);
 				//vueTextuelle.setSize(largeurVueTextuelle,hauteurFenetre-hauteurCadreMessages);

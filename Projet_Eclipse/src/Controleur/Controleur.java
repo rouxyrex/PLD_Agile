@@ -1,4 +1,4 @@
-package Controleur;
+package controleur;
 
 import java.io.IOException;
 
@@ -6,15 +6,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import Modele.DemandeLivraison;
-import Modele.Plan;
-import XML.ExceptionXml;
-import XML.LectureXml;
-import Vue.Fenetre;
+import modele.DemandeLivraison;
+import modele.Plan;
+import xml.ExceptionXml;
+import xml.LectureXml;
+import vue.Fenetre;
 
 public class Controleur {
-	
-	
 	
 	private Plan plan;
 	private Fenetre fenetre;

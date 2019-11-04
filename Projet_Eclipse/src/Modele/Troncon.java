@@ -1,4 +1,4 @@
-package Modele;
+package modele;
 public class Troncon {
 	Intersection intersectionOrigine;
 	Intersection intersectionDestination;
