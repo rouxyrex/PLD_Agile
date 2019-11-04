@@ -10,7 +10,8 @@ import javax.swing.JPanel;
 
 import modele.DemandeLivraison;
 import modele.Livraison;
-import modele.Plan; 
+import modele.Plan;
+import modele.Trajet;
 import vue.VueTroncon;
 import modele.Troncon;
 
@@ -32,6 +33,7 @@ public class VuePlan extends JPanel {
 	
 	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
 	LinkedList<VueTroncon> tronconsTraces = null;  
+	LinkedList<VueTroncon> tronconsTournee = null;  
 	LinkedList<VueAdresseDepot> adressesDepot = null;
 	LinkedList<VueAdresseEnlevement> adressesEnlevement = null;
 	VueEntrepot entrepot = null;
@@ -45,6 +47,7 @@ public class VuePlan extends JPanel {
 	public VuePlan(int e, Fenetre f) {
 		super(); 
 		tronconsTraces = new LinkedList<VueTroncon>(); 
+		tronconsTournee = new LinkedList<VueTroncon>(); 
 		adressesDepot = new LinkedList<VueAdresseDepot>();
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
 		this.echelle = e; 
@@ -66,7 +69,12 @@ public class VuePlan extends JPanel {
 		g.setColor(Color.black);
 		for (VueTroncon troncon : tronconsTraces) {   
 	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
-	    }   
+	    }
+		
+		g.setColor(Color.blue);
+		for (VueTroncon troncon : tronconsTournee) {   
+	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
+	    }
 		 
 		for(int i = 0; i < adressesDepot.size(); i++) {
 			g.setColor(colors[i]);  
@@ -160,6 +168,20 @@ public class VuePlan extends JPanel {
 		modifLatitude = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight()); 
 		repaint();
 		
+	}
+
+	public void afficherTournee(List<Trajet> trajets) { 
+		for (Trajet trajet : trajets) {   
+			List<Troncon> troncons = trajet.getTrajet();
+			for (Troncon troncon : troncons) {  
+				float x1 = troncon.getIntersectionOrigine().getLatitude();
+				float y1 = troncon.getIntersectionOrigine().getLongitude();
+				float x2 = troncon.getIntersectionDestination().getLatitude();
+				float y2 = troncon.getIntersectionDestination().getLongitude();
+				tronconsTournee.add(new VueTroncon(x1,y1,x2,y2)); 
+			}  
+		}
+		repaint();
 	}  
 
 

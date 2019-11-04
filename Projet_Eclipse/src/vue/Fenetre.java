@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import controleur.Controleur;
 import modele.DemandeLivraison;
 import modele.Plan;
+import modele.Trajet;
 
 public class Fenetre extends JFrame {
 	// Intitulés des boutons de la fenêtre
@@ -161,6 +163,11 @@ public class Fenetre extends JFrame {
 			}
 			public void gauche() { 
 				vuePlan.gauche();
+			}
+
+			public void afficherTournee(List<Trajet> trajets) {
+				// TODO Auto-generated method stub
+				vuePlan.afficherTournee(trajets);
 			}
 		
 }

@@ -39,6 +39,10 @@ public class EcouteurDeBoutons implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} break;
+				
+			case Fenetre.CALCULER_TOURNEE:
+				controleur.calculerTournee();
+				break;
 			case Fenetre.ZOOM: 
 				controleur.zoom();
 				break; 
