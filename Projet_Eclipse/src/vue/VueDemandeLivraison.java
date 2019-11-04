@@ -17,7 +17,7 @@ public class VueDemandeLivraison {
 	private static final long serialVersionUID = 1L;
 	private int echelle; 
 	private DemandeLivraison dl;
-	private Fenetre f;  
+	private Fenetre fenetre;  
 	VueEntrepot entrepot = null;
 	
 	LinkedList<VueAdresseDepot> adressesDepot = null;
@@ -35,7 +35,7 @@ public class VueDemandeLivraison {
 		adressesDepot = new LinkedList<VueAdresseDepot>();
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>(); 
 		this.echelle = e;  
-		this.f = f; 
+		this.fenetre = f; 
 	} 
 	
 	/**
@@ -57,6 +57,8 @@ public class VueDemandeLivraison {
 			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
 		}  
 	}
+	
+	//Créer une méthode qui remplit la grille de la vue textuelle
 
 /*	public void setEchelle(int e) {
 		largeurVue = (largeurVue/echelle)*e;
@@ -69,22 +71,6 @@ public class VueDemandeLivraison {
 		return echelle;
 	}
 
-	public void afficherPlan(/*DemandeLivraison dl*/) {
-	//	this.dl = dl;
-		// TODO Auto-generated method stub
-		
-	/*	List<Livraison> livraisons = dl.getLivraisons();   
-		
-		for(int i= 0; i < livraisons.size(); i++) {
-			float xDepot = livraisons.get(i).getAdresseDepot().getLattitude();
-			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
-			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLattitude();
-			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude(); 
-			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));  
-			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
-		}  */
-	}
-
 	/*public int getHauteur() {
 		return hauteurVue;
 	}
@@ -92,40 +78,4 @@ public class VueDemandeLivraison {
 	public int getLargeur() {
 		return largeurVue;
 	}*/
-
-	/**
-	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
-	 */
-/*	@Override
-	public void update(Observable o, Object arg) {
-		if (arg != null){ // arg est une forme qui vient d'etre ajoutee a plan
-			Forme f = (Forme)arg;
-			f.addObserver(this);  // this observe la forme f
-		}
-		repaint();
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un cercle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Cercle c) {
-		int r = echelle*c.getRayon();
-		if (c.getEstSelectionne())
-			g.drawOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-		else
-			g.fillOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un rectangle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Rectangle r) {
-		if (r.getEstSelectionne())
-			g.drawRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-		else
-			g.fillRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-	}*/
-
 }

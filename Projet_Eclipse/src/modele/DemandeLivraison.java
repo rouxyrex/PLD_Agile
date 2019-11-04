@@ -28,4 +28,8 @@ public class DemandeLivraison {
 		return heureDepart;
 	}
 	
+	public int getNbLivraisons() {
+		return this.livraisons.size();
+	}
+	
 }
