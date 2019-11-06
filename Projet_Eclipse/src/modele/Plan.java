@@ -1,7 +1,9 @@
 package modele;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Plan {
 	Map<String, Intersection> intersections;
@@ -20,8 +22,32 @@ public class Plan {
 	
 	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Intersection intersectionInitiale){
 		
-		LinkedList<Trajet> graphouille= new LinkedList<Trajet>();
-		return graphouille;
+		LinkedList<Trajet> listeTrajets = new LinkedList<Trajet>();
+		PriorityQueue<Intersection> interAVisiter = new PriorityQueue<>();
+		Map<Intersection, Float> temps = new HashMap<>(); //initialiser tout ca
+		Map<Intersection, Troncon> tronconOrigine = new HashMap<>();
+		Map<Intersection, Boolean> visite = new HashMap<>();
+		
+		Intersection curr_i;
+		Intersection interVoisine;
+		
+		interAVisiter.add(intersectionInitiale);
+		while(! interAVisiter.isEmpty()) {
+			curr_i = interAVisiter.poll(); //verifier la gestion de la pile
+			if (! visite.get(curr_i)) {
+				for(Troncon curr_tv : curr_i.getTronconsVoisins()) {
+					interVoisine = curr_tv.getIntersectionDestination();
+					interAVisiter.add(interVoisine);
+					if (temps.get(curr_i) + curr_tv.getTempsParcoursMinute() < temps.get(interVoisine)) {
+						temps.replace(interVoisine, temps.get(curr_i) + curr_tv.getTempsParcoursMinute());
+						tronconOrigine.replace(interVoisine, curr_tv);
+					}
+				}
+				visite.replace(curr_i, true);
+			}
+		}
+		
+		return listeTrajets;
 		
 	}
 	
