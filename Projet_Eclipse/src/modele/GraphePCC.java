@@ -12,8 +12,6 @@ public class GraphePCC {
 		
 	}
 	
-	private void Dijkstra(){
-		
-	}
+
 	
 }
