@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DemandeLivraison {
@@ -8,12 +9,27 @@ public class DemandeLivraison {
 	Intersection entrepot;
 	String heureDepart; //A modifier en une vraie heure? 
 	
+	List<Intersection> ptsPassage;
+	
 	public DemandeLivraison(List<Livraison> livraisons, Intersection entrepot, String heureDepart) {
 		
 		this.livraisons = livraisons;
 		this.entrepot = entrepot;
 		this.heureDepart = heureDepart;
 		
+		creerPtsPassage();
+	}
+	
+	public void creerPtsPassage() {
+		
+		ptsPassage = new ArrayList<Intersection>();
+		
+		for(Livraison l : livraisons) {
+			
+			ptsPassage.add(l.getAdresseDepot());
+			ptsPassage.add(l.getAdresseEnlevement());
+			
+		}
 	}
 	
 	public List<Livraison> getLivraisons() {
@@ -26,6 +42,10 @@ public class DemandeLivraison {
 	
 	public String getHeureDepart() {
 		return heureDepart;
+	}
+	
+	public List<Intersection> getPtsPassage() {
+		return ptsPassage;
 	}
 	
 }
