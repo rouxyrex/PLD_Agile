@@ -174,6 +174,8 @@ public class LectureXml {
 	   	
 	   	Troncon t = new Troncon(interOrigine, interDestination, longueur, nomRue);
 	   	
+	   	interOrigine.addTronconVoisin(t);
+	   	
 	   	return t;
 	}
 	
