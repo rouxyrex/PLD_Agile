@@ -8,8 +8,9 @@ public class GraphePCC {
 	private LinkedList<Trajet>[] listeAdjacence;
 	
 	
-	public GraphePCC(){
-		
+	public GraphePCC(int nbSommets){
+		this.nbSommets = nbSommets;
+		listeAdjacence= new LinkedList[nbSommets];
 	}
 	
 
