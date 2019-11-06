@@ -1,4 +1,5 @@
 package modele;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,11 @@ public class Plan {
 	public Plan(Map<String, Intersection> intersections, List<Troncon> troncons) {
 		this.intersections = intersections;
 		this.troncons = troncons;
+	}
+	
+	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Intersection intersectionInitiale){
+		LinkedList<Trajet> graphouille= new LinkedList<Trajet>();
+		return graphouille;
 	}
 	
 	public Map<String, Intersection> getIntersections() {
