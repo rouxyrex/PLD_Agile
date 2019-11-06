@@ -13,6 +13,12 @@ public class GraphePCC {
 		listeAdjacence= new LinkedList[nbSommets];
 	}
 	
-
+	public void ajouterGraphouille(LinkedList<Trajet> graphouille, int position) {
+		
+		listeAdjacence[position] = graphouille;
+		
+	}
+	
+	
 	
 }

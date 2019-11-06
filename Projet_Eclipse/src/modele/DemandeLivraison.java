@@ -17,12 +17,12 @@ public class DemandeLivraison {
 		this.entrepot = entrepot;
 		this.heureDepart = heureDepart;
 		
+		this.ptsPassage = new ArrayList<Intersection>();
+		
 		creerPtsPassage();
 	}
 	
 	public void creerPtsPassage() {
-		
-		ptsPassage = new ArrayList<Intersection>();
 		
 		for(Livraison l : livraisons) {
 			

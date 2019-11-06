@@ -16,10 +16,17 @@ public class Plan {
 		this.troncons = troncons;
 	}
 	
+	
+	
 	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Intersection intersectionInitiale){
+		
 		LinkedList<Trajet> graphouille= new LinkedList<Trajet>();
 		return graphouille;
+		
 	}
+	
+	
+	
 	
 	public Map<String, Intersection> getIntersections() {
 		return intersections;
