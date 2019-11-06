@@ -17,6 +17,7 @@ public class Controleur {
 	private Plan plan;
 	private Fenetre fenetre;
 	private LectureXml l;
+	private DemandeLivraison demandeLivraison;
 	
 	public Controleur( int echelle)
 	{
@@ -41,8 +42,8 @@ public class Controleur {
 	
 	public void chargerDemandeLivraison() throws Exception{
 		
-		DemandeLivraison dl = l.creerDemandeDeLivraison(plan);
+		demandeLivraison = l.creerDemandeDeLivraison(plan);
 		
-		fenetre.afficherDemandeLivraison(dl);
+		fenetre.afficherDemandeLivraison(demandeLivraison);
 	}
 }

@@ -7,6 +7,11 @@ public class GraphePCC {
 	private int nbSommets;
 	private LinkedList<Trajet>[] listeAdjacence;
 	
+	
+	public GraphePCC(){
+		
+	}
+	
 	private void Dijkstra(){
 		
 	}
