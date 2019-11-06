@@ -1,19 +1,12 @@
 package vue;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.Dimension; 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import controleur.Controleur;
 import modele.DemandeLivraison;
@@ -27,9 +20,9 @@ public class Fenetre extends JFrame {
 		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
 		private ArrayList<JButton> boutons;
 		private JPanel cadreBoutons;
-		private JLabel cadreMessages;
-		private JPanel cadreTextuel;
+		private JLabel cadreMessages; 
 		private VuePlan vuePlan;
+		private VueTextuelle vueTextuelle;
 		private EcouteurDeBoutons ecouteurDeBoutons;
 		//private EcouteurDeSouris ecouteurDeSouris;
 		//private EcouteurDeClavier ecouteurDeClavier;
@@ -62,14 +55,10 @@ public class Fenetre extends JFrame {
 			
 			cadreMessages = new JLabel();
 			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
-			getContentPane().add(cadreMessages, BorderLayout.SOUTH);
-			
-			cadreTextuel = new JPanel();
-			cadreTextuel.setBorder(BorderFactory.createTitledBorder("Demande de livraison"));
-			cadreTextuel.setPreferredSize(new Dimension(300, 100));
-			getContentPane().add(cadreTextuel, BorderLayout.EAST);
+			getContentPane().add(cadreMessages, BorderLayout.SOUTH); 
 			
 			vuePlan = new VuePlan(1 ,this);
+			vueTextuelle = new VueTextuelle(this, controleur);
 			//ecouteurDeSouris = new EcouteurDeSouris(controleur,vueGraphique,this);
 			//addMouseListener(ecouteurDeSouris);
 			//addMouseMotionListener(ecouteurDeSouris);
@@ -90,7 +79,7 @@ public class Fenetre extends JFrame {
 		public void afficherDemandeLivraison(DemandeLivraison dl, Controleur controleur) {
 			demandeLivraisonChargee = true;
 			vuePlan.afficherLivraisonDemande(dl);
-			creeCadreTextuel(controleur);
+			vueTextuelle.afficherDemandeLivraison();
 			repaint();
 		}
 		
@@ -116,16 +105,6 @@ public class Fenetre extends JFrame {
 			}
 		}
 		
-		/**
-		 * Cree le cadre textuel qui contient les informations relatives 
-		 * à la demande de livraison et à la tournée
-		 * @param controleur
-		 */
-		private void creeCadreTextuel(Controleur controleur) {
-			cadreTextuel.setLayout(new GridLayout(controleur.getNbLivraisons(),1));
-			this.add(new JScrollPane(cadreTextuel), BorderLayout.EAST);
-			getContentPane().add(cadreTextuel, BorderLayout.EAST);
-		}
 		
 		/**
 		 * Definit la taille du cadre et de ses composants en fonction de la taille de la vue

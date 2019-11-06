@@ -47,8 +47,8 @@ public class Controleur {
 		fenetre.afficherDemandeLivraison(dl, this);
 	}
 	
-	public int getNbLivraisons() {
+	public DemandeLivraison getDemandeLivraison() {
 		
-		return dl.getNbLivraisons();
+		return dl;
 	}
 }

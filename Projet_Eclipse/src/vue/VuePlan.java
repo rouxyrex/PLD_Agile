@@ -61,7 +61,7 @@ public class VuePlan extends JPanel {
 		super.paintComponent(g); 
 		g.setColor(Color.black);
 		for (VueTroncon troncon : tronconsTraces) {   
-	    	troncon.dessiner(g, this.getWidth(), this.getHeight()); 
+	    	troncon.dessiner(g, this.getWidth(), this.getHeight());  
 	    }   
 		 
 		for(int i = 0; i < adressesDepot.size(); i++) {
