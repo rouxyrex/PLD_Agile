@@ -5,8 +5,12 @@ import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
- 
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 
 import modele.DemandeLivraison;
 import modele.Livraison;
@@ -33,7 +37,7 @@ public class VuePlan extends JPanel {
 	LinkedList<VueTroncon> tronconsTournee = null;  
 	LinkedList<VueAdresseDepot> adressesDepot = null;
 	LinkedList<VueAdresseEnlevement> adressesEnlevement = null;
-	VueEntrepot entrepot = null;
+	VueEntrepot entrepot = null; 
 
 	/**
 	 * Cree la vue graphique permettant de dessiner plan avec l'echelle e dans la fenetre f
@@ -51,8 +55,8 @@ public class VuePlan extends JPanel {
 		modifLatitude = 0;
 		modifLongitude = 0;
 		setLayout(null);
-		setBackground(Color.white); 
-		f.getContentPane().add(this,  BorderLayout.CENTER);   
+		setBackground(Color.white);   
+        f.getContentPane().add(this,  BorderLayout.CENTER);    
 		repaint();
 	} 
 	
@@ -64,12 +68,12 @@ public class VuePlan extends JPanel {
 		super.paintComponent(g); 
 		g.setColor(Color.black);
 		for (VueTroncon troncon : tronconsTraces) {   
-	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
+	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude, false); 
 	    }
 		
 		g.setColor(Color.blue);
 		for (VueTroncon troncon : tronconsTournee) {   
-	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
+	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude, true); 
 	    }
 		 
 		for(int i = 0; i < adressesDepot.size(); i++) {
@@ -83,7 +87,7 @@ public class VuePlan extends JPanel {
 	    }   
 		
 		if(entrepot != null) entrepot.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude); 
-
+	 
 	} 
 
 	public int getEchelle() {
@@ -139,23 +143,30 @@ public class VuePlan extends JPanel {
 	public void dezoom() { 
 		echelle = echelle - 1;
 		if(echelle <= 0) echelle = 1;
+		boolean res = (int) (((longitudeMax-VuePlan.longitudeMin)*getWidth()*echelle/VuePlan.intervalleLongitude)+modifLongitude)  < getWidth();
+		if(res) modifLongitude = 0;    
+		if((int) (((latitudeMax-VuePlan.latitudeMin)*getHeight()*echelle/VuePlan.intervalleLatitude)+modifLatitude)  < getHeight()) modifLatitude = 0;
 		repaint();
 	} 
 	public void droite() { 
 		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/5)*getWidth()); 
+		if(modifLongitude >= 0) modifLongitude = 0;
 		repaint();
 	} 
 	public void gauche() { 
-		modifLongitude = (int) (modifLongitude - ((longitudeMax-longitudeMin)/5)*getWidth()); 
+		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/5)*getWidth());  
+		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
 		repaint();
 	} 
 	public void haut() { 
 		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin)/5)*getHeight()); 
+		if(modifLatitude >= 0) modifLatitude = 0;
 		repaint();
 		
 	} 
 	public void bas() { 
-		modifLatitude = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight()); 
+		int memoire = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight());   
+		if((((latitudeMax-latitudeMin)*getHeight()/intervalleLatitude - memoire) < (getHeight()*echelle))) modifLatitude = memoire;
 		repaint();
 		
 	}
