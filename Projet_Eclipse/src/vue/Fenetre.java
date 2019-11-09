@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension; 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -23,17 +26,12 @@ public class Fenetre extends JFrame {
 		private JLabel cadreMessages; 
 		private VuePlan vuePlan;
 		private VueTextuelle vueTextuelle;
-		private EcouteurDeBoutons ecouteurDeBoutons;
-		//private EcouteurDeSouris ecouteurDeSouris;
-		//private EcouteurDeClavier ecouteurDeClavier;
+		private EcouteurDeBoutons ecouteurDeBoutons; 
 		
 		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 		private final int hauteurBouton = 50;
 		private final int largeurBouton = 300;
-		private final int hauteurCadreMessages = 80;
-		private final int largeurVueTextuelle = 400;
-		
-		private boolean demandeLivraisonChargee = false;
+		private final int hauteurCadreMessages = 80; 
 		
 		/**
 		 * Cree une fenetre avec des boutons, une zone graphique pour afficher le plan avec l'echelle, 
@@ -58,28 +56,28 @@ public class Fenetre extends JFrame {
 			getContentPane().add(cadreMessages, BorderLayout.SOUTH); 
 			
 			vuePlan = new VuePlan(1 ,this);
-			vueTextuelle = new VueTextuelle(this, controleur);
-			//ecouteurDeSouris = new EcouteurDeSouris(controleur,vueGraphique,this);
-			//addMouseListener(ecouteurDeSouris);
-			//addMouseMotionListener(ecouteurDeSouris);
+			vueTextuelle = new VueTextuelle(this, controleur); 
+			vueTextuelle.setVisible(false);
 			setTailleFenetre(); 
 			setVisible(true);
 			addComponentListener(new ComponentAdapter() {
 			    public void componentResized(ComponentEvent componentEvent) { 
 					repaint();
 			    }
-			}); 
+			});   
 		}
 		
 		public void passerPlan (Plan plan) {
 			vuePlan.afficherPlan(plan);
+			vueTextuelle.setVisible(false);
 			repaint();
 		}
 		
-		public void afficherDemandeLivraison(DemandeLivraison dl, Controleur controleur) {
-			demandeLivraisonChargee = true;
-			vuePlan.afficherLivraisonDemande(dl);
+		public void afficherDemandeLivraison(DemandeLivraison dl, Controleur controleur) { 
+			
+			vuePlan.afficherLivraisonDemande(dl); 
 			vueTextuelle.afficherDemandeLivraison();
+			vueTextuelle.setVisible(true);
 			repaint();
 		}
 		
@@ -101,7 +99,7 @@ public class Fenetre extends JFrame {
 				bouton.setFocusable(false);
 				bouton.setFocusPainted(false);
 				bouton.addActionListener(ecouteurDeBoutons);
-				cadreBoutons.add(bouton);	
+				cadreBoutons.add(bouton);	 
 			}
 		}
 		
@@ -111,18 +109,10 @@ public class Fenetre extends JFrame {
 		 * @param largeurVue
 		 * @param hauteurVue
 		 */
-		private void setTailleFenetre() {
-			//int hauteurBoutons = hauteurBouton*intitulesBoutons.length;
-			//int hauteurFenetre = Math.max(vueGraphique.getHauteur(),hauteurBoutons)+hauteurCadreMessages;
-			//int largeurFenetre = vueGraphique.getLargeur()+largeurBouton+largeurVueTextuelle+10;
-			
-			//setSize(largeurFenetre, hauteurFenetre);
-			setSize(1000, 800);
-			
+		private void setTailleFenetre() { 
+			setSize(1000, 800); 
 			cadreMessages.setSize(500,60);
-			cadreMessages.setLocation(0,800-hauteurCadreMessages);
-			//vueTextuelle.setSize(largeurVueTextuelle,hauteurFenetre-hauteurCadreMessages);
-			//vueTextuelle.setLocation(10+vueGraphique.getLargeur()+largeurBouton,0);
+			cadreMessages.setLocation(0,800-hauteurCadreMessages); 
 		}
 			
 		/**
