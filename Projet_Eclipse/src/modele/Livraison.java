@@ -33,4 +33,10 @@ public Livraison(Intersection adresseEnlevement, Intersection adresseDepot, int 
 		return dureeDepot;
 	}
 	
+	public String toString() {
+		String  res = "<html>"+adresseEnlevement.getId() + "         " + dureeEnlevement+"<br>"+adresseDepot.getId() + "         " + dureeDepot+"</span></html>";
+		System.out.println(res);
+		return  res;
+	}
+	
 }

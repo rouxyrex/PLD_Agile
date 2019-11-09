@@ -16,55 +16,63 @@ import xml.LectureXml;
 import vue.Fenetre;
 
 public class Controleur {
-	
+
 	private Plan plan;
 	private Fenetre fenetre;
 	private LectureXml l;
 	private Tournee tournee;
-	
+
+	private DemandeLivraison dl;
+
 	public Controleur( int echelle)
 	{
-		l = new LectureXml();
+		lecture = new LectureXml();
 		//etatCourant = etatInit;
 		fenetre = new Fenetre(plan, echelle, this);
 	}
 
 
-	public void chargerPlan() throws Exception{ 
-		plan = l.creerPlan(); 
-		fenetre.passerPlan(plan); 
+	public void chargerPlan() throws Exception{
+		plan = l.creerPlan();
+		fenetre.passerPlan(plan);
 	}
-	
-	
+
+
 	public void chargerDemandeLivraison() throws Exception{
-		
-		DemandeLivraison dl = l.creerDemandeDeLivraison(plan); 
-		fenetre.afficherDemandeLivraison(dl);
+
+		dl = lecture.creerDemandeDeLivraison(plan);
+
+		fenetre.afficherDemandeLivraison(dl, this);
+	}
+
+	public DemandeLivraison getDemandeLivraison() {
+
+		return dl;
 	}
 
 
 	public void zoom() {
-		fenetre.zoom(); 
+		fenetre.zoom();
 	}
 	public void dezoom() {
-		fenetre.dezoom(); 
+		fenetre.dezoom();
 	}
 	public void haut() {
-		fenetre.haut(); 
+		fenetre.haut();
 	}
 	public void bas() {
-		fenetre.bas(); 
+		fenetre.bas();
 	}
 	public void droite() {
-		fenetre.droite(); 
+		fenetre.droite();
 	}
 	public void gauche() {
-		fenetre.gauche(); 
+		fenetre.gauche();
 	}
- 
+
 	public void calculerTournee() {
 		tournee = new Tournee();
-		List <Trajet> trajets = tournee.getParcours(); 
+		List <Trajet> trajets = tournee.getParcours();
 		fenetre.afficherTournee(trajets);
 	}
 }
