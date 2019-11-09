@@ -117,7 +117,8 @@ public class VuePlan extends JPanel {
 		this.dl = dl; 
 		adressesDepot.clear();
 		adressesEnlevement.clear();
-		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude()); 
+		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
+		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();    
 		for(int i= 0; i < livraisons.size(); i++) {
 			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
