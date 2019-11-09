@@ -2,16 +2,20 @@ package vue;
 
 import java.awt.Graphics;
 
+import modele.Intersection;
+
 class VueAdresseEnlevement{ 
     final float latitude; 
     final float longitude;   
     final int TAILLE_TRIANGLE = 10;
     int[] tab;
     int[] tab2;
+    Intersection adresse;
 
-    public VueAdresseEnlevement(float x1, float y1) {
-        this.latitude = x1;
-        this.longitude = y1; 
+    public VueAdresseEnlevement(Intersection adresse) {
+        this.latitude = adresse.getLatitude();
+        this.longitude = adresse.getLongitude(); 
+        this.adresse = adresse;
     }       
     
     public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
@@ -24,9 +28,10 @@ class VueAdresseEnlevement{
     	g.fillPolygon(tab2, tab, 3); 
     }
 
-	public boolean onClick(int x, int y) {
+	public Intersection onClick(int x, int y) {
 		// TODO Auto-generated method stub
 		boolean touche= false; 
-		return touche;
+		if(touche) return adresse;
+		else return null;
 	}
 }

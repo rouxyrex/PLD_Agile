@@ -3,6 +3,8 @@ package vue;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import modele.Intersection;
+
 class VueAdresseDepot{
     final float latitude; 
     final float longitude;    
@@ -23,9 +25,9 @@ class VueAdresseDepot{
     	g.fillOval(this.x, this.y, tailleDepot, tailleDepot);
     }
 
-	public boolean onClick(int x, int y) {
+	public Intersection onClick(int x, int y) {
 		// TODO Auto-generated method stub
 		boolean touche = false;
-		return touche;
+		return null;
 	}
 }

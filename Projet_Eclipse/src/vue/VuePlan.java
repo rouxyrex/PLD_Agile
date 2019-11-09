@@ -4,17 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.Graphics; 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import java.awt.event.MouseMotionListener;
+ 
+import javax.swing.JPanel; 
 
 import modele.DemandeLivraison;
+import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
 import modele.Trajet;
@@ -64,6 +62,22 @@ public class VuePlan extends JPanel {
 	           onClick(getMousePosition().x, getMousePosition().y);
 	         } 
 	    }); 
+
+		addMouseMotionListener(new MouseMotionListener() {  
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("****" + e.getX());
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub 
+				Intersection i = onClick(e.getX(), e.getY());
+				if (i != null) f.afficheMessage("La souris est sur l'intersection "+i.getId());
+				 
+			}
+		});
 		repaint();
 	} 
 	
@@ -122,12 +136,8 @@ public class VuePlan extends JPanel {
 		intervalleLatitude = latitudeMax-latitudeMin;
 		intervalleLongitude = longitudeMax-longitudeMin; 
 		
-		for(int i= 0; i < troncons.size(); i++) { 
-			float x1 = troncons.get(i).getIntersectionOrigine().getLatitude();
-			float y1 = troncons.get(i).getIntersectionOrigine().getLongitude();
-			float x2 = troncons.get(i).getIntersectionDestination().getLatitude();
-			float y2 = troncons.get(i).getIntersectionDestination().getLongitude();
-			tronconsTraces.add(new VueTroncon(x1,y1,x2,y2)); 
+		for(int i= 0; i < troncons.size(); i++) {  
+			tronconsTraces.add(new VueTroncon(troncons.get(i).getIntersectionOrigine(), troncons.get(i).getIntersectionDestination())); 
 		}   
 	}
 	
@@ -140,16 +150,14 @@ public class VuePlan extends JPanel {
 	public void afficherLivraisonDemande(DemandeLivraison dl) { 
 		adressesDepot.clear();
 		adressesEnlevement.clear();
-		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
+		entrepot = new VueEntrepot(dl.getEntrepot());
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();    
 		for(int i= 0; i < livraisons.size(); i++) {
 			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
-			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
-			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLatitude();
-			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude(); 
+			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude(); 
 			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));  
-			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
+			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement()));  
 		}  
 	}
 
@@ -217,12 +225,8 @@ public class VuePlan extends JPanel {
 	public void afficherTournee(List<Trajet> trajets) { 
 		for (Trajet trajet : trajets) {   
 			List<Troncon> troncons = trajet.getTrajet();
-			for (Troncon troncon : troncons) {  
-				float x1 = troncon.getIntersectionOrigine().getLatitude();
-				float y1 = troncon.getIntersectionOrigine().getLongitude();
-				float x2 = troncon.getIntersectionDestination().getLatitude();
-				float y2 = troncon.getIntersectionDestination().getLongitude();
-				tronconsTournee.add(new VueTroncon(x1,y1,x2,y2)); 
+			for (Troncon troncon : troncons) {   
+				tronconsTournee.add(new VueTroncon(troncon.getIntersectionOrigine(), troncon.getIntersectionDestination())); 
 			}  
 		}
 		repaint();
@@ -234,21 +238,22 @@ public class VuePlan extends JPanel {
 	 * Retour : rien
 	 */
 	
-	public void onClick(int x, int y) {  
-		
-		for (VueTroncon troncon : tronconsTraces) {   
-	    	if(troncon.onClick(x, y)) break;
-	    }
+	public Intersection onClick(int x, int y) {   
 		
 		for(int i = 0; i < adressesDepot.size(); i++) { 
-			adressesDepot.get(i).onClick(x, y);
+			if(adressesDepot.get(i).onClick(x, y) != null) return adressesDepot.get(i).onClick(x, y);
 	    }  
 		
 		for(int i = 0; i < adressesEnlevement.size(); i++) { 
-			adressesEnlevement.get(i).onClick(x, y);
+			if(adressesEnlevement.get(i).onClick(x, y) != null) return adressesEnlevement.get(i).onClick(x, y);
 	    }   
 		
-		if(entrepot != null) entrepot.onClick(x, y);
+		if(entrepot != null && entrepot.onClick(x, y) != null) return entrepot.onClick(x, y);
+		
+		for (VueTroncon troncon : tronconsTraces) {   
+	    	if(troncon.onClick(x, y) != null) return troncon.onClick(x, y);
+	    }
+		return null;
 	}  
 
 

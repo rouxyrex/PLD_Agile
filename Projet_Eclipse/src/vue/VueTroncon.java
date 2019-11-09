@@ -2,22 +2,28 @@ package vue;
 
 import java.awt.Graphics;
 
+import modele.Intersection;
+
 class VueTroncon{
     float latitudeOrigine; 
     float longitudeOrigine;
     float latitudeDest;
     float longitudeDest;    
+    Intersection origine;
+    Intersection destination;
     int xOrigine = -1;
     int yOrigine = -1;
     int xDest = -1;
     int yDest = -1;
     final int TAILLE_FLECHE = 10;
 
-   public VueTroncon(float x1, float y1, float x2, float y2) {
-       this.latitudeOrigine = x1;
-       this.longitudeOrigine = y1;
-       this.latitudeDest = x2;
-       this.longitudeDest = y2; 
+   public VueTroncon(Intersection origine, Intersection destination) {
+	   this.origine = origine;
+	   this.destination = destination;
+       this.latitudeOrigine = origine.getLatitude();
+       this.longitudeOrigine = origine.getLongitude();
+       this.latitudeDest = destination.getLatitude();
+       this.longitudeDest = destination.getLongitude(); 
    } 
    
    public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude, boolean fleche) {   
@@ -37,11 +43,10 @@ class VueTroncon{
 	   }
    }
 
-	public boolean onClick(int x, int y) {
-		// TODO Auto-generated method stub
-		boolean touche = false;
-		if(Math.sqrt((x-xOrigine)*(x-xOrigine)) + ((y-yOrigine)*(y-yOrigine)) < 5) {touche = true;  System.out.println("touche origine");}
-		if(Math.sqrt((x-xDest)*(x-xDest)) + ((y-yDest)*(y-yDest)) < 5) {touche = true; System.out.println("touche destination"); }
-		return touche;
+	public Intersection onClick(int x, int y) {
+		// TODO Auto-generated method stub 
+		if(Math.sqrt((x-xOrigine)*(x-xOrigine)) + ((y-yOrigine)*(y-yOrigine)) < 5) {return origine;}
+		if(Math.sqrt((x-xDest)*(x-xDest)) + ((y-yDest)*(y-yDest)) < 5) {return destination; }
+		return null;
 	}
 }

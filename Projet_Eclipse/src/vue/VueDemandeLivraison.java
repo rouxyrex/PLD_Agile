@@ -45,16 +45,14 @@ public class VueDemandeLivraison {
 		this.dl = dl; 
 		adressesDepot.clear();
 		adressesEnlevement.clear();
-		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
+		entrepot = new VueEntrepot(dl.getEntrepot());
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();    
 		for(int i= 0; i < livraisons.size(); i++) {
 			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
-			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
-			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLatitude();
-			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude(); 
+			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude(); 
 			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));  
-			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
+			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement()));  
 		}  
 	}
 
