@@ -1,8 +1,7 @@
 package vue;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.awt.BorderLayout;
+import java.util.List; 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -53,10 +52,8 @@ public class VuePlan extends JPanel {
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();
 		echelle = 1;
 		modifLatitude = 0;
-		modifLongitude = 0;
-		setLayout(null);
-		setBackground(Color.white);
-        f.getContentPane().add(this,  BorderLayout.CENTER);
+		modifLongitude = 0; 
+		setBackground(Color.white); 
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	           onClick(getMousePosition().x, getMousePosition().y);
@@ -66,8 +63,7 @@ public class VuePlan extends JPanel {
 		addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("****" + e.getX());
+				// TODO Auto-generated method stub 
 			}
 
 			@Override
@@ -194,12 +190,12 @@ public class VuePlan extends JPanel {
 	 */
 
 	public void droite() {
-		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/5)*getWidth());
+		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/3)*getWidth());
 		if(modifLongitude >= 0) modifLongitude = 0;
 		repaint();
 	}
 	public void gauche() {
-		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/5)*getWidth());
+		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/3)*getWidth());
 		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
 		repaint();
 	}
@@ -218,7 +214,7 @@ public class VuePlan extends JPanel {
 
 	/**
 	 * Methode appelee pour afficher une tournee (tous les troncons correspondant ï¿½ la tournee)
-	 * Paramï¿½tre : la liste des trajets a afficher
+	 * Paramètre : la liste des trajets a afficher
 	 * Retour : rien
 	 */
 

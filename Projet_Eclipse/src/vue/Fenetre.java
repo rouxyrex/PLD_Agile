@@ -17,7 +17,7 @@ import modele.Plan;
 import modele.Trajet;
 
 public class Fenetre extends JFrame {
-		// Intitulés des boutons de la fenï¿½tre
+		// Intitulés des boutons de la fenêtre
 		protected static final String CHARGER_PLAN = "Charger un plan";
 		protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
 		protected static final String CALCULER_TOURNEE = "Calculer la tournée";
@@ -67,6 +67,7 @@ public class Fenetre extends JFrame {
 			vueTextuelle.setVisible(false);
 			setTailleFenetre();
 			setVisible(true);
+			getContentPane().add(vuePlan, BorderLayout.CENTER);
 			addComponentListener(new ComponentAdapter() {
 			    public void componentResized(ComponentEvent componentEvent) {
 					repaint();
