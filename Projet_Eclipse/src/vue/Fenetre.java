@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,7 @@ public class Fenetre extends JFrame {
 			
 			cadreMessages = new JLabel();
 			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
+
 			getContentPane().add(cadreMessages,  BorderLayout.SOUTH);
 			
 			vuePlan = new VuePlan(1 ,this);
@@ -81,16 +84,16 @@ public class Fenetre extends JFrame {
 					repaint();
 			    }
 			}); 
-		} 
+			
+		}
 		
-		public void passerPlan (Plan p/*, DemandeLivraison dl */) {
-			vuePlan.afficherPlan( p/*, dl*/);
-			//demandeLivraison.afficherPlan(dl);
+		
+		public void passerPlan (Plan p ) {
+			vuePlan.afficherPlan( p ); 
 			repaint();
 		}
 		
-		public void afficherDemandeLivraison(DemandeLivraison dl) {
-			//demandeLivraison.afficherPlan(dl);
+		public void afficherDemandeLivraison(DemandeLivraison dl) { 
 			vuePlan.afficherLivraisonDemande(dl);
 			repaint();
 		}

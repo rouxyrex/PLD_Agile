@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +27,7 @@ public class VuePlan extends JPanel {
 	private int echelle;
 	private int modifLatitude;
 	private int modifLongitude; 
-	public static float latitudeMax;
+	public static float latitudeMax = 0;
 	public static float latitudeMin;
 	public static float longitudeMax;
 	public static float longitudeMin;
@@ -57,11 +59,16 @@ public class VuePlan extends JPanel {
 		setLayout(null);
 		setBackground(Color.white);   
         f.getContentPane().add(this,  BorderLayout.CENTER);    
+        addMouseListener(new MouseAdapter() { 
+	         public void mousePressed(MouseEvent me) {  
+	           onClick(getMousePosition().x, getMousePosition().y);
+	         } 
+	    }); 
 		repaint();
 	} 
 	
 	/**
-	 * Methode appelee a chaque fois que VueGraphique doit etre redessinee
+	 * Methode appelee a chaque fois que VuePlan doit etre redessinee
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -94,14 +101,19 @@ public class VuePlan extends JPanel {
 		return echelle;
 	}
 
+	/**
+	 * Methode appelee pour dessiner un plan
+	 * Paramètre : le plan a afficher
+	 * Retour : rien
+	 */
+	
 	public void afficherPlan(Plan plan) { 
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		entrepot = null;
 		echelle = 1; 
 		modifLatitude = 0;
-		modifLongitude = 0;
-		// TODO Auto-generated method stub
+		modifLongitude = 0; 
 		List<Troncon> troncons = plan.getTroncons();  
 		latitudeMax = plan.getLatitudeMax();
 		latitudeMin = plan.getLatitudeMin();
@@ -110,8 +122,7 @@ public class VuePlan extends JPanel {
 		intervalleLatitude = latitudeMax-latitudeMin;
 		intervalleLongitude = longitudeMax-longitudeMin; 
 		
-		for(int i= 0; i < troncons.size(); i++) {
-
+		for(int i= 0; i < troncons.size(); i++) { 
 			float x1 = troncons.get(i).getIntersectionOrigine().getLatitude();
 			float y1 = troncons.get(i).getIntersectionOrigine().getLongitude();
 			float x2 = troncons.get(i).getIntersectionDestination().getLatitude();
@@ -119,6 +130,12 @@ public class VuePlan extends JPanel {
 			tronconsTraces.add(new VueTroncon(x1,y1,x2,y2)); 
 		}   
 	}
+	
+	/**
+	 * Methode appelee pour afficher les points d'intérêt d'une demande de livraison
+	 * Paramètre : la demande de livraison a afficher
+	 * Retour : rien
+	 */
 	
 	public void afficherLivraisonDemande(DemandeLivraison dl) { 
 		adressesDepot.clear();
@@ -136,10 +153,23 @@ public class VuePlan extends JPanel {
 		}  
 	}
 
+	/**
+	 * Methode appelee pour zommer sur le plan 
+	 * Paramètre : aucun
+	 * Retour : rien
+	 */
+	
 	public void zoom() { 
 		echelle = echelle + 1;
 		repaint();
 	} 
+	
+	/**
+	 * Methode appelee pour dezoomer sur le plan
+	 * Paramètre : aucun
+	 * Retour : rien
+	 */
+	
 	public void dezoom() { 
 		echelle = echelle - 1;
 		if(echelle <= 0) echelle = 1;
@@ -148,6 +178,13 @@ public class VuePlan extends JPanel {
 		if((int) (((latitudeMax-VuePlan.latitudeMin)*getHeight()*echelle/VuePlan.intervalleLatitude)+modifLatitude)  < getHeight()) modifLatitude = 0;
 		repaint();
 	} 
+	
+	/**
+	 * Methodes appelees pour se deplacer à droite, gauche, haut, bas sur le plan
+	 * Paramètre : aucun
+	 * Retour : rien
+	 */
+	
 	public void droite() { 
 		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/5)*getWidth()); 
 		if(modifLongitude >= 0) modifLongitude = 0;
@@ -171,6 +208,12 @@ public class VuePlan extends JPanel {
 		
 	}
 
+	/**
+	 * Methode appelee pour afficher une tournee (tous les troncons correspondant à la tournee)
+	 * Paramètre : la liste des trajets a afficher
+	 * Retour : rien
+	 */
+	
 	public void afficherTournee(List<Trajet> trajets) { 
 		for (Trajet trajet : trajets) {   
 			List<Troncon> troncons = trajet.getTrajet();
@@ -183,6 +226,29 @@ public class VuePlan extends JPanel {
 			}  
 		}
 		repaint();
+	}
+
+	/**
+	 * Methode appelee lors d'un click sur le plan
+	 * Paramètre : les coordonnees (x et y) du point sur lequel on a clické
+	 * Retour : rien
+	 */
+	
+	public void onClick(int x, int y) {  
+		
+		for (VueTroncon troncon : tronconsTraces) {   
+	    	if(troncon.onClick(x, y)) break;
+	    }
+		
+		for(int i = 0; i < adressesDepot.size(); i++) { 
+			adressesDepot.get(i).onClick(x, y);
+	    }  
+		
+		for(int i = 0; i < adressesEnlevement.size(); i++) { 
+			adressesEnlevement.get(i).onClick(x, y);
+	    }   
+		
+		if(entrepot != null) entrepot.onClick(x, y);
 	}  
 
 
