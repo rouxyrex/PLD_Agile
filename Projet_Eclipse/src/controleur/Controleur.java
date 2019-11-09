@@ -26,7 +26,7 @@ public class Controleur {
 
 	public Controleur( int echelle)
 	{
-		lecture = new LectureXml();
+		l = new LectureXml();
 		//etatCourant = etatInit;
 		fenetre = new Fenetre(plan, echelle, this);
 	}
@@ -40,7 +40,7 @@ public class Controleur {
 
 	public void chargerDemandeLivraison() throws Exception{
 
-		dl = lecture.creerDemandeDeLivraison(plan);
+		dl = l.creerDemandeDeLivraison(plan);
 
 		fenetre.afficherDemandeLivraison(dl, this);
 	}

@@ -17,11 +17,11 @@ import modele.Plan;
 import modele.Trajet;
 
 public class Fenetre extends JFrame {
-		// Intitulï¿½s des boutons de la fenï¿½tre
+		// Intitulés des boutons de la fenï¿½tre
 		protected static final String CHARGER_PLAN = "Charger un plan";
 		protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
-		protected static final String CALCULER_TOURNEE = "Calculer la tournï¿½e";
-		protected static final String GENERER_FEUILLE_ROUTE = "Gï¿½nï¿½rer la feuille de route";
+		protected static final String CALCULER_TOURNEE = "Calculer la tournée";
+		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
 		protected static final String ZOOM = "Zoom";
 		protected static final String DEZOOM = "Dezoom";
 		protected static final String DROITE = "Droite";
@@ -31,8 +31,7 @@ public class Fenetre extends JFrame {
 		private ArrayList<JButton> boutons;
 		private JPanel cadreBoutons;
 		private JLabel cadreMessages;
-		private VuePlan vuePlan;
-		private VueDemandeLivraison demandeLivraison;
+		private VuePlan vuePlan; 
 		private EcouteurDeBoutons ecouteurDeBoutons;
 		private VueTextuelle vueTextuelle;
 		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
@@ -60,7 +59,7 @@ public class Fenetre extends JFrame {
 			creeBoutons(controleur);
 
 			cadreMessages = new JLabel();
-			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complï¿½mentaires"));
+			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
 			getContentPane().add(cadreMessages, BorderLayout.SOUTH);
 
 			vuePlan = new VuePlan(1 ,this);
@@ -110,35 +109,7 @@ public class Fenetre extends JFrame {
 				cadreBoutons.add(bouton);
 			}
 		}
-
-			/**
-			 * Definit la taille du cadre et de ses composants en fonction de la taille de la vue
-			 * @param largeurVue
-			 * @param hauteurVue
-			 */
-			private void setTailleFenetre() {
-				//int hauteurBoutons = hauteurBouton*intitulesBoutons.length;
-				//int hauteurFenetre = Math.max(vueGraphique.getHauteur(),hauteurBoutons)+hauteurCadreMessages;
-				//int largeurFenetre = vueGraphique.getLargeur()+largeurBouton+largeurVueTextuelle+10;
-
-				//setSize(largeurFenetre, hauteurFenetre);
-				setSize(500, 800);
-		//		vuePlan.setLocation(0, 0);
-				cadreMessages.setSize(500,60);
-				cadreMessages.setLocation(0,800-hauteurCadreMessages);
-				//vueTextuelle.setSize(largeurVueTextuelle,hauteurFenetre-hauteurCadreMessages);
-				//vueTextuelle.setLocation(10+vueGraphique.getLargeur()+largeurBouton,0);
-			}
-
-
-
-			/**
-			 * Affiche message dans la fenetre de dialogue avec l'utilisateur
-			 * @param m le message a afficher
-			 */
-			public void afficheMessage(String m) {
-				cadreMessages.setText(m);
-			}
+ 
 
 			public void zoom() {
 				vuePlan.zoom();
