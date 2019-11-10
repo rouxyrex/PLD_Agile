@@ -134,8 +134,17 @@ public class Fenetre extends JFrame {
 				
 			}
 			
+			public void effacerVuePlan() {
+				vuePlan.effacerVuePlan();
+				
+			}
+			
 			public void initialiserVueDemandeLivraison() {
 				vuePlan.initialiserVueDemandeLivraison();
+			}
+			
+			public void effacerVueDemandeLivraison() {
+				vuePlan.effacerVueDemandeLivraison();
 			}
 			
 		

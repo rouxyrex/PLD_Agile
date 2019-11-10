@@ -25,9 +25,7 @@ import org.xml.sax.SAXException;
 
 public class LectureXml {
 	
-	public LectureXml() {}
-	
-	public void creerPlan(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+	public static void creerPlan(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
@@ -177,7 +175,7 @@ public class LectureXml {
 	}
 	
 	
-	public void creerDemandeDeLivraison(Plan plan, DemandeLivraison demande) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+	public static void creerDemandeDeLivraison(Plan plan, DemandeLivraison demande) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
@@ -232,7 +230,8 @@ public class LectureXml {
 		    livraisons.add(l);
 		    
 		}
-	    	
+	    
+	    demande.reset();
 	    demande.initialiser(livraisons, entrepot, heureDepart);
 	    
 	}

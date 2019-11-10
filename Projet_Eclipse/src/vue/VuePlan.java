@@ -1,6 +1,5 @@
 package vue;
  
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -108,9 +107,6 @@ public class VuePlan extends JPanel implements Observer {
 
 	public void initialiserVuePlan() {
 		
-		adressesEnlevement.clear();
-		adressesDepot.clear();
-		entrepot = null;
 		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();  
 		latitudeMax = plan.getLatitudeMax();
@@ -130,9 +126,11 @@ public class VuePlan extends JPanel implements Observer {
 		}   
 	}
 	
+	public void effacerVuePlan() {
+		tronconsTraces.clear();
+	}
+	
 	public void initialiserVueDemandeLivraison() {
-		adressesDepot.clear();
-		adressesEnlevement.clear();
 		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();    
@@ -145,6 +143,12 @@ public class VuePlan extends JPanel implements Observer {
 			adressesEnlevement.add(new VueAdresseEnlevement(xEnlevement, yEnlevement));  
 		}  
 	} 
+	
+	public void effacerVueDemandeLivraison() {
+		adressesEnlevement.clear();
+		adressesDepot.clear();
+		entrepot = null;
+	}
 
 
 }

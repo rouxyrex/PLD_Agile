@@ -21,7 +21,7 @@ public class DemandeLivraison extends Observable {
 	public void initialiser(List<Livraison> livraisonsAInserer, Intersection entrepot, String heureDepart) {
 		
 		for(Livraison l : livraisonsAInserer) {
-			ajouteLivraison(l);
+			ajouterLivraison(l);
 		}
 		
 		this.entrepot = entrepot;
@@ -48,6 +48,7 @@ public class DemandeLivraison extends Observable {
 		return livraisons.iterator();
 	}
 	
+	
 	public void reset() {
 		
 		Iterator<Livraison> it = livraisons.iterator();
@@ -71,13 +72,14 @@ public class DemandeLivraison extends Observable {
 		notifyObservers();	
 	}
 	
-	public void ajouteLivraison(Livraison l){
+	
+	public void ajouterLivraison(Livraison l){
 		livraisons.add(l);
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void supprimeLivraison(Livraison l) {
+	public void supprimerLivraison(Livraison l) {
 		livraisons.remove(l);
 		setChanged();
 		notifyObservers();
