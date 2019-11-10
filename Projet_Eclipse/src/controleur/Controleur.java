@@ -1,17 +1,11 @@
 package controleur;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
+ 
+import java.util.List; 
 
 import modele.DemandeLivraison;
 import modele.Plan;
 import modele.Tournee;
-import modele.Trajet;
-import xml.ExceptionXml;
+import modele.Trajet; 
 import xml.LectureXml;
 import vue.Fenetre;
 
@@ -74,5 +68,11 @@ public class Controleur {
 		tournee = new Tournee();
 		List <Trajet> trajets = tournee.getParcours();
 		fenetre.afficherTournee(trajets);
+	}
+
+
+	public void genererFeuilleRoute() {
+		// TODO Auto-generated method stub
+		fenetre.genererFeuilleRoute();
 	}
 }

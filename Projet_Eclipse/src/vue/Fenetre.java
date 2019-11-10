@@ -3,9 +3,7 @@ package vue;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ComponentEvent; 
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,24 +15,20 @@ import modele.Plan;
 import modele.Trajet;
 
 public class Fenetre extends JFrame {
+	
+		private static final long serialVersionUID = 1L;
 		// Intitulés des boutons de la fenêtre
 		protected static final String CHARGER_PLAN = "Charger un plan";
 		protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
 		protected static final String CALCULER_TOURNEE = "Calculer la tournée";
-		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
-		protected static final String ZOOM = "Zoom";
-		protected static final String DEZOOM = "Dezoom";
-		protected static final String DROITE = "Droite";
-		protected static final String GAUCHE = "Gauche";
-		protected static final String HAUT = "Haut";
-		protected static final String BAS = "Bas";
+		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route"; 
 		private ArrayList<JButton> boutons;
 		private JPanel cadreBoutons;
 		private JLabel cadreMessages;
 		private VuePlan vuePlan; 
 		private EcouteurDeBoutons ecouteurDeBoutons;
 		private VueTextuelle vueTextuelle;
-		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+		private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 
 		private final int hauteurBouton = 50;
 		private final int largeurBouton = 300;
@@ -62,7 +56,9 @@ public class Fenetre extends JFrame {
 			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
 			getContentPane().add(cadreMessages, BorderLayout.SOUTH);
 
-			vuePlan = new VuePlan(1 ,this);
+			vuePlan = new VuePlan(1 ,this, controleur);  
+			
+			
 			vueTextuelle = new VueTextuelle(this, controleur);
 			vueTextuelle.setVisible(false);
 			setTailleFenetre();
@@ -81,8 +77,7 @@ public class Fenetre extends JFrame {
 			repaint();
 		}
 
-		public void afficherDemandeLivraison(DemandeLivraison dl, Controleur controleur) {
-
+		public void afficherDemandeLivraison(DemandeLivraison dl, Controleur controleur) { 
 			vuePlan.afficherLivraisonDemande(dl);
 			vueTextuelle.afficherDemandeLivraison();
 			vueTextuelle.setVisible(true);
@@ -154,5 +149,10 @@ public class Fenetre extends JFrame {
 		*/
 		public void afficheMessage(String m) {
 			cadreMessages.setText(m);
+		}
+
+		public void genererFeuilleRoute() {
+			// TODO Auto-generated method stub
+			//Ici on a le code de la feuille de route
 		}
 }

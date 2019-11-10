@@ -1,15 +1,28 @@
 package vue;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List; 
+import java.util.List;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JTextArea;
 
+import controleur.Controleur;
 import modele.DemandeLivraison;
 import modele.Intersection;
 import modele.Livraison;
@@ -24,12 +37,23 @@ public class VuePlan extends JPanel {
 	private int echelle;
 	private int modifLatitude;
 	private int modifLongitude;
+	private JPanel cadreBoutons;
 	public static float latitudeMax = 0;
 	public static float latitudeMin;
 	public static float longitudeMax;
 	public static float longitudeMin;
 	public static float intervalleLatitude;
 	public static float intervalleLongitude;
+	protected static final String ZOOM = "Zoom";
+	protected static final String DEZOOM = "Dezoom";
+	protected static final String DROITE = "Droite";
+	protected static final String GAUCHE = "Gauche";
+	protected static final String HAUT = "Haut";
+	protected static final String BAS = "Bas";
+	private EcouteurDeBoutons ecouteurDeBoutons;
+	private ArrayList<JButton> boutons;
+	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+	private final int hauteurBouton = 50;  
 
 	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
 	LinkedList<VueTroncon> tronconsTraces = null;
@@ -44,8 +68,18 @@ public class VuePlan extends JPanel {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(int e, Fenetre f) {
+	public VuePlan(int e, Fenetre f, Controleur c) {
 		super();
+	/*	setLayout(new BorderLayout());
+
+		cadreBoutons = new JPanel();
+		cadreBoutons.setSize(300, 100);
+		cadreBoutons.setLayout(new BoxLayout(cadreBoutons, BoxLayout.LINE_AXIS) );
+	    add(cadreBoutons, BorderLayout.NORTH);
+	    
+	/*	JTextArea texte = new JTextArea("Veuillez charger un plan");  
+		texte.setEditable(false);
+		this.add(texte);*/
 		tronconsTraces = new LinkedList<VueTroncon>();
 		tronconsTournee = new LinkedList<VueTroncon>();
 		adressesDepot = new LinkedList<VueAdresseDepot>();
@@ -53,6 +87,18 @@ public class VuePlan extends JPanel {
 		echelle = 1;
 		modifLatitude = 0;
 		modifLongitude = 0; 
+		this.setPreferredSize(new Dimension(300,100)); 
+		creeBoutons(c);
+		
+	/*	JScrollBar scrollBarVertical = new JScrollBar(); 
+		scrollBarVertical.setOrientation(1);
+		scrollBarVertical.setVisible(true);
+		this.add(scrollBarVertical, BorderLayout.EAST);
+		JScrollBar scrollBarHorizontal = new JScrollBar(); 
+		scrollBarHorizontal.setOrientation(0);
+		scrollBarHorizontal.setVisible(true);
+		this.add(scrollBarHorizontal, BorderLayout.SOUTH);*/
+		
 		setBackground(Color.white); 
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
@@ -75,6 +121,27 @@ public class VuePlan extends JPanel {
 			}
 		});
 		repaint();
+	}
+	
+	private void creeBoutons(Controleur controleur){ 
+		ecouteurDeBoutons = new EcouteurDeBoutons(controleur);
+		boutons = new ArrayList<JButton>();
+		for (String intituleBouton : intitulesBoutons){
+			JButton bouton = new JButton(intituleBouton); 
+			boutons.add(bouton);  
+			Image img = null;
+			try { 
+				img = ImageIO.read(new FileInputStream(intituleBouton+".png"));
+			} catch (IOException e) { 
+				e.printStackTrace();
+			}
+			bouton.setIcon(new ImageIcon(img)); 
+			bouton.setLocation(0,(boutons.size()-1)*hauteurBouton); 
+			bouton.addActionListener(ecouteurDeBoutons); 
+		//	cadreBoutons.add(bouton);
+			this.add(bouton);
+			bouton.setVisible(false);
+		}
 	}
 
 	/**
@@ -104,7 +171,6 @@ public class VuePlan extends JPanel {
 	    }
 
 		if(entrepot != null) entrepot.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
-
 	}
 
 	public int getEchelle() {
@@ -113,11 +179,14 @@ public class VuePlan extends JPanel {
 
 	/**
 	 * Methode appelee pour dessiner un plan
-	 * Paramï¿½tre : le plan a afficher
+	 * Paramètre : le plan a afficher
 	 * Retour : rien
 	 */
 
 	public void afficherPlan(Plan plan) {
+		for (JButton bouton : boutons){ 
+			bouton.setVisible(true); 
+		}
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		entrepot = null;
@@ -230,7 +299,7 @@ public class VuePlan extends JPanel {
 
 	/**
 	 * Methode appelee lors d'un click sur le plan
-	 * Paramï¿½tre : les coordonnees (x et y) du point sur lequel on a clickï¿½
+	 * Paramètre : les coordonnees (x et y) du point sur lequel on a clickï¿½
 	 * Retour : rien
 	 */
 

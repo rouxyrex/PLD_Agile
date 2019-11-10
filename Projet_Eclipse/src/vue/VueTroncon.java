@@ -35,11 +35,25 @@ class VueTroncon{
 	   yOrigine = height-x11+modifLatitude;
 	   xDest = y21+modifLongitude;
 	   yDest = height-x21+modifLatitude;
-	   g.drawLine( xOrigine, yOrigine, xDest, yDest); 
-	   if(fleche) {
-		   int[] tab = {x11+modifLatitude, x11+modifLatitude+TAILLE_FLECHE, x11+modifLatitude};
-		   int[] tab2 = {y11+modifLongitude, y11+modifLongitude,  y11+modifLongitude+TAILLE_FLECHE};
-		   g.fillPolygon(tab2, tab, 3); 
+	   if(yDest != yOrigine) { 
+		   float pente = -(xDest-xOrigine)/(yDest-yOrigine); 
+		   float xC = (xOrigine+xDest)/2;
+		   float yC = (yOrigine+yDest)/2;
+		   float origine = yC-pente*xC;
+		   float a = 1+pente*pente;
+		   float b = -2*xC + 2*pente*origine - 2*pente*yC;
+		   float c = xC*xC + origine*origine + yC*yC -2*origine*yC - TAILLE_FLECHE*TAILLE_FLECHE;
+		   float delta = (b*b)-(4*a*c);
+		   int xD =  (int) ((-b+Math.sqrt(delta)) / (2*a));
+		   int xE = (int) ((-b-Math.sqrt(delta)) / (2*a));
+		   int yD = (int) (pente*xD+origine);
+		   int yE = (int) (pente*xE+origine); 
+		   g.drawLine(xOrigine, yOrigine, xDest, yDest); 
+		   if(fleche) {
+			   int[] tab = {xOrigine, xD, xE};
+			   int[] tab2 = {yOrigine, yD,  yE};
+			   g.fillPolygon(tab, tab2, 3); 
+		   }
 	   }
    }
 

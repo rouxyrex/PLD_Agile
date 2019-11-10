@@ -1,14 +1,7 @@
 package vue;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import xml.ExceptionXml;
+import java.awt.event.ActionListener; 
 import controleur.Controleur;
 
 public class EcouteurDeBoutons implements ActionListener {
@@ -43,34 +36,28 @@ public class EcouteurDeBoutons implements ActionListener {
 			case Fenetre.CALCULER_TOURNEE:
 				controleur.calculerTournee();
 				break;
-			case Fenetre.ZOOM: 
+			case Fenetre.GENERER_FEUILLE_ROUTE:
+				controleur.genererFeuilleRoute();
+				break;
+			case VuePlan.ZOOM: 
 				controleur.zoom();
 				break; 
-			case Fenetre.DEZOOM: 
+			case VuePlan.DEZOOM: 
 				controleur.dezoom();
 				break;
-			case Fenetre.HAUT: 
+			case VuePlan.HAUT: 
 				controleur.haut();
 				break;
-			case Fenetre.BAS: 
+			case VuePlan.BAS: 
 				controleur.bas();
 				break;
-			case Fenetre.GAUCHE: 
+			case VuePlan.GAUCHE: 
 				controleur.gauche();
 				break;
-			case Fenetre.DROITE: 
+			case VuePlan.DROITE: 
 				controleur.droite();
 				break;
-		}
-		/*case Fenetre.AJOUTER_RECTANGLE: controleur.ajouterRectangle(); break;
-		case Fenetre.SUPPRIMER: controleur.supprimer(); break;
-		case Fenetre.SAUVER: controleur.sauver(); break;
-		case Fenetre.OUVRIR: controleur.ouvrir(); break;
-		case Fenetre.UNDO: controleur.undo(); break;
-		case Fenetre.REDO: controleur.redo(); break;
-		case Fenetre.DEPLACER: controleur.deplacer();break;
-		case Fenetre.DIMINUER_ECHELLE: controleur.diminuerEchelle(); break;
-		case Fenetre.AUGMENTER_ECHELLE: controleur.augmenterEchelle(); break;*/
-		}
+		} 
+	}
 	
 }

@@ -1,6 +1,5 @@
 package vue;
-
-import java.awt.Color;
+ 
 import java.awt.Graphics;
 
 import modele.Intersection;
@@ -26,8 +25,7 @@ class VueAdresseDepot{
     }
 
 	public Intersection onClick(int x, int y) {
-		// TODO Auto-generated method stub
-		boolean touche = false;
+		// TODO Auto-generated method stub 
 		return null;
 	}
 }

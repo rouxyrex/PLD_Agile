@@ -12,6 +12,7 @@ import xml.ExceptionXml;
 public class Main {
 	public static void main (String[] args) throws IOException, NumberFormatException, ParserConfigurationException, SAXException, ExceptionXml{
 		
+		@SuppressWarnings("unused")
 		Controleur c = new Controleur(1);
 	}
 }
