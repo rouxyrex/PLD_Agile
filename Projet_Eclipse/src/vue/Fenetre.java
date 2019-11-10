@@ -48,7 +48,7 @@ public class Fenetre extends JFrame {
 		 * @param echelle l'echelle
 		 * @param controleur le controleur
 		 */
-		public Fenetre(Plan plan, int echelle, Controleur controleur){
+		public Fenetre(Plan plan, DemandeLivraison demandeLivraison, int echelle, Controleur controleur){
 			setLayout(new BorderLayout());
 			
 			cadreBoutons = new JPanel(); 
@@ -62,7 +62,7 @@ public class Fenetre extends JFrame {
 			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
 			getContentPane().add(cadreMessages,  BorderLayout.SOUTH);
 			
-			vuePlan = new VuePlan(1 ,this);
+			vuePlan = new VuePlan(1 ,this, plan, demandeLivraison);
 			//vueTextuelle = new VueTextuelle(plan, this);
 			//ecouteurDeSouris = new EcouteurDeSouris(controleur,vueGraphique,this);
 			//addMouseListener(ecouteurDeSouris);
@@ -77,19 +77,6 @@ public class Fenetre extends JFrame {
 			    }
 			}); 
 		} 
-		
-		public void passerPlan (Plan p/*, DemandeLivraison dl */) {
-			vuePlan.afficherPlan( p/*, dl*/);
-			//demandeLivraison.afficherPlan(dl);
-			repaint();
-		}
-		
-		public void afficherDemandeLivraison(DemandeLivraison dl) {
-			//demandeLivraison.afficherPlan(dl);
-			vuePlan.afficherLivraisonDemande(dl);
-			repaint();
-		}
-		
 		
 		/**
 		 * Cree les boutons correspondant aux intitules contenus dans intitulesBoutons
@@ -111,10 +98,6 @@ public class Fenetre extends JFrame {
 				cadreBoutons.add(bouton);	
 			}
 		}
-			
-			
-			
-			
 			
 			
 			/**
@@ -145,5 +128,15 @@ public class Fenetre extends JFrame {
 			public void afficheMessage(String m) {
 				cadreMessages.setText(m);
 			}
+			
+			public void initialiserVuePlan() {
+				vuePlan.initialiserVuePlan();
+				
+			}
+			
+			public void initialiserVueDemandeLivraison() {
+				vuePlan.initialiserVueDemandeLivraison();
+			}
+			
 		
 }

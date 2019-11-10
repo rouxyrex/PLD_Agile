@@ -1,5 +1,9 @@
 package vue;
  
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.awt.BorderLayout;
@@ -14,7 +18,7 @@ import modele.Plan;
 import vue.VueTroncon;
 import modele.Troncon;
 
-public class VuePlan extends JPanel {
+public class VuePlan extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	private int echelle; 
@@ -40,8 +44,10 @@ public class VuePlan extends JPanel {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(int e, Fenetre f) {
+	public VuePlan(int e, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {
 		super(); 
+		plan.addObserver(this); // this observe plan
+		demandeLivraison.addObserver(this); // this observe demandeLivraison
 		tronconsTraces = new LinkedList<VueTroncon>(); 
 		adressesDepot = new LinkedList<VueAdresseDepot>();
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
@@ -50,6 +56,8 @@ public class VuePlan extends JPanel {
 		setBackground(Color.white); 
 		f.getContentPane().add(this,  BorderLayout.CENTER);  
 		this.f = f;
+		this.plan = plan;
+		this.dl = demandeLivraison;
 		repaint();
 	} 
 	
@@ -78,6 +86,15 @@ public class VuePlan extends JPanel {
 
 	}
 
+	
+	/**
+	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
+	}
+	
 /*	public void setEchelle(int e) {
 		largeurVue = (largeurVue/echelle)*e;
 		hauteurVue = (hauteurVue/echelle)*e;
@@ -89,8 +106,8 @@ public class VuePlan extends JPanel {
 		return echelle;
 	}
 
-	public void afficherPlan(Plan plan) {
-		this.plan = plan;
+	public void initialiserVuePlan() {
+		
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		entrepot = null;
@@ -113,8 +130,7 @@ public class VuePlan extends JPanel {
 		}   
 	}
 	
-	public void afficherLivraisonDemande(DemandeLivraison dl) {
-		this.dl = dl; 
+	public void initialiserVueDemandeLivraison() {
 		adressesDepot.clear();
 		adressesEnlevement.clear();
 		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
@@ -130,39 +146,5 @@ public class VuePlan extends JPanel {
 		}  
 	} 
 
-	/**
-	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
-	 */
-/*	@Override
-	public void update(Observable o, Object arg) {
-		if (arg != null){ // arg est une forme qui vient d'etre ajoutee a plan
-			Forme f = (Forme)arg;
-			f.addObserver(this);  // this observe la forme f
-		}
-		repaint();
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un cercle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Cercle c) {
-		int r = echelle*c.getRayon();
-		if (c.getEstSelectionne())
-			g.drawOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-		else
-			g.fillOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un rectangle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Rectangle r) {
-		if (r.getEstSelectionne())
-			g.drawRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-		else
-			g.fillRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-	}*/
 
 }

@@ -93,39 +93,5 @@ public class VueDemandeLivraison {
 		return largeurVue;
 	}*/
 
-	/**
-	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
-	 */
-/*	@Override
-	public void update(Observable o, Object arg) {
-		if (arg != null){ // arg est une forme qui vient d'etre ajoutee a plan
-			Forme f = (Forme)arg;
-			f.addObserver(this);  // this observe la forme f
-		}
-		repaint();
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un cercle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Cercle c) {
-		int r = echelle*c.getRayon();
-		if (c.getEstSelectionne())
-			g.drawOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-		else
-			g.fillOval(echelle*c.getCentre().getX()-r, echelle*c.getCentre().getY()-r, 2*r, 2*r);
-	}*/
-
-	/**
-	 * Methode appelee par l'objet visite (un rectangle) a chaque fois qu'il recoit le message affiche
-	 */
-/*	@Override
-	public void affiche(Rectangle r) {
-		if (r.getEstSelectionne())
-			g.drawRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-		else
-			g.fillRect(echelle*r.getCoin().getX(),echelle*r.getCoin().getY(),echelle*(r.getLargeur()),echelle*(r.getHauteur()));
-	}*/
 
 }

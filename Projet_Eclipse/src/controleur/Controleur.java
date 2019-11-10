@@ -19,38 +19,37 @@ import vue.Fenetre;
 
 public class Controleur {
 	
-	private Plan plan;
 	private Fenetre fenetre;
 	private LectureXml l;
+	private Plan plan;
 	private DemandeLivraison demandeLivraison;
 	private GraphePCC graphePCC;
 	
-	public Controleur( int echelle)
+	public Controleur(int echelle)
 	{
 		l = new LectureXml();
 		//etatCourant = etatInit;
-		fenetre = new Fenetre(plan, echelle, this);
+		plan = new Plan();
+		demandeLivraison = new DemandeLivraison();
+		
+		fenetre = new Fenetre(plan, demandeLivraison, echelle, this);
 	}
 
 
 	public void chargerPlan() throws IOException, NumberFormatException, ParserConfigurationException, SAXException, ExceptionXml {
-
-
-		String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Téléchargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
+		demandeLivraison.reset();
+		l.creerPlan(plan);
 		
-		plan = l.creerPlan();
-		
-		fenetre.passerPlan(plan);
-		
-		
+		fenetre.initialiserVuePlan();
 	}
 	
 	
 	public void chargerDemandeLivraison() throws Exception{
 		
-		demandeLivraison = l.creerDemandeDeLivraison(plan);
+		demandeLivraison.reset();
+		l.creerDemandeDeLivraison(plan, demandeLivraison);
 		
-		fenetre.afficherDemandeLivraison(demandeLivraison);
+		fenetre.initialiserVueDemandeLivraison();
 	}
 	
 	public void creerGraphePCC() {
