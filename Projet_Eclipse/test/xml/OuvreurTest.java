@@ -15,7 +15,7 @@ public class OuvreurTest {
 
 	@Test
 	public void testAccepteFichier() throws ExceptionXml {
-		boolean result = OuvreurDeFichierXml.getInstance().accept(new File("/Projet_Eclipse/Resources/docIncorrect.txt"));
+		boolean result = OuvreurDeFichierXml.getInstance().accept(new File("/Projet_Eclipse/Ressources/docIncorrect.txt"));
 		assertFalse(result);
 	}
 

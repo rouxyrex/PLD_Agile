@@ -41,7 +41,7 @@ public class LectureXMLtests {
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("/Projet_Eclipse/Resources/Test1_FormatXml.xml"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test1_FormatXml.xml"));
 		
 	}
 	
@@ -49,7 +49,7 @@ public class LectureXMLtests {
 	@Test
 	public void testCreerPlan_PlanExiste() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test2_PlanExiste"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test2_PlanExiste.xml"));
 		assertNotNull(plan);
 		assertNotNull(plan.getIntersections());
 		assertNotNull(plan.getTroncons());
@@ -58,71 +58,71 @@ public class LectureXMLtests {
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_nbNoeuds() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test3_nbNoeuds"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test3_nbNoeuds.xml"));
 		
 	}
 
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_nbIntersections() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test4_nbIntersections"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test4_nbIntersections.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_nbTroncons() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test5_nbTroncons"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test5_nbTroncons.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_TronconLgNeg() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test6_TronconLgNeg"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test6_TronconLgNeg.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_TronconOrigineNull() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test7_TronconOrigineNull"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test7_TronconOrigineNull.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_TronconDestinationNull() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test8_TronconDestinationNull"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test8_TronconDestinationNull.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_IntersectionLat() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test9_IntersectionLat"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test9_IntersectionLat.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_IntersectionLong() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/Test10_IntersectionLong"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test10_IntersectionLong.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerDemandeDeLivraison_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/petitPlan"));
-		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./../../../XMLTest/Test11_Demande_FormatXML"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test11_Demande_FormatXML.xml"));
 	}
 	
 	@Test
 	public void testCreerDemandeDeLivraison_LivraisonExiste() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/petitPlan"));
-		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./../../../XMLTest/Test12_Demande_LivraisonExiste"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test12_Demande_LivraisonExiste.xml"));
 		assertNotNull(demande);
 		assertNotNull(demande.getLivraisons());
 		assertNotNull(demande.getEntrepot());
@@ -132,22 +132,22 @@ public class LectureXMLtests {
 	@Test(expected=ExceptionXml.class)
 	public void testCreerDemandeDeLivraison_EntrepotNull() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/petitPlan"));
-		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./../../../XMLTest/Test13_Demande_EntrepotNull"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test13_Demande_EntrepotNull.xml"));
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerDemandeDeLivraison_MauvaisPlan() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/petitPlan"));
-		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan , new File("./../../../XMLTest/Test14_Demande_MauvaisPlan"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan , new File("./Ressources/Test14_Demande_MauvaisPlan.xml"));
 	}
 	
 	@Test(expected=ExceptionXml.class)
 	public void testCreerDemandeDeLivraison_DureeNeg() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
-		Plan plan = lecteur.creerPlan(new File("./../../../XMLTest/petitPlan"));
-		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./../../../XMLTest/Test15_Demande_DureeNeg"));
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test15_Demande_DureeNeg.xml"));
 	}
 	
 	
