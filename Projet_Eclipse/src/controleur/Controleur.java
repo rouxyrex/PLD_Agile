@@ -16,11 +16,11 @@ public class Controleur {
 	
 	private Plan plan;
 	private Fenetre fenetre;
-	private LectureXml l;
+	private LectureXml lecteur;
 	
 	public Controleur( int echelle)
 	{
-		l = new LectureXml();
+		lecteur = new LectureXml();
 		//etatCourant = etatInit;
 		fenetre = new Fenetre(plan, echelle, this);
 	}
@@ -29,9 +29,9 @@ public class Controleur {
 	public void chargerPlan() throws IOException, NumberFormatException, ParserConfigurationException, SAXException, ExceptionXml {
 
 
-		String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Téléchargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
+		//String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Téléchargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
 		
-		plan = l.creerPlan();
+		plan = lecteur.creerPlan();
 		
 		fenetre.passerPlan(plan);
 		
@@ -41,7 +41,7 @@ public class Controleur {
 	
 	public void chargerDemandeLivraison() throws Exception{
 		
-		DemandeLivraison dl = l.creerDemandeDeLivraison(plan);
+		DemandeLivraison dl = lecteur.creerDemandeDeLivraison(plan);
 		
 		fenetre.afficherDemandeLivraison(dl);
 	}

@@ -44,6 +44,22 @@ public class LectureXml {
 	    return plan;
 	}
 	
+public Plan creerPlan( File xml) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+		
+		Plan plan;
+	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
+	    Document document = docBuilder.parse(xml);
+	    Element racine = document.getDocumentElement();
+	    if (racine.getNodeName().equals("reseau")) {
+	       plan = construirePlanAPartirDeDOMXML(racine);
+	    }
+	    else {
+	        throw new ExceptionXml("Document de plan non conforme");
+	    }
+	    
+	    return plan;
+	}
+	
 	
 	private static Plan construirePlanAPartirDeDOMXML(Element noeudDOMRacine) throws ExceptionXml, NumberFormatException{
 	    	
@@ -131,11 +147,11 @@ public class LectureXml {
 	   	float latitude = Float.parseFloat(elt.getAttribute("latitude"));
 	   	float longitude = Float.parseFloat(elt.getAttribute("longitude"));
 	   	
-	   	if( (latitude <= - 90) && (latitude >= 90) ) {
+	   	if( (latitude <= - 90) || (latitude >= 90) ) {
 	   		throw new ExceptionXml("Une intersection a une latitude non comprise entre -90 et 90.");
 	   	}
 	   	
-	   	if( (longitude <= - 180) && (longitude >= 180) ) {
+	   	if( (longitude <= - 180) || (longitude >= 180) ) {
 	   		throw new ExceptionXml("Une intersection a une longitude non comprise entre -180 et 180.");
 	   	}
 	   	
@@ -182,6 +198,22 @@ public class LectureXml {
 		
 		DemandeLivraison demande;
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
+	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
+	    Document document = docBuilder.parse(xml);
+	    Element racine = document.getDocumentElement();
+	    if (racine.getNodeName().equals("demandeDeLivraisons")) {
+	    	demande = construireDemandeLivraisonAPartirDeDOMXML(racine, plan);
+	    }
+	    else {
+	        throw new ExceptionXml("Document de demande de livraisons non conforme");
+	    }
+	    
+	    return demande;
+	}
+	
+public DemandeLivraison creerDemandeDeLivraison(Plan plan, File xml) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+		
+		DemandeLivraison demande;
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
