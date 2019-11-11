@@ -13,7 +13,7 @@ import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
 
-public class EtatDemandeLivraisonCharge implements Etat {
+public class EtatTourneeCalculee implements Etat {
 	// Etat initial 
 	
 	
@@ -23,16 +23,17 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		fenetre.afficheMessage("Chargement d'un plan : Veuillez saisir le fichier XML représentant le plan.");
 		
 		try {
-			
 			LectureXml.creerPlan(plan);
 			
 			demandeLivraison.reset();
 			fenetre.effacerVuePlan();
 			fenetre.effacerVueDemandeLivraison();
 			
+			//Effacer la tournee et la vue tournee
+			
 			fenetre.initialiserVuePlan();
 			controleur.setEtatCourant(controleur.etatPlanCharge);
-			
+		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
 			fenetre.afficheMessage(e.getMessage());
 		}
@@ -49,8 +50,11 @@ public class EtatDemandeLivraisonCharge implements Etat {
 			
 			fenetre.effacerVueDemandeLivraison();
 			
-			fenetre.initialiserVueDemandeLivraison();
+			//Effacer la tournee et la vue tournee
 			
+			fenetre.initialiserVueDemandeLivraison();
+			controleur.setEtatCourant(controleur.etatDemandeLivraisonCharge);
+		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
 			fenetre.afficheMessage(e.getMessage());
 		}
@@ -67,11 +71,14 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	@Override
 	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison) {
 		
-		fenetre.afficheMessage("Suppression d'une livraison.");
+		fenetre.afficheMessage("Suppression d'une livraison et calcul d'une nouvelle tournee.");
 		
 		demandeLivraison.supprimerLivraison(livraison);
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();
 		
+		//Recalculer tournee
 	}
+	
+	
 }

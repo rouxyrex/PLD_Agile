@@ -27,22 +27,10 @@ public class DemandeLivraison extends Observable {
 		this.entrepot = entrepot;
 		this.heureDepart = heureDepart;
 		
-		creerPtsPassage();
-		
 		setChanged();
 		notifyObservers();
 	}
 	
-	
-	public void creerPtsPassage() {
-		
-		for(Livraison l : livraisons) {
-			
-			ptsPassage.add(l.getAdresseDepot());
-			ptsPassage.add(l.getAdresseEnlevement());
-			
-		}
-	}
 	
 	public Iterator<Livraison> getIterateurLivraisons(){
 		return livraisons.iterator();
@@ -75,12 +63,20 @@ public class DemandeLivraison extends Observable {
 	
 	public void ajouterLivraison(Livraison l){
 		livraisons.add(l);
+		
+		ptsPassage.add(l.getAdresseDepot());
+		ptsPassage.add(l.getAdresseEnlevement());
+		
 		setChanged();
 		notifyObservers();
 	}
 	
 	public void supprimerLivraison(Livraison l) {
 		livraisons.remove(l);
+		
+		ptsPassage.remove(l.getAdresseDepot());
+		ptsPassage.remove(l.getAdresseEnlevement());
+		
 		setChanged();
 		notifyObservers();
 	}

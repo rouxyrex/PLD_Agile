@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import modele.DemandeLivraison;
 import modele.GraphePCC;
 import modele.Intersection;
+import modele.Livraison;
 import modele.Plan;
 import modele.Trajet;
 import vue.Fenetre;
@@ -21,6 +22,7 @@ public class Controleur {
 	protected final EtatInit etatInit = new EtatInit();
 	protected final EtatPlanCharge etatPlanCharge = new EtatPlanCharge();
 	protected final EtatDemandeLivraisonCharge etatDemandeLivraisonCharge = new EtatDemandeLivraisonCharge();
+	protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
 		
 	
 	public Controleur(int echelle)
@@ -57,6 +59,19 @@ public class Controleur {
 		etatCourant.chargerDemandeLivraison(this, fenetre, plan, demandeLivraison);
 	}
 	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
+	 */
+	public void calculerTournee() {
+		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison);
+	}
+	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le choix d'une livraison par l'utilisateur
+	 */
+	public void supprimerLivraison(Livraison livraison) {
+		etatCourant.supprimerLivraison(this, fenetre, plan, demandeLivraison, livraison);
+	}
 	
 	
 	
