@@ -16,6 +16,7 @@ public class Controleur {
 	private Plan plan;
 	private DemandeLivraison demandeLivraison;
 	private GraphePCC graphePCC;
+	private ListeDeCdes listeDeCdes;
 	
 	private Etat etatCourant;
 	// Instances associees a chaque etat possible du controleur
@@ -30,6 +31,7 @@ public class Controleur {
 		etatCourant = etatInit;
 		plan = new Plan();
 		demandeLivraison = new DemandeLivraison();
+		listeDeCdes = new ListeDeCdes();
 		
 		fenetre = new Fenetre(plan, demandeLivraison, echelle, this);
 	}
@@ -48,7 +50,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Charger un plan"
 	 */
 	public void chargerPlan() {
-		etatCourant.chargerPlan(this, fenetre, plan, demandeLivraison);
+		etatCourant.chargerPlan(this, fenetre, listeDeCdes, plan, demandeLivraison);
 	}
 	
 	
@@ -56,7 +58,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Charger une demande de livraison"
 	 */
 	public void chargerDemandeLivraison() {
-		etatCourant.chargerDemandeLivraison(this, fenetre, plan, demandeLivraison);
+		etatCourant.chargerDemandeLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison);
 	}
 	
 	/**
@@ -70,10 +72,22 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le choix d'une livraison par l'utilisateur
 	 */
 	public void supprimerLivraison(Livraison livraison) {
-		etatCourant.supprimerLivraison(this, fenetre, plan, demandeLivraison, livraison);
+		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison);
 	}
 	
-	
+	/**
+	 * Methode appelee par la fenetre quand l'utilisateur clique sur le bouton "Undo"
+	 */
+	public void undo(){
+		etatCourant.undo(fenetre, listeDeCdes);
+	}
+
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Redo"
+	 */
+	public void redo(){
+		etatCourant.redo(fenetre, listeDeCdes);
+	}
 	
 	public void creerGraphePCC() {
 		

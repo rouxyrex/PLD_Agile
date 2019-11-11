@@ -17,7 +17,7 @@ public class EtatInit implements Etat {
 	
 	
 	@Override
-	public void chargerPlan(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison) {
+	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison) {
 		
 		fenetre.afficheMessage("Chargement d'un plan : Veuillez saisir le fichier XML représentant le plan.");
 		
