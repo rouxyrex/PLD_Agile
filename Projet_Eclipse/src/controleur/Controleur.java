@@ -7,6 +7,7 @@ import modele.GraphePCC;
 import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
+import modele.Tournee;
 import modele.Trajet;
 import vue.Fenetre;
 
@@ -16,6 +17,7 @@ public class Controleur {
 	private Plan plan;
 	private DemandeLivraison demandeLivraison;
 	private GraphePCC graphePCC;
+	private Tournee tournee;
 	private ListeDeCdes listeDeCdes;
 	
 	private Etat etatCourant;
@@ -31,9 +33,10 @@ public class Controleur {
 		etatCourant = etatInit;
 		plan = new Plan();
 		demandeLivraison = new DemandeLivraison();
+		tournee = new Tournee();
 		listeDeCdes = new ListeDeCdes();
 		
-		fenetre = new Fenetre(plan, demandeLivraison, echelle, this);
+		fenetre = new Fenetre(plan, demandeLivraison, tournee, echelle, this);
 	}
 	
 	/**
@@ -66,6 +69,13 @@ public class Controleur {
 	 */
 	public void calculerTournee() {
 		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison);
+	}
+	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Generer feuille de route"
+	 */
+	public void genererFeuilleRoute() {
+		//Creer un methode generer feuille de route dans etat
 	}
 	
 	/**
