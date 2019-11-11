@@ -12,22 +12,22 @@ import modele.Trajet;
 import vue.Fenetre;
 
 public class Controleur {
-	
+
 	private Fenetre fenetre;
 	private Plan plan;
 	private DemandeLivraison demandeLivraison;
 	private GraphePCC graphePCC;
 	private Tournee tournee;
 	private ListeDeCdes listeDeCdes;
-	
+
 	private Etat etatCourant;
 	// Instances associees a chaque etat possible du controleur
 	protected final EtatInit etatInit = new EtatInit();
 	protected final EtatPlanCharge etatPlanCharge = new EtatPlanCharge();
 	protected final EtatDemandeLivraisonCharge etatDemandeLivraisonCharge = new EtatDemandeLivraisonCharge();
 	protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
-		
-	
+
+
 	public Controleur(int echelle)
 	{
 		etatCourant = etatInit;
@@ -35,10 +35,10 @@ public class Controleur {
 		demandeLivraison = new DemandeLivraison();
 		tournee = new Tournee();
 		listeDeCdes = new ListeDeCdes();
-		
+
 		fenetre = new Fenetre(plan, demandeLivraison, tournee, echelle, this);
 	}
-	
+
 	/**
 	 * Change l'etat courant du controleur
 	 * @param etat le nouvel etat courant
@@ -46,8 +46,8 @@ public class Controleur {
 	protected void setEtatCourant(Etat etat){
 		etatCourant = etat;
 	}
-	
-	
+
+
 	// Methodes correspondant aux evenements utilisateur
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Charger un plan"
@@ -55,36 +55,36 @@ public class Controleur {
 	public void chargerPlan() {
 		etatCourant.chargerPlan(this, fenetre, listeDeCdes, plan, demandeLivraison);
 	}
-	
-	
+
+
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Charger une demande de livraison"
 	 */
 	public void chargerDemandeLivraison() {
 		etatCourant.chargerDemandeLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison);
 	}
-	
+
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
 	 */
 	public void calculerTournee() {
 		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison);
 	}
-	
+
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Generer feuille de route"
 	 */
 	public void genererFeuilleRoute() {
 		//Creer un methode generer feuille de route dans etat
 	}
-	
+
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le choix d'une livraison par l'utilisateur
 	 */
 	public void supprimerLivraison(Livraison livraison) {
 		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison);
 	}
-	
+
 	/**
 	 * Methode appelee par la fenetre quand l'utilisateur clique sur le bouton "Undo"
 	 */
@@ -98,26 +98,26 @@ public class Controleur {
 	public void redo(){
 		etatCourant.redo(fenetre, listeDeCdes);
 	}
-	
+
 	public void creerGraphePCC() {
-		
+
 		int nbSommets = 1 + demandeLivraison.getPtsPassage().size();
 		graphePCC = new GraphePCC(nbSommets);
-		
+
 		Intersection entrepot = demandeLivraison.getEntrepot();
-		
-		LinkedList<Trajet> graphouille;
-		
-		graphouille = plan.Dijkstra(demandeLivraison, entrepot);
-		graphePCC.ajouterGraphouille(graphouille, 0);
-		
+
+		LinkedList<Trajet> graphIntermediaire;
+
+		graphIntermediaire = plan.Dijkstra(demandeLivraison, entrepot);
+		graphePCC.ajouterGraphIntermediaire(graphIntermediaire, 0);
+
 		for(int i = 1; i < nbSommets; i++) {
-			
+
 			Intersection intersectionInitiale = demandeLivraison.getPtsPassage().get(i);
-			graphouille = plan.Dijkstra(demandeLivraison, intersectionInitiale);
-			graphePCC.ajouterGraphouille(graphouille, i);
-			
+			graphIntermediaire = plan.Dijkstra(demandeLivraison, intersectionInitiale);
+			graphePCC.ajouterGraphIntermediaire(graphIntermediaire, i);
+
 		}
-		
+
 	}
 }

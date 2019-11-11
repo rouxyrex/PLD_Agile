@@ -13,9 +13,9 @@ public class GraphePCC {
 		listeAdjacence= new LinkedList[nbSommets];
 	}
 	
-	public void ajouterGraphouille(LinkedList<Trajet> graphouille, int position) {
+	public void ajouterGraphIntermediaire(LinkedList<Trajet> graphIntermediaire, int position) {
 		
-		listeAdjacence[position] = graphouille;
+		listeAdjacence[position] = graphIntermediaire;
 		
 	}
 	
