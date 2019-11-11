@@ -145,7 +145,40 @@ public Plan creerPlan( File xml) throws IOException, ParserConfigurationExceptio
 			troncons.add(t);
 	       		
 	    }
-	       	
+	      
+	boolean testOrigineEgaleDestination = true ; 
+		for(int i=0; i<listeTroncons.getLength(); i++) {
+			if(Long.parseLong(listeTroncons.item(i).getAttributes().getNamedItem("destination").getNodeValue())==Long.parseLong(listeTroncons.item(i).getAttributes().getNamedItem("origine").getNodeValue()))
+			{
+				testOrigineEgaleDestination = false ;
+				break ;  
+			}
+		}
+		if(testOrigineEgaleDestination==false)
+		{
+			throw new ExceptionXml("l'origine est égale à la destination");
+		}
+		
+		
+		
+		ArrayList<String> listetroncon = new ArrayList<String>();
+		boolean verifierDoublonsTroncon = false;
+		for(int i=0; i<listeTroncons.getLength(); i++) {
+			String nomTroncon = "";
+			nomTroncon = listeTroncons.item(i).getAttributes().getNamedItem("nomRue").getNodeValue().concat(listeTroncons.item(i).getAttributes().getNamedItem("origine").getNodeValue()).concat(listeTroncons.item(i).getAttributes().getNamedItem("destination").getNodeValue().concat(listeTroncons.item(i).getAttributes().getNamedItem("longueur").getNodeValue()));
+			listetroncon.add(nomTroncon);
+		}
+		for(int i=0; i<listeTroncons.getLength(); i++) {
+			if(listetroncon.indexOf(listetroncon.get(i)) != listetroncon.lastIndexOf(listetroncon.get(i))) {
+				verifierDoublonsTroncon = true;
+				break;
+			}
+		}
+		if(verifierDoublonsTroncon==true)
+		{
+			throw new ExceptionXml("il y a au moins un doublon dans le tronçon ");
+		}
+			
 	    Plan plan = new Plan(intersections, troncons);
 	    
 	    plan.setLatitudeMax(latitudeMax);
