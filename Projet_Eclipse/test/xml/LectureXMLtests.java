@@ -37,6 +37,13 @@ public class LectureXMLtests {
 	@After
 	public void tearDown() throws Exception {
 	}
+	@Test(expected=ExceptionXml.class)
+	public void testDoublonPlan_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
+		
+		Plan plan = lecteur.creerPlan(new File("./Ressources/Test16_IdNonUnique.xml"));
+		
+	}
+	
 
 	@Test(expected=ExceptionXml.class)
 	public void testCreerPlan_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
