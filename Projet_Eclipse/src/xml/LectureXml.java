@@ -78,6 +78,22 @@ public Plan creerPlan( File xml) throws IOException, ParserConfigurationExceptio
 	    if( listeNoeuds.getLength() < 2) {
 	    	throw new ExceptionXml("Un plan doit contenir au moins 2 intersections.");
 	    }
+	    ArrayList<String> listenoeud = new ArrayList<String>();
+		boolean verifierDoublonsIntersection = false;
+		for(int i=0; i<listeNoeuds.getLength(); i++) {
+			listenoeud.add(listeNoeuds.item(i).getAttributes().getNamedItem("id").getNodeValue());
+		}
+		for(int i=0; i<listeNoeuds.getLength(); i++) {
+			if(listenoeud.indexOf(listenoeud.get(i)) != listenoeud.lastIndexOf(listenoeud.get(i))) {
+				verifierDoublonsIntersection = true;
+				break ; 
+			}
+			
+		}
+		if(verifierDoublonsIntersection==true)
+		{
+			throw new ExceptionXml("L'Id doit être unique.") ;
+		}
 	    
 	    for (int i = 0; i < listeNoeuds.getLength(); i++) {
 	       		
@@ -171,7 +187,7 @@ public Plan creerPlan( File xml) throws IOException, ParserConfigurationExceptio
 	   	String nomRue = elt.getAttribute("nomRue");
 	   	
 	   	if( longueur <= 0 ) {
-	   		throw new ExceptionXml("Un troncon a une longueur n�gative ou nulle.");
+	   		throw new ExceptionXml("Un troncon a une longueur négative ou nulle.");
 	   	}
 	   	
 	   	//System.out.println("Troncon: origine= "+idOrigine+" nomRue= "+nomRue+" longueur= "+longueur+" destination= "+idDestination);
