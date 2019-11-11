@@ -3,8 +3,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-
 public class Plan {
 	Map<String, Intersection> intersections;
 	List<Troncon> troncons;
@@ -22,33 +20,62 @@ public class Plan {
 	
 	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Intersection intersectionInitiale){
 		
+		//declaration
 		LinkedList<Trajet> listeTrajets = new LinkedList<Trajet>();
-		PriorityQueue<Intersection> interAVisiter = new PriorityQueue<>();
-		Map<Intersection, Float> temps = new HashMap<>(); //initialiser tout ca
+		LinkedList<Intersection> interAVisiter = new LinkedList<>(); //queue
+		Map<Intersection, Float> temps = new HashMap<>();
 		Map<Intersection, Troncon> tronconOrigine = new HashMap<>();
 		Map<Intersection, Boolean> visite = new HashMap<>();
 		
+		List<Intersection> ptsInteret = demandeLivraison.getPtsPassage();
+		ptsInteret.add(demandeLivraison.getEntrepot());
+		
 		Intersection curr_i;
 		Intersection interVoisine;
+		float zero = 0;
 		
-		interAVisiter.add(intersectionInitiale);
+		String idInterInit = intersectionInitiale.getId();
+		
+		//initialisation
+		intersections.forEach((key,value)->temps.put(value, Float.POSITIVE_INFINITY));
+		temps.replace(intersections.get(idInterInit), zero);
+		
+		intersections.forEach((key,value)->visite.put(value, false));
+		
+		interAVisiter.add(intersections.get(idInterInit));
+		
+		//algo
 		while(! interAVisiter.isEmpty()) {
-			curr_i = interAVisiter.poll(); //verifier la gestion de la pile
+			curr_i = interAVisiter.poll();
 			if (! visite.get(curr_i)) {
 				for(Troncon curr_tv : curr_i.getTronconsVoisins()) {
 					interVoisine = curr_tv.getIntersectionDestination();
-					interAVisiter.add(interVoisine);
+					interAVisiter.add(intersections.get(interVoisine.getId()));
+					
 					if (temps.get(curr_i) + curr_tv.getTempsParcoursMinute() < temps.get(interVoisine)) {
 						temps.replace(interVoisine, temps.get(curr_i) + curr_tv.getTempsParcoursMinute());
-						tronconOrigine.replace(interVoisine, curr_tv);
+						tronconOrigine.put(interVoisine, curr_tv);
 					}
 				}
 				visite.replace(curr_i, true);
 			}
 		}
 		
-		return listeTrajets;
+		for (Intersection i : ptsInteret) {
+			LinkedList<Troncon> tronconsParcourus = new LinkedList<Troncon>();
+			curr_i = intersections.get(i.getId());
+			Troncon curr_tv;
+			
+			while (curr_i.getId() != idInterInit) {
+				curr_tv = tronconOrigine.get(curr_i);
+				tronconsParcourus.addFirst(curr_tv);
+				curr_i = curr_tv.getIntersectionOrigine();
+			}
+			Trajet curr_trajet = new Trajet(tronconsParcourus, intersectionInitiale, i);
+			listeTrajets.add(curr_trajet);
+		}
 		
+		return listeTrajets;
 	}
 	
 	

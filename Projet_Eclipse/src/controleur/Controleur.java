@@ -51,6 +51,9 @@ public class Controleur {
 		demandeLivraison = l.creerDemandeDeLivraison(plan);
 		
 		fenetre.afficherDemandeLivraison(demandeLivraison);
+		
+		creerGraphePCC();
+		
 	}
 	
 	public void creerGraphePCC() {
@@ -60,16 +63,16 @@ public class Controleur {
 		
 		Intersection entrepot = demandeLivraison.getEntrepot();
 		
-		LinkedList<Trajet> graphouille;
+		LinkedList<Trajet> graphIntermediaire;
 		
-		graphouille = plan.Dijkstra(demandeLivraison, entrepot);
-		graphePCC.ajouterGraphouille(graphouille, 0);
+		graphIntermediaire = plan.Dijkstra(demandeLivraison, entrepot);
+		graphePCC.ajouterGraphIntermediaire(graphIntermediaire, 0);
 		
 		for(int i = 1; i < nbSommets; i++) {
 			
 			Intersection intersectionInitiale = demandeLivraison.getPtsPassage().get(i);
-			graphouille = plan.Dijkstra(demandeLivraison, intersectionInitiale);
-			graphePCC.ajouterGraphouille(graphouille, i);
+			graphIntermediaire = plan.Dijkstra(demandeLivraison, intersectionInitiale);
+			graphePCC.ajouterGraphIntermediaire(graphIntermediaire, i);
 			
 		}
 		

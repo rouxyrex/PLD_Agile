@@ -1,15 +1,15 @@
 package modele;
 
-import java.util.List;
+import java.util.LinkedList;
 
 public class Trajet {
 	
-	List <Troncon> trajet;
+	LinkedList <Troncon> trajet;
 	Intersection intersectionOrigine;
 	Intersection intersectionDestination;
 	float tempsParcours;
 	
-	public Trajet(List <Troncon> trajet, Intersection intersectionOrigine, Intersection intersectionDestination) {
+	public Trajet(LinkedList <Troncon> trajet, Intersection intersectionOrigine, Intersection intersectionDestination) {
 		this.trajet = trajet;
 		
 		this.intersectionOrigine = intersectionOrigine;
@@ -25,7 +25,7 @@ public class Trajet {
 	}
 	
 	
-	public List<Troncon> getTrajet() {
+	public LinkedList<Troncon> getTrajet() {
 		return this.trajet;
 	}
 	
