@@ -1,6 +1,9 @@
 package vue;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.awt.BorderLayout;
@@ -31,7 +34,7 @@ import modele.Trajet;
 import vue.VueTroncon;
 import modele.Troncon;
 
-public class VuePlan extends JPanel {
+public class VuePlan extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	private int echelle;
@@ -53,7 +56,7 @@ public class VuePlan extends JPanel {
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	private ArrayList<JButton> boutons;
 	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
-	private final int hauteurBouton = 50;  
+	private final int hauteurBouton = 50;
 
 	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
 	LinkedList<VueTroncon> tronconsTraces = null;
@@ -68,38 +71,30 @@ public class VuePlan extends JPanel {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(int e, Fenetre f, Controleur c) {
+	public VuePlan(int e, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {
 		super();
-	/*	setLayout(new BorderLayout());
-
-		cadreBoutons = new JPanel();
-		cadreBoutons.setSize(300, 100);
-		cadreBoutons.setLayout(new BoxLayout(cadreBoutons, BoxLayout.LINE_AXIS) );
-	    add(cadreBoutons, BorderLayout.NORTH);
-	    
-	/*	JTextArea texte = new JTextArea("Veuillez charger un plan");  
-		texte.setEditable(false);
-		this.add(texte);*/
+		plan.addObserver(this); // this observe plan
+		demandeLivraison.addObserver(this); // this observe demandeLivraison
 		tronconsTraces = new LinkedList<VueTroncon>();
-		tronconsTournee = new LinkedList<VueTroncon>();
+    tronconsTournee = new LinkedList<VueTroncon>();
 		adressesDepot = new LinkedList<VueAdresseDepot>();
 		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();
 		echelle = 1;
 		modifLatitude = 0;
-		modifLongitude = 0; 
-		this.setPreferredSize(new Dimension(300,100)); 
+		modifLongitude = 0;
+		this.setPreferredSize(new Dimension(300,100));
 		creeBoutons(c);
-		
-	/*	JScrollBar scrollBarVertical = new JScrollBar(); 
+
+	/*	JScrollBar scrollBarVertical = new JScrollBar();
 		scrollBarVertical.setOrientation(1);
 		scrollBarVertical.setVisible(true);
 		this.add(scrollBarVertical, BorderLayout.EAST);
-		JScrollBar scrollBarHorizontal = new JScrollBar(); 
+		JScrollBar scrollBarHorizontal = new JScrollBar();
 		scrollBarHorizontal.setOrientation(0);
 		scrollBarHorizontal.setVisible(true);
 		this.add(scrollBarHorizontal, BorderLayout.SOUTH);*/
-		
-		setBackground(Color.white); 
+
+		setBackground(Color.white);
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	           onClick(getMousePosition().x, getMousePosition().y);
@@ -109,7 +104,7 @@ public class VuePlan extends JPanel {
 		addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub 
+				// TODO Auto-generated method stub
 			}
 
 			@Override
@@ -120,24 +115,28 @@ public class VuePlan extends JPanel {
 
 			}
 		});
+		f.getContentPane().add(this,  BorderLayout.CENTER);
+		this.f = f;
+		this.plan = plan;
+		this.dl = demandeLivraison;
 		repaint();
 	}
-	
-	private void creeBoutons(Controleur controleur){ 
+
+	private void creeBoutons(Controleur controleur){
 		ecouteurDeBoutons = new EcouteurDeBoutons(controleur);
 		boutons = new ArrayList<JButton>();
 		for (String intituleBouton : intitulesBoutons){
-			JButton bouton = new JButton(intituleBouton); 
-			boutons.add(bouton);  
+			JButton bouton = new JButton(intituleBouton);
+			boutons.add(bouton);
 			Image img = null;
-			try { 
+			try {
 				img = ImageIO.read(new FileInputStream(intituleBouton+".png"));
-			} catch (IOException e) { 
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			bouton.setIcon(new ImageIcon(img)); 
-			bouton.setLocation(0,(boutons.size()-1)*hauteurBouton); 
-			bouton.addActionListener(ecouteurDeBoutons); 
+			bouton.setIcon(new ImageIcon(img));
+			bouton.setLocation(0,(boutons.size()-1)*hauteurBouton);
+			bouton.addActionListener(ecouteurDeBoutons);
 		//	cadreBoutons.add(bouton);
 			this.add(bouton);
 			bouton.setVisible(false);
@@ -173,26 +172,37 @@ public class VuePlan extends JPanel {
 		if(entrepot != null) entrepot.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
 	}
 
+
+	/**
+	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
+	}
+
+/*	public void setEchelle(int e) {
+		largeurVue = (largeurVue/echelle)*e;
+		hauteurVue = (hauteurVue/echelle)*e;
+		setSize(largeurVue, hauteurVue);
+		echelle = e;
+	}*/
+
 	public int getEchelle() {
 		return echelle;
 	}
 
-	/**
-	 * Methode appelee pour dessiner un plan
-	 * Paramètre : le plan a afficher
-	 * Retour : rien
-	 */
-
-	public void afficherPlan(Plan plan) {
-		for (JButton bouton : boutons){ 
-			bouton.setVisible(true); 
-		}
-		adressesEnlevement.clear();
-		adressesDepot.clear();
-		entrepot = null;
-		echelle = 1;
-		modifLatitude = 0;
-		modifLongitude = 0;
+	public void initialiserVuePlan() {
+    for (JButton bouton : boutons){
+      bouton.setVisible(true);
+    }
+    adressesEnlevement.clear();
+    adressesDepot.clear();
+    entrepot = null;
+    echelle = 1;
+    modifLatitude = 0;
+    modifLongitude = 0;
+		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();
 		latitudeMax = plan.getLatitudeMax();
 		latitudeMin = plan.getLatitudeMin();
@@ -206,25 +216,31 @@ public class VuePlan extends JPanel {
 		}
 	}
 
-	/**
-	 * Methode appelee pour afficher les points d'intï¿½rï¿½t d'une demande de livraison
-	 * Paramï¿½tre : la demande de livraison a afficher
-	 * Retour : rien
-	 */
+	public void effacerVuePlan() {
+		tronconsTraces.clear();
+	}
 
-	public void afficherLivraisonDemande(DemandeLivraison dl) {
-		adressesDepot.clear();
-		adressesEnlevement.clear();
-		entrepot = new VueEntrepot(dl.getEntrepot());
+	public void initialiserVueDemandeLivraison() {
+    adressesDepot.clear();
+    adressesEnlevement.clear();
+		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();
 		for(int i= 0; i < livraisons.size(); i++) {
 			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
 			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
+      float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLatitude();
+      float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude();
 			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));
 			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement()));
 		}
 	}
+
+  public void effacerVueDemandeLivraison() {
+    adressesEnlevement.clear();
+    adressesDepot.clear();
+    entrepot = null;
+  }
 
 	/**
 	 * Methode appelee pour zommer sur le plan
@@ -283,7 +299,7 @@ public class VuePlan extends JPanel {
 
 	/**
 	 * Methode appelee pour afficher une tournee (tous les troncons correspondant ï¿½ la tournee)
-	 * Paramètre : la liste des trajets a afficher
+	 * Paramï¿½tre : la liste des trajets a afficher
 	 * Retour : rien
 	 */
 
@@ -299,7 +315,7 @@ public class VuePlan extends JPanel {
 
 	/**
 	 * Methode appelee lors d'un click sur le plan
-	 * Paramètre : les coordonnees (x et y) du point sur lequel on a clickï¿½
+	 * Paramï¿½tre : les coordonnees (x et y) du point sur lequel on a clickï¿½
 	 * Retour : rien
 	 */
 
