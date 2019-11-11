@@ -41,6 +41,9 @@ public class VuePlan extends JPanel implements Observer {
 	private int modifLatitude;
 	private int modifLongitude;
 	private JPanel cadreBoutons;
+	private Fenetre f;
+	private Plan plan;
+	private DemandeLivraison dl;
 	public static float latitudeMax = 0;
 	public static float latitudeMin;
 	public static float longitudeMax;
@@ -71,7 +74,7 @@ public class VuePlan extends JPanel implements Observer {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(int e, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {
+	public VuePlan(Fenetre f, Plan plan, DemandeLivraison demandeLivraison, Controleur c) {
 		super();
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
@@ -121,6 +124,8 @@ public class VuePlan extends JPanel implements Observer {
 		this.dl = demandeLivraison;
 		repaint();
 	}
+
+	 
 
 	private void creeBoutons(Controleur controleur){
 		ecouteurDeBoutons = new EcouteurDeBoutons(controleur);
@@ -223,7 +228,7 @@ public class VuePlan extends JPanel implements Observer {
 	public void initialiserVueDemandeLivraison() {
     adressesDepot.clear();
     adressesEnlevement.clear();
-		entrepot = new VueEntrepot(dl.getEntrepot().getLatitude(), dl.getEntrepot().getLongitude());
+		entrepot = new VueEntrepot(dl.getEntrepot());
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();
 		for(int i= 0; i < livraisons.size(); i++) {

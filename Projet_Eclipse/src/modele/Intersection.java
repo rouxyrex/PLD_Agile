@@ -37,4 +37,5 @@ public class Intersection {
 	public List<Troncon> getTronconsVoisins() {
 		return tronconsVoisins;
 	}
+ 
 }

@@ -12,11 +12,12 @@ public class Plan extends Observable {
 	float latitudeMax;
 	float longitudeMin;
 	float longitudeMax;
+	 
 	
 	public Plan() {
-		
+		// TODO Auto-generated constructor stub
 	}
-	
+
 	public void initialiser(Map<String, Intersection> intersections, List<Troncon> troncons) {
 		this.intersections = intersections;
 		this.troncons = troncons;

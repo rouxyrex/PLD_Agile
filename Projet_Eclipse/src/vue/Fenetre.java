@@ -17,11 +17,11 @@ import modele.Trajet;
 public class Fenetre extends JFrame {
 
 		private static final long serialVersionUID = 1L;
-		// Intitulï¿½s des boutons de la fenï¿½tre
+		// Intitulés des boutons de la fenêtre
 		protected static final String CHARGER_PLAN = "Charger un plan";
 		protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
-		protected static final String CALCULER_TOURNEE = "Calculer la tournï¿½e";
-		protected static final String GENERER_FEUILLE_ROUTE = "Gï¿½nï¿½rer la feuille de route";
+		protected static final String CALCULER_TOURNEE = "Calculer la tournée";
+		protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
 		private ArrayList<JButton> boutons;
 		private JPanel cadreBoutons;
 		private JLabel cadreMessages;
@@ -56,7 +56,7 @@ public class Fenetre extends JFrame {
 			cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complï¿½mentaires"));
 			getContentPane().add(cadreMessages, BorderLayout.SOUTH);
 
-			vuePlan = new VuePlan(1 ,this, controleur);
+			vuePlan = new VuePlan(this, plan, demandeLivraison, controleur);
 
 
 			vueTextuelle = new VueTextuelle(this, controleur);
@@ -72,18 +72,10 @@ public class Fenetre extends JFrame {
 		}
 
 		public void passerPlan (Plan plan) {
-			vuePlan.afficherPlan(plan);
+			vuePlan.initialiserVuePlan();
 			vueTextuelle.setVisible(false);
 			repaint();
-		}
-
-		public void afficherDemandeLivraison(DemandeLivraison dl, Controleur controleur) {
-			vuePlan.afficherLivraisonDemande(dl);
-			vueTextuelle.afficherDemandeLivraison();
-			vueTextuelle.setVisible(true);
-			repaint();
-		}
-
+		} 
 
 		/**
 		 * Cree les boutons correspondant aux intitules contenus dans intitulesBoutons
@@ -167,11 +159,15 @@ public class Fenetre extends JFrame {
 			}
 
 			public void initialiserVueDemandeLivraison() {
-				vuePlan.initialiserVueDemandeLivraison();
+				vuePlan.initialiserVueDemandeLivraison(); 
+				vueTextuelle.afficherDemandeLivraison();
+				vueTextuelle.setVisible(true);
+				repaint();
 			}
 
 			public void effacerVueDemandeLivraison() {
 				vuePlan.effacerVueDemandeLivraison();
+				
 			}
 
 		 

@@ -7,6 +7,7 @@ import modele.DemandeLivraison;
 import modele.GraphePCC;
 import modele.Intersection;
 import modele.Plan;
+import modele.Tournee;
 import modele.Trajet;
 import vue.Fenetre;
 
@@ -16,6 +17,7 @@ public class Controleur {
 	private Plan plan;
 	private DemandeLivraison demandeLivraison;
 	private GraphePCC graphePCC;
+	private Tournee tournee;
 
 	private Etat etatCourant;
 	// Instances associees a chaque etat possible du controleur
@@ -61,7 +63,8 @@ public class Controleur {
 	public void genererFeuilleRoute() {
 		// TODO Auto-generated method stub
 		fenetre.genererFeuilleRoute();
-
+	}
+	
 	/**
 	 * Change l'etat courant du controleur
 	 * @param etat le nouvel etat courant
@@ -110,5 +113,9 @@ public class Controleur {
 
 		}
 
+	}
+	public DemandeLivraison getDemandeLivraison() {
+		// TODO Auto-generated method stub
+		return demandeLivraison;
 	}
 }
