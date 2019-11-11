@@ -97,4 +97,14 @@ public class DemandeLivraison extends Observable {
 		return ptsPassage;
 	}
 	
+	public int getPtsInteret() {
+		
+		if(entrepot == null) {
+			return 0;
+		}
+		else {
+			return 1 + ptsPassage.size();
+		}
+	}
+	
 }

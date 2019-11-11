@@ -62,9 +62,13 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	
 	
 	@Override
-	public void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {
+	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison) {
 		
+		fenetre.afficheMessage("Calcul d'une tournee.");
 		
+		//Code pour calculer la tournee ici
+		
+		fenetre.initialiserVueTournee();
 	}
 	
 	

@@ -33,6 +33,7 @@ public class Controleur {
 		etatCourant = etatInit;
 		plan = new Plan();
 		demandeLivraison = new DemandeLivraison();
+		graphePCC = new GraphePCC();
 		tournee = new Tournee();
 		listeDeCdes = new ListeDeCdes();
 		
@@ -99,25 +100,4 @@ public class Controleur {
 		etatCourant.redo(fenetre, listeDeCdes);
 	}
 	
-	public void creerGraphePCC() {
-		
-		int nbSommets = 1 + demandeLivraison.getPtsPassage().size();
-		graphePCC = new GraphePCC(nbSommets);
-		
-		Intersection entrepot = demandeLivraison.getEntrepot();
-		
-		LinkedList<Trajet> graphouille;
-		
-		graphouille = plan.Dijkstra(demandeLivraison, entrepot);
-		graphePCC.ajouterGraphouille(graphouille, 0);
-		
-		for(int i = 1; i < nbSommets; i++) {
-			
-			Intersection intersectionInitiale = demandeLivraison.getPtsPassage().get(i);
-			graphouille = plan.Dijkstra(demandeLivraison, intersectionInitiale);
-			graphePCC.ajouterGraphouille(graphouille, i);
-			
-		}
-		
-	}
 }

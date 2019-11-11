@@ -28,8 +28,8 @@ public class Plan extends Observable {
 	
 	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Intersection intersectionInitiale){
 		
-		LinkedList<Trajet> graphouille= new LinkedList<Trajet>();
-		return graphouille;
+		LinkedList<Trajet> graphe1Sommet= new LinkedList<Trajet>();
+		return graphe1Sommet;
 		
 	}
 	

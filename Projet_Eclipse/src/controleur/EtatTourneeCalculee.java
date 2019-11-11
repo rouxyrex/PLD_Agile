@@ -66,7 +66,7 @@ public class EtatTourneeCalculee implements Etat {
 	
 	
 	@Override
-	public void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {
+	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison) {
 		
 		
 	}
