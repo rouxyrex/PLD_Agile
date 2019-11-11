@@ -6,103 +6,95 @@ import java.util.List;
 import java.util.Observable;
 
 public class DemandeLivraison extends Observable {
-
+	
 	List<Livraison> livraisons;
 	Intersection entrepot;
-	String heureDepart; //A modifier en une vraie heure?
-
+	String heureDepart; //A modifier en une vraie heure? 
+	
 	List<Intersection> ptsPassage;
-
+	
 	public DemandeLivraison() {
 		livraisons = new ArrayList<Livraison>();
 		ptsPassage = new ArrayList<Intersection>();
 	}
-
+	
 	public void initialiser(List<Livraison> livraisonsAInserer, Intersection entrepot, String heureDepart) {
-
+		
 		for(Livraison l : livraisonsAInserer) {
 			ajouterLivraison(l);
 		}
-
+		
 		this.entrepot = entrepot;
 		this.heureDepart = heureDepart;
-
-		creerPtsPassage();
-
+		
 		setChanged();
 		notifyObservers();
 	}
-
-
-	public void creerPtsPassage() {
-
-		for(Livraison l : livraisons) {
-
-			ptsPassage.add(l.getAdresseDepot());
-			ptsPassage.add(l.getAdresseEnlevement());
-
-		}
-	}
-
+	
+	
 	public Iterator<Livraison> getIterateurLivraisons(){
 		return livraisons.iterator();
 	}
-
-
+	
+	
 	public void reset() {
-
+		
 		Iterator<Livraison> it = livraisons.iterator();
-
+		
 		while (it.hasNext()){
 			it.next();
 			it.remove();
 		}
-
+		
 		Iterator<Intersection> it2 = ptsPassage.iterator();
-
+		
 		while (it2.hasNext()){
 			it2.next();
 			it2.remove();
 		}
-
+		
 		entrepot = null;
 		heureDepart = null;
-
+		
 		setChanged();
-		notifyObservers();
+		notifyObservers();	
 	}
-
-
+	
+	
 	public void ajouterLivraison(Livraison l){
 		livraisons.add(l);
+		
+		ptsPassage.add(l.getAdresseDepot());
+		ptsPassage.add(l.getAdresseEnlevement());
+		
 		setChanged();
 		notifyObservers();
 	}
-
+	
 	public void supprimerLivraison(Livraison l) {
 		livraisons.remove(l);
+		
+		ptsPassage.remove(l.getAdresseDepot());
+		ptsPassage.remove(l.getAdresseEnlevement());
+		
 		setChanged();
 		notifyObservers();
 	}
-
+	
 	public List<Livraison> getLivraisons() {
 		return livraisons;
 	}
-
+	
 	public Intersection getEntrepot() {
 		return entrepot;
 	}
-
+	
 	public String getHeureDepart() {
 		return heureDepart;
-	}
-
-	public int getNbLivraisons() {
-		return this.livraisons.size();
 	}
 	
 	public List<Intersection> getPtsPassage() {
 		return ptsPassage;
 	}
-
+	
 }

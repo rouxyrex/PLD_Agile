@@ -8,14 +8,21 @@ class VueAdresseEnlevement{
     final float latitude; 
     final float longitude;   
     final int TAILLE_TRIANGLE = 10;
-    int[] tab;
-    int[] tab2;
+    int[] tab = new int[3];
+    int[] tab2 = new int[3];
     Intersection adresse;
 
     public VueAdresseEnlevement(Intersection adresse) {
         this.latitude = adresse.getLatitude();
         this.longitude = adresse.getLongitude(); 
         this.adresse = adresse;
+        tab[0] = -1;
+        tab[1] = -1;
+        tab[2] = -1;
+        tab2[0] = -1;
+        tab2[1] = -1;
+        tab2[2] = -1;
+        
     }       
     
     public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
@@ -28,10 +35,9 @@ class VueAdresseEnlevement{
     	g.fillPolygon(tab2, tab, 3); 
     }
 
-	public Intersection onClick(int x, int y) {
-		// TODO Auto-generated method stub
-		boolean touche= false; 
-		if(touche) return adresse;
+	public Intersection onClick(int x, int y) { 
+		//on va dire que le triangle est dans un rectangle
+		if(x >= tab2[1] && x <= tab2[2] && y >= tab[0] && y <= tab[1])  return adresse; 
 		else return null;
 	}
 }

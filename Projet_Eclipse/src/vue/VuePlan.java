@@ -30,6 +30,7 @@ import modele.DemandeLivraison;
 import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
+import modele.Tournee;
 import modele.Trajet;
 import vue.VueTroncon;
 import modele.Troncon;
@@ -39,17 +40,20 @@ public class VuePlan extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 	private int echelle;
 	private int modifLatitude;
-	private int modifLongitude;
-	private JPanel cadreBoutons;
-	private Fenetre f;
+	private int modifLongitude; 
 	private Plan plan;
 	private DemandeLivraison dl;
+	private Tournee tournee;
+	private Fenetre f;
+	
+	
 	public static float latitudeMax = 0;
 	public static float latitudeMin;
 	public static float longitudeMax;
 	public static float longitudeMin;
 	public static float intervalleLatitude;
-	public static float intervalleLongitude;
+	public static float intervalleLongitude; 
+	
 	protected static final String ZOOM = "Zoom";
 	protected static final String DEZOOM = "Dezoom";
 	protected static final String DROITE = "Droite";
@@ -60,9 +64,9 @@ public class VuePlan extends JPanel implements Observer {
 	private ArrayList<JButton> boutons;
 	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 	private final int hauteurBouton = 50;
-
+	
 	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
-	LinkedList<VueTroncon> tronconsTraces = null;
+	LinkedList<VueTroncon> tronconsTraces = null; 
 	LinkedList<VueTroncon> tronconsTournee = null;
 	LinkedList<VueAdresseDepot> adressesDepot = null;
 	LinkedList<VueAdresseEnlevement> adressesEnlevement = null;
@@ -74,14 +78,21 @@ public class VuePlan extends JPanel implements Observer {
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
-	public VuePlan(Fenetre f, Plan plan, DemandeLivraison demandeLivraison, Controleur c) {
+	public VuePlan(Fenetre f, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee, Controleur c) {
 		super();
+		
+		this.f = f;
+		this.plan = plan;
+		this.dl = demandeLivraison;
+		this.tournee = tournee;
+		
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
-		tronconsTraces = new LinkedList<VueTroncon>();
-    tronconsTournee = new LinkedList<VueTroncon>();
+		
+		tronconsTraces = new LinkedList<VueTroncon>(); 
+		tronconsTournee = new LinkedList<VueTroncon>();
 		adressesDepot = new LinkedList<VueAdresseDepot>();
-		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();
+		adressesEnlevement = new LinkedList<VueAdresseEnlevement>();  
 		echelle = 1;
 		modifLatitude = 0;
 		modifLongitude = 0;
@@ -119,37 +130,36 @@ public class VuePlan extends JPanel implements Observer {
 			}
 		});
 		f.getContentPane().add(this,  BorderLayout.CENTER);
-		this.f = f;
-		this.plan = plan;
-		this.dl = demandeLivraison;
+		
 		repaint();
-	}
-
-	 
-
+	} 
+	
 	private void creeBoutons(Controleur controleur){
-		ecouteurDeBoutons = new EcouteurDeBoutons(controleur);
+		ecouteurDeBoutons = new EcouteurDeBoutons(controleur, f);
 		boutons = new ArrayList<JButton>();
 		for (String intituleBouton : intitulesBoutons){
 			JButton bouton = new JButton(intituleBouton);
 			boutons.add(bouton);
 			Image img = null;
 			try {
-				img = ImageIO.read(new FileInputStream(intituleBouton+".png"));
+				img = ImageIO.read(new FileInputStream("src/vue/Images/"+intituleBouton+".png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			bouton.setIcon(new ImageIcon(img));
+			bouton.setBackground(Color.white);
+			bouton.setOpaque(false);
+			bouton.setBorderPainted(false);
 			bouton.setLocation(0,(boutons.size()-1)*hauteurBouton);
-			bouton.addActionListener(ecouteurDeBoutons);
-		//	cadreBoutons.add(bouton);
+			bouton.addActionListener(ecouteurDeBoutons); 
 			this.add(bouton);
 			bouton.setVisible(false);
 		}
 	}
-
+	
+	
 	/**
-	 * Methode appelee a chaque fois que VuePlan doit etre redessinee
+	 * Methode appelee a chaque fois que VueGraphique doit etre redessinee
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -177,7 +187,7 @@ public class VuePlan extends JPanel implements Observer {
 		if(entrepot != null) entrepot.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
 	}
 
-
+	
 	/**
 	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
 	 */
@@ -185,28 +195,18 @@ public class VuePlan extends JPanel implements Observer {
 	public void update(Observable o, Object arg) {
 		repaint();
 	}
-
-/*	public void setEchelle(int e) {
-		largeurVue = (largeurVue/echelle)*e;
-		hauteurVue = (hauteurVue/echelle)*e;
-		setSize(largeurVue, hauteurVue);
-		echelle = e;
-	}*/
+	 
 
 	public int getEchelle() {
 		return echelle;
 	}
 
 	public void initialiserVuePlan() {
-    for (JButton bouton : boutons){
-      bouton.setVisible(true);
-    }
-    adressesEnlevement.clear();
-    adressesDepot.clear();
-    entrepot = null;
-    echelle = 1;
-    modifLatitude = 0;
-    modifLongitude = 0;
+		
+		for (JButton bouton : boutons){
+		      bouton.setVisible(true);
+		}
+		
 		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();
 		latitudeMax = plan.getLatitudeMax();
@@ -220,50 +220,71 @@ public class VuePlan extends JPanel implements Observer {
 			tronconsTraces.add(new VueTroncon(troncons.get(i).getIntersectionOrigine(), troncons.get(i).getIntersectionDestination()));
 		}
 	}
-
+	
 	public void effacerVuePlan() {
 		tronconsTraces.clear();
+		echelle = 1;
+	    modifLatitude = 0;
+	    modifLongitude = 0;
+	    for (JButton bouton : boutons){
+	        bouton.setVisible(false);
+	    }
 	}
-
+	
 	public void initialiserVueDemandeLivraison() {
-    adressesDepot.clear();
-    adressesEnlevement.clear();
 		entrepot = new VueEntrepot(dl.getEntrepot());
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();
-		for(int i= 0; i < livraisons.size(); i++) {
-			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
-			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
-      float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLatitude();
-      float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude();
-			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));
+		for(int i= 0; i < livraisons.size(); i++) { 
+			adressesDepot.add(new VueAdresseDepot(livraisons.get(i).getAdresseDepot()));
 			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement()));
 		}
+	} 
+	
+	public void effacerVueDemandeLivraison() {
+		adressesEnlevement.clear();
+		adressesDepot.clear();
+		entrepot = null;
 	}
-
-  public void effacerVueDemandeLivraison() {
-    adressesEnlevement.clear();
-    adressesDepot.clear();
-    entrepot = null;
-  }
-
+	
+	
 	/**
-	 * Methode appelee pour zommer sur le plan
-	 * Param�tre : aucun
+	 * Methode appelee pour initialiser le vue de la tournee
+	 * Parametre : rien
 	 * Retour : rien
 	 */
-
+	public void initialiserVueTournee() {
+		
+		List<Trajet> trajets = tournee.getParcours();
+		
+		for (Trajet trajet : trajets) {
+			List<Troncon> troncons = trajet.getTrajet();
+			for (Troncon troncon : troncons) {
+				tronconsTournee.add(new VueTroncon(troncon.getIntersectionOrigine(), troncon.getIntersectionDestination()));
+			}
+		}
+	}
+	
+	public void effacerVueTournee() {
+		tronconsTournee.clear();
+	}
+	
+	/**
+	 * Methode appelee pour zommer sur le plan
+	 * Parametre : aucun
+	 * Retour : rien
+	 */
 	public void zoom() {
 		echelle = echelle + 1;
 		repaint();
 	}
-
+	
+	
 	/**
 	 * Methode appelee pour dezoomer sur le plan
-	 * Param�tre : aucun
+	 * Parametre : aucun
 	 * Retour : rien
 	 */
-
 	public void dezoom() {
 		echelle = echelle - 1;
 		if(echelle <= 0) echelle = 1;
@@ -272,58 +293,41 @@ public class VuePlan extends JPanel implements Observer {
 		if((int) (((latitudeMax-VuePlan.latitudeMin)*getHeight()*echelle/VuePlan.intervalleLatitude)+modifLatitude)  < getHeight()) modifLatitude = 0;
 		repaint();
 	}
-
+	
+	
 	/**
-	 * Methodes appelees pour se deplacer � droite, gauche, haut, bas sur le plan
-	 * Param�tre : aucun
+	 * Methodes appelees pour se deplacer a droite, gauche, haut, bas sur le plan
+	 * Parametre : aucun
 	 * Retour : rien
 	 */
-
-	public void droite() {
-		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/3)*getWidth());
+	public void gauche() {
+		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin))*getWidth());
 		if(modifLongitude >= 0) modifLongitude = 0;
 		repaint();
 	}
-	public void gauche() {
-		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/3)*getWidth());
+	public void droite() {
+		int memoire = (int) (modifLongitude - (longitudeMax-longitudeMin)*getWidth());
 		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
 		repaint();
 	}
 	public void haut() {
-		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin)/5)*getHeight());
+		modifLatitude = (int) (modifLatitude + (latitudeMax-latitudeMin)*getHeight());
 		if(modifLatitude >= 0) modifLatitude = 0;
 		repaint();
 
 	}
 	public void bas() {
-		int memoire = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight());
+		int memoire = (int) (modifLatitude - (latitudeMax-latitudeMin)*getHeight());
 		if((((latitudeMax-latitudeMin)*getHeight()/intervalleLatitude - memoire) < (getHeight()*echelle))) modifLatitude = memoire;
 		repaint();
 
 	}
-
-	/**
-	 * Methode appelee pour afficher une tournee (tous les troncons correspondant � la tournee)
-	 * Param�tre : la liste des trajets a afficher
-	 * Retour : rien
-	 */
-
-	public void afficherTournee(List<Trajet> trajets) {
-		for (Trajet trajet : trajets) {
-			List<Troncon> troncons = trajet.getTrajet();
-			for (Troncon troncon : troncons) {
-				tronconsTournee.add(new VueTroncon(troncon.getIntersectionOrigine(), troncon.getIntersectionDestination()));
-			}
-		}
-		repaint();
-	}
-
+	
 	/**
 	 * Methode appelee lors d'un click sur le plan
-	 * Param�tre : les coordonnees (x et y) du point sur lequel on a click�
+	 * Parametre : les coordonnees (x et y) du point sur lequel on a clicke
 	 * Retour : rien
 	 */
-
 	public Intersection onClick(int x, int y) {
 
 		for(int i = 0; i < adressesDepot.size(); i++) {
@@ -341,6 +345,5 @@ public class VuePlan extends JPanel implements Observer {
 	    }
 		return null;
 	}
-
-
+	
 }

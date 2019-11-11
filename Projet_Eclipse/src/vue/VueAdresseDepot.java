@@ -7,13 +7,15 @@ import modele.Intersection;
 class VueAdresseDepot{
     final float latitude; 
     final float longitude;    
+    Intersection adresse;
     int x = -1;
     int y = -1;
     final int tailleDepot = 20;
 
-    public VueAdresseDepot(float x1, float y1) {
-        this.latitude = x1;
-        this.longitude = y1; 
+    public VueAdresseDepot(Intersection adresse) {
+        this.adresse = adresse;
+        this.latitude = adresse.getLatitude();
+        this.longitude = adresse.getLongitude();
     }             
     
     public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
@@ -26,6 +28,9 @@ class VueAdresseDepot{
 
 	public Intersection onClick(int x, int y) {
 		// TODO Auto-generated method stub 
+		int centrex = this.x+(tailleDepot/2);
+		int centrey = this.y+(tailleDepot/2);
+		if(Math.sqrt((x-centrex)*(x-centrex)+(y-centrey)*(y-centrey)) <= (tailleDepot/2)) return adresse;
 		return null;
 	}
 }

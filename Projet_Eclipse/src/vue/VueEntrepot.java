@@ -30,7 +30,7 @@ class VueEntrepot{
 
 	public Intersection onClick(int x, int y) {
 		// TODO Auto-generated method stub 
-		if(x >= this.x && x <= (this.x+tailleEntrepot) && y >= (this.y) && y <= (this.y + tailleEntrepot)) {
+		if(x >= this.x && x <= (this.x+tailleEntrepot) && y >= (this.y) && y <= (this.y + tailleEntrepot)) { 
 			return adresse;
 		}
 		return null;

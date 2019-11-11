@@ -3,9 +3,12 @@ package vue;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import modele.Livraison;
+
 public class VueLivraison { 
     String idDepot;
     String idEnlevement;
+    Livraison l;
     int tempsDepot;
     int tempsEnlevement;  
     Color color2 = Color.LIGHT_GRAY;
@@ -14,11 +17,14 @@ public class VueLivraison {
     float size;
     int width;
 
-    public VueLivraison(String idDepot, String idEnlevement, int tempsDepot, int tempsEnlevement) {
-    	this.idDepot = idDepot;
-    	this.idEnlevement = idEnlevement;
-    	this.tempsDepot = tempsDepot;
-    	this.tempsEnlevement = tempsEnlevement; 
+    public VueLivraison(Livraison l) {
+    	if(l.getAdresseDepot() == null) this.idDepot = "Adresse de depart : ";
+    	else this.idDepot = l.getAdresseDepot().getId();
+    	if(l.getAdresseEnlevement() == null) this.idEnlevement = "Adresse de enlevement : ";
+    	else this.idEnlevement = l.getAdresseEnlevement().getId();
+    	this.tempsDepot = l.getDureeDepot();
+    	this.tempsEnlevement = l.getDureeEnlevement(); 
+    	this.l = l;
     	
     }             
     
@@ -55,6 +61,16 @@ public class VueLivraison {
 		// TODO Auto-generated method stub 
 		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) color2 =  Color.GRAY;
 		else color2 = Color.lightGray;
+	}
+	
+	public Livraison onClick(int x, int y) {
+		// TODO Auto-generated method stub 
+		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) {
+			color2 =  Color.GRAY;
+			return l;
+		}
+		else color2 = Color.lightGray;
+		return null;
 	}
      
 }
