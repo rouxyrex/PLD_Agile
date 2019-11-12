@@ -1,9 +1,12 @@
 package modele;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +18,8 @@ public class Tournee {
 	private float coutMeilleureSolution;
 	private boolean tempsLimiteAtteint;
 	private Integer[] meilleureSolution;
+	
+	GraphePCC graphePCC;
 	
 	public Tournee() {//Constructeur a faire
 		pointsPassage=new HashMap<Intersection, String>();
@@ -74,7 +79,6 @@ public class Tournee {
 			
 		}
 		
-		
 		tempsLimiteAtteint = false;
 		coutMeilleureSolution = Float.MAX_VALUE;
 		meilleureSolution = new Integer[nbSommets];
@@ -92,7 +96,13 @@ public class Tournee {
 		for(Trajet t : parcours){
 			System.out.println(t);
 		}
+		
 	}
+	
+	public void initialiserGraphePCC(GraphePCC graphePCC) {
+		this.graphePCC = graphePCC;
+	}
+	
 	
 	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, long tpsDebut, int tempsLimite){
 		 if (System.currentTimeMillis() - tpsDebut > tempsLimite){

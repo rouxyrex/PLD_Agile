@@ -25,27 +25,23 @@ import org.xml.sax.SAXException;
 
 public class LectureXml {
 	
-	public LectureXml() {}
-	
-	public Plan creerPlan() throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+	public static void creerPlan(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
-		Plan plan;
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
 	    if (racine.getNodeName().equals("reseau")) {
-	       plan = construirePlanAPartirDeDOMXML(racine);
+	       construirePlanAPartirDeDOMXML(racine, plan);
 	    }
 	    else {
 	        throw new ExceptionXml("Document de plan non conforme");
 	    }
 	    
-	    return plan;
 	}
 	
 	
-	private static Plan construirePlanAPartirDeDOMXML(Element noeudDOMRacine) throws ExceptionXml, NumberFormatException{
+	private static void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXml, NumberFormatException{
 	    	
 		Map<String, Intersection> intersections = new HashMap<String, Intersection>();
 		
@@ -114,14 +110,13 @@ public class LectureXml {
 	       		
 	    }
 	       	
-	    Plan plan = new Plan(intersections, troncons);
+	    plan.initialiser(intersections, troncons);
 	    
 	    plan.setLatitudeMax(latitudeMax);
 	    plan.setLatitudeMin(latitudeMin);
 	    plan.setLongitudeMax(longitudeMax);
 	    plan.setLongitudeMin(longitudeMin);
 	    
-	    return plan;
 	}
 	
 	
@@ -131,11 +126,11 @@ public class LectureXml {
 	   	float latitude = Float.parseFloat(elt.getAttribute("latitude"));
 	   	float longitude = Float.parseFloat(elt.getAttribute("longitude"));
 	   	
-	   	if( (latitude <= - 90) && (latitude >= 90) ) {
+	   	if( (latitude <= - 90) || (latitude >= 90) ) {
 	   		throw new ExceptionXml("Une intersection a une latitude non comprise entre -90 et 90.");
 	   	}
 	   	
-	   	if( (longitude <= - 180) && (longitude >= 180) ) {
+	   	if( (longitude <= - 180) || (longitude >= 180) ) {
 	   		throw new ExceptionXml("Une intersection a une longitude non comprise entre -180 et 180.");
 	   	}
 	   	
@@ -180,25 +175,23 @@ public class LectureXml {
 	}
 	
 	
-	public DemandeLivraison creerDemandeDeLivraison(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+	public static void creerDemandeDeLivraison(Plan plan, DemandeLivraison demande) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
-		DemandeLivraison demande;
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
 	    if (racine.getNodeName().equals("demandeDeLivraisons")) {
-	    	demande = construireDemandeLivraisonAPartirDeDOMXML(racine, plan);
+	    	construireDemandeLivraisonAPartirDeDOMXML(racine, plan, demande);
 	    }
 	    else {
 	        throw new ExceptionXml("Document de demande de livraisons non conforme");
 	    }
 	    
-	    return demande;
 	}
 	
 	
-	private static DemandeLivraison construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXml, NumberFormatException{
+	private static void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, Plan plan, DemandeLivraison demande) throws ExceptionXml, NumberFormatException{
 	    	
 		Intersection entrepot;
 		String heureDepart;
@@ -222,7 +215,7 @@ public class LectureXml {
 	   		throw new ExceptionXml("L'entrepot ne correspond a aucune intersection du plan.");
 	   	}
 	   	
-	   	entrepot = new Intersection(entrepotACopier.getId(), entrepotACopier.getLatitude(), entrepotACopier.getLongitude());
+	   	entrepot = entrepotACopier;
 	   	
 	   	//System.out.println("Entrepot: heureDepart= "+heureDepart+" adresse= "+idAdresse);
 	   	
@@ -237,10 +230,10 @@ public class LectureXml {
 		    livraisons.add(l);
 		    
 		}
-	    	
-	    DemandeLivraison demande = new DemandeLivraison(livraisons, entrepot, heureDepart);
-	       	
-	    return demande;
+	    
+	    demande.reset();
+	    demande.initialiser(livraisons, entrepot, heureDepart);
+	    
 	}
 	
 	    
@@ -268,14 +261,14 @@ public class LectureXml {
 	   		throw new ExceptionXml("Il y a au moins une adresse d'enlevement qui ne correspond a aucune intersection du plan.");
 	   	}
 	   	
-	   	Intersection adresseEnlevement = new Intersection(adresseEnlevementACopier.getId(), adresseEnlevementACopier.getLatitude(), adresseEnlevementACopier.getLongitude());
-	    
+	   	Intersection adresseEnlevement = adresseEnlevementACopier;
+	   			
 	   	if(adresseDepotACopier == null) {
 	   		throw new ExceptionXml("Il y a au moins une adresse de depot qui ne correspond a aucune intersection du plan.");
 	   	}
 	   	
-	   	Intersection adresseDepot = new Intersection(adresseDepotACopier.getId(), adresseDepotACopier.getLatitude(), adresseDepotACopier.getLongitude());
-	   	
+	   	Intersection adresseDepot = adresseDepotACopier;
+	   			
 	   	Livraison l = new Livraison(adresseEnlevement, adresseDepot, dureeEnlevement, dureeDepot);
 	   	
 	   	return l;

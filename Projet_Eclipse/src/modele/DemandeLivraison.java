@@ -1,9 +1,11 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
 
-public class DemandeLivraison {
+public class DemandeLivraison extends Observable {
 	
 	List<Livraison> livraisons;
 	Intersection entrepot;
@@ -11,25 +13,72 @@ public class DemandeLivraison {
 	
 	List<Intersection> ptsPassage;
 	
-	public DemandeLivraison(List<Livraison> livraisons, Intersection entrepot, String heureDepart) {
+	public DemandeLivraison() {
+		livraisons = new ArrayList<Livraison>();
+		ptsPassage = new ArrayList<Intersection>();
+	}
+	
+	public void initialiser(List<Livraison> livraisonsAInserer, Intersection entrepot, String heureDepart) {
 		
-		this.livraisons = livraisons;
+		for(Livraison l : livraisonsAInserer) {
+			ajouterLivraison(l);
+		}
+		
 		this.entrepot = entrepot;
 		this.heureDepart = heureDepart;
 		
-		this.ptsPassage = new ArrayList<Intersection>();
-		
-		creerPtsPassage();
+		setChanged();
+		notifyObservers();
 	}
 	
-	public void creerPtsPassage() {
+	
+	public Iterator<Livraison> getIterateurLivraisons(){
+		return livraisons.iterator();
+	}
+	
+	
+	public void reset() {
 		
-		for(Livraison l : livraisons) {
-			
-			ptsPassage.add(l.getAdresseDepot());
-			ptsPassage.add(l.getAdresseEnlevement());
-			
+		Iterator<Livraison> it = livraisons.iterator();
+		
+		while (it.hasNext()){
+			it.next();
+			it.remove();
 		}
+		
+		Iterator<Intersection> it2 = ptsPassage.iterator();
+		
+		while (it2.hasNext()){
+			it2.next();
+			it2.remove();
+		}
+		
+		entrepot = null;
+		heureDepart = null;
+		
+		setChanged();
+		notifyObservers();	
+	}
+	
+	
+	public void ajouterLivraison(Livraison l){
+		livraisons.add(l);
+		
+		ptsPassage.add(l.getAdresseDepot());
+		ptsPassage.add(l.getAdresseEnlevement());
+		
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void supprimerLivraison(Livraison l) {
+		livraisons.remove(l);
+		
+		ptsPassage.remove(l.getAdresseDepot());
+		ptsPassage.remove(l.getAdresseEnlevement());
+		
+		setChanged();
+		notifyObservers();
 	}
 	
 	public List<Livraison> getLivraisons() {
@@ -46,6 +95,16 @@ public class DemandeLivraison {
 	
 	public List<Intersection> getPtsPassage() {
 		return ptsPassage;
+	}
+	
+	public int getPtsInteret() {
+		
+		if(entrepot == null) {
+			return 0;
+		}
+		else {
+			return 1 + ptsPassage.size();
+		}
 	}
 	
 }

@@ -8,22 +8,47 @@ public class GraphePCC {
 	private LinkedList<Trajet>[] listeAdjacence;
 	
 	
-	public GraphePCC(int nbSommets){
-		this.nbSommets = nbSommets;
-		listeAdjacence= new LinkedList[nbSommets];
-	}
-	
-	public void ajouterGraphIntermediaire(LinkedList<Trajet> graphIntermediaire, int position) {
-		
-		listeAdjacence[position] = graphIntermediaire;
+	public GraphePCC(){
 		
 	}
 	
-	public int getNbSommets(){
+
+	public void initialiserGraphePCC(Plan plan, DemandeLivraison demandeLivraison) {
+		
+		nbSommets = demandeLivraison.getPtsInteret();
+		
+		listeAdjacence = new LinkedList[nbSommets];
+		
+		LinkedList<Trajet> grapheIntermediaire;
+		
+		grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getEntrepot());
+		ajouterGraphIntermediaire(grapheIntermediaire, 0);
+		
+		for(int i = 0; i < nbSommets; i++) {
+			
+			grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getPtsPassage().get(i));
+			ajouterGraphIntermediaire(grapheIntermediaire, i);
+			
+		}
+		
+	}
+	
+	public void ajouterGraphIntermediaire(LinkedList<Trajet> grapheIntermediaire, int position) {
+		
+		listeAdjacence[position] = grapheIntermediaire;
+		
+	}
+	
+	public int getNbSommets() {
 		return nbSommets;
 	}
 	
-	public LinkedList<Trajet>[] getListeAdjacence(){
+	public LinkedList<Trajet>[] getListeAdjacence() {
 		return listeAdjacence;
 	}
+	
+	public void setNbSommets(int nbSommets) {
+		this.nbSommets = nbSommets;
+	}
+	
 }
