@@ -19,6 +19,11 @@ public class GraphePCC {
 		
 	}
 	
+	public int getNbSommets(){
+		return nbSommets;
+	}
 	
-	
+	public LinkedList<Trajet>[] getListeAdjacence(){
+		return listeAdjacence;
+	}
 }

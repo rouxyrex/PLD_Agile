@@ -12,6 +12,7 @@ import modele.DemandeLivraison;
 import modele.GraphePCC;
 import modele.Intersection;
 import modele.Plan;
+import modele.Tournee;
 import modele.Trajet;
 import xml.ExceptionXml;
 import xml.LectureXml;
@@ -24,6 +25,7 @@ public class Controleur {
 	private LectureXml l;
 	private DemandeLivraison demandeLivraison;
 	private GraphePCC graphePCC;
+	private Tournee tournee;
 	
 	public Controleur( int echelle)
 	{
@@ -53,6 +55,8 @@ public class Controleur {
 		fenetre.afficherDemandeLivraison(demandeLivraison);
 		
 		creerGraphePCC();
+		tournee = new Tournee();
+		tournee.CalculerTournee(10000, graphePCC, demandeLivraison);
 		
 	}
 	
@@ -75,6 +79,6 @@ public class Controleur {
 			graphePCC.ajouterGraphIntermediaire(graphIntermediaire, i);
 			
 		}
-		
+
 	}
 }
