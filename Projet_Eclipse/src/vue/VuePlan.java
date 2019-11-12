@@ -46,8 +46,7 @@ public class VuePlan extends JPanel implements Observer {
 	private Plan plan;
 	private DemandeLivraison dl;
 	private Tournee tournee;
-	private Fenetre f;
-	
+	private Fenetre fenetre;
 	
 	public static float latitudeMax = 0;
 	public static float latitudeMin;
@@ -64,7 +63,7 @@ public class VuePlan extends JPanel implements Observer {
 	protected static final String BAS = "Bas";
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	private ArrayList<JButton> boutons;
-	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS};
 	private final int hauteurBouton = 50;
 	
 	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
@@ -75,15 +74,17 @@ public class VuePlan extends JPanel implements Observer {
 	VueEntrepot entrepot = null;
 
 	/**
-	 * Cree la vue graphique permettant de dessiner plan avec l'echelle e dans la fenetre f
+	 * Cree la vue graphique permettant d'afficher le plan dans la fenetre f
+	 * @param fenetre la fenetre
 	 * @param plan leplan
-	 * @param e l'echelle
-	 * @param f la fenetre
+	 * @param demandeLivraison la demande de livraison
+	 * @param tournee la tournee
+	 * @param c le controleur
 	 */
-	public VuePlan(Fenetre f, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee, Controleur c) {
+	public VuePlan(Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee, Controleur c) {
 		super();
 		
-		this.f = f;
+		this.fenetre = fenetre;
 		this.plan = plan;
 		this.dl = demandeLivraison;
 		this.tournee = tournee;
@@ -111,6 +112,7 @@ public class VuePlan extends JPanel implements Observer {
 		this.add(scrollBarHorizontal, BorderLayout.SOUTH);*/
 
 		setBackground(Color.white);
+		
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	           onClick(getMousePosition().x, getMousePosition().y);
@@ -125,19 +127,18 @@ public class VuePlan extends JPanel implements Observer {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 				Intersection i = onClick(e.getX(), e.getY());
-				if (i != null) f.afficheMessage("La souris est sur l'intersection "+i.getId());
+				if (i != null) fenetre.afficheMessage("La souris est sur l'intersection "+i.getId());
 
 			}
 		});
-		f.getContentPane().add(this,  BorderLayout.CENTER);
+		fenetre.getContentPane().add(this,  BorderLayout.CENTER);
 		
 		repaint();
 	} 
 	
 	private void creeBoutons(Controleur controleur){
-		ecouteurDeBoutons = new EcouteurDeBoutons(controleur, f);
+		ecouteurDeBoutons = new EcouteurDeBoutons(controleur, fenetre);
 		boutons = new ArrayList<JButton>();
 		for (String intituleBouton : intitulesBoutons){
 			JButton bouton = new JButton(intituleBouton);
@@ -160,6 +161,7 @@ public class VuePlan extends JPanel implements Observer {
 	
 	/**
 	 * Methode appelee a chaque fois que VueGraphique doit etre redessinee
+	 * @param g 
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -190,6 +192,8 @@ public class VuePlan extends JPanel implements Observer {
 	
 	/**
 	 * Methode appelee par les objets observes par this a chaque fois qu'ils ont ete modifies
+	 * @param o 
+	 * @param arg
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
@@ -202,18 +206,22 @@ public class VuePlan extends JPanel implements Observer {
 		setSize(largeurVue, hauteurVue);
 		echelle = e;
 	}*/
-
+	
+	/**
+	 * Permet de récupérer l'echelle actuelle du plan
+	 */
 	public int getEchelle() {
 		return echelle;
 	}
-
+	
+	/**
+	 * Cree une nouvelle vue de troncon pour chaque troncon du plan et affiche les boutons de zoom et de deplacement
+	 */
 	public void initialiserVuePlan() {
 		
 		for (JButton bouton : boutons){
 		      bouton.setVisible(true);
 		}
-		
-		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();
 		latitudeMax = plan.getLatitudeMax();
 		latitudeMin = plan.getLatitudeMin();
@@ -227,6 +235,10 @@ public class VuePlan extends JPanel implements Observer {
 		}
 	}
 	
+	/**
+	 * Supprime les vues troncons actuelles, reinitialise l'echelle
+	 * Fait disparaitre les boutons de zoom et de deplacement
+	 */
 	public void effacerVuePlan() {
 		tronconsTraces.clear();
 		echelle = 1;
@@ -251,6 +263,9 @@ public class VuePlan extends JPanel implements Observer {
 		}
 	} 
 	
+	/**
+	 * Supprime les objets adresseEnlevement et adresseDepot et Entrepot crees 
+	 */
 	public void effacerVueDemandeLivraison() {
 		adressesEnlevement.clear();
 		adressesDepot.clear();
@@ -259,9 +274,8 @@ public class VuePlan extends JPanel implements Observer {
 	
 	
 	/**
-	 * Methode appelee pour initialiser le vue de la tournee
-	 * Parametre : rien
-	 * Retour : rien
+	 * Methode appelee pour initialiser la vue de la tournee
+	 * Cree une nouvelle vue troncon pour chaque troncon de la tournee
 	 */
 	public void initialiserVueTournee() {
 		
@@ -275,14 +289,15 @@ public class VuePlan extends JPanel implements Observer {
 		}
 	}
 	
+	/**
+	 * Methode appelee pour effacer la vue de la tournee
+	 */
 	public void effacerVueTournee() {
 		tronconsTournee.clear();
 	}
 	
 	/**
 	 * Methode appelee pour zommer sur le plan
-	 * Parametre : aucun
-	 * Retour : rien
 	 */
 	public void zoom() {
 		echelle = echelle + 1;
@@ -292,8 +307,6 @@ public class VuePlan extends JPanel implements Observer {
 	
 	/**
 	 * Methode appelee pour dezoomer sur le plan
-	 * Parametre : aucun
-	 * Retour : rien
 	 */
 	public void dezoom() {
 		echelle = echelle - 1;
@@ -306,26 +319,36 @@ public class VuePlan extends JPanel implements Observer {
 	
 	
 	/**
-	 * Methodes appelees pour se deplacer a droite, gauche, haut, bas sur le plan
-	 * Parametre : aucun
-	 * Retour : rien
+	 * Methode appelee pour se deplacer a droite sur le plan
 	 */
 	public void droite() {
 		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/3)*getWidth());
 		if(modifLongitude >= 0) modifLongitude = 0;
 		repaint();
 	}
+	
+	/**
+	 * Methode appelee pour se deplacer a gauche sur le plan
+	 */
 	public void gauche() {
 		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/3)*getWidth());
 		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
 		repaint();
 	}
+	
+	/**
+	 * Methode appelee pour se deplacer vers le haut sur le plan
+	 */
 	public void haut() {
 		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin)/5)*getHeight());
 		if(modifLatitude >= 0) modifLatitude = 0;
 		repaint();
 
 	}
+	
+	/**
+	 * Methode appelee pour se deplacer vers le bas sur le plan
+	 */
 	public void bas() {
 		int memoire = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight());
 		if((((latitudeMax-latitudeMin)*getHeight()/intervalleLatitude - memoire) < (getHeight()*echelle))) modifLatitude = memoire;
@@ -334,9 +357,9 @@ public class VuePlan extends JPanel implements Observer {
 	}
 	
 	/**
-	 * Methode appelee lors d'un click sur le plan
-	 * Parametre : les coordonnees (x et y) du point sur lequel on a clicke
-	 * Retour : rien
+	 * Methode appelee lors d'un clic sur le plan
+	 * @param x l'abscisse du point sur lequel on a clique
+	 * @param y l'ordonnee du point sur lequel on a clique
 	 */
 	public Intersection onClick(int x, int y) {
 

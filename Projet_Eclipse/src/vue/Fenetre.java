@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import controleur.Controleur;
 import modele.DemandeLivraison;
@@ -21,6 +22,7 @@ import modele.Tournee;
 public class Fenetre extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
+	
 	// Intitulés des boutons de la fenêtre
 	protected static final String CHARGER_PLAN = "Charger un plan";
 	protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
@@ -28,12 +30,13 @@ public class Fenetre extends JFrame {
 	protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
 	private ArrayList<JButton> boutons;
 	private JLabel cadreMessages;
+	private JLabel cadreAide;
 	private JPanel cadreBoutons;
 	private VuePlan vuePlan;
 	private VueTextuelle vueTextuelle;
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	
-	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 
 	private final int hauteurBouton = 50;
 	private final int largeurBouton = 300;
@@ -45,6 +48,8 @@ public class Fenetre extends JFrame {
 	 * un cadre pour afficher des messages, une zone textuelle decrivant les formes de p,
 	 * et des ecouteurs de boutons, de clavier et de souris qui envoient des messages au controleur c
 	 * @param plan le plan
+	 * @param demandeLivraison la demande de livraison
+	 * @param tournee la tournee
 	 * @param echelle l'echelle
 	 * @param controleur le controleur
 	 */
@@ -57,9 +62,15 @@ public class Fenetre extends JFrame {
 	    getContentPane().add(cadreBoutons, BorderLayout.WEST);
 
 		creeBoutons(controleur);
+		
+		String info = "<html>Carré : Entrepôt<br>Rond : Adresse d'enlèvement<br>Triangle : Adresse de dépôt</html>";
+		cadreAide = new JLabel(info);
+		cadreAide.setBorder(BorderFactory.createTitledBorder("Aide"));
+		
+		cadreBoutons.add(cadreAide);
 
 		cadreMessages = new JLabel();
-		cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complementaires"));
+		cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complémentaires"));
 		getContentPane().add(cadreMessages, BorderLayout.SOUTH);
 		
 		vuePlan = new VuePlan(this, plan, demandeLivraison, tournee, controleur);
@@ -100,8 +111,6 @@ public class Fenetre extends JFrame {
 	
 	/**
 	 * Definit la taille du cadre et de ses composants en fonction de la taille de la vue
-	 * @param largeurVue
-	 * @param hauteurVue
 	 */
 	private void setTailleFenetre() {
 		setSize(1000, 800);
@@ -117,50 +126,95 @@ public class Fenetre extends JFrame {
 		cadreMessages.setText(m);
 	}
 	
+	/**
+	 * Zoom au niveau du plan
+	 */
 	public void zoom() {
 		vuePlan.zoom();
 	}
+	
+	/**
+	 * Dezoom au niveau du plan
+	 */
 	public void dezoom() {
 		vuePlan.dezoom();
 	}
+	
+	/**
+	 * Se déplacer vers le haut sur le plan
+	 */
 	public void haut() {
 		vuePlan.haut();
 	}
+	
+	/**
+	 * Se déplacer vers le bas sur le plan
+	 */
 	public void bas() {
 		vuePlan.bas();
 	}
+	
+	/**
+	 * Se déplacer vers la droite sur le plan
+	 */
 	public void droite() {
 		vuePlan.droite();
 	}
+	
+	/**
+	 * Se déplacer vers la gauche sur le plan
+	 */
 	public void gauche() {
 		vuePlan.gauche();
 	}
 	
-	
+	/**
+	 * Initialise la vue plan: 
+	 * cree une nouvelle vue de troncon pour chaque troncon du plan
+	 * affiche les boutons de zoom et de deplacement
+	 */
 	public void initialiserVuePlan() {
 		vuePlan.initialiserVuePlan();
 	}
 	
+	/**
+	 * Efface la vue plan:
+	 * Supprime les vues troncons actuelles, reinitialise l'echelle
+	 * Fait disparaitre les boutons de zoom et de deplacement
+	 */
 	public void effacerVuePlan() {
 		vuePlan.effacerVuePlan();
 	}
 	
+	/**
+	 * Initialise la vue demande de livraison
+	 */
 	public void initialiserVueDemandeLivraison() {
 		vuePlan.initialiserVueDemandeLivraison();
 		vueTextuelle.initialiserVueDemandeLivraison();
 		vueTextuelle.setVisible(true);
 	}
 	
+	/**
+	 * Efface les vues graphique et textuelle de la demande livraison
+	 * Fait disparaitre les boutons de la vue textuelle
+	 */
 	public void effacerVueDemandeLivraison() {
 		vuePlan.effacerVueDemandeLivraison();
 		vueTextuelle.effacerVueDemandeLivraison();
 		vueTextuelle.setVisible(false);
 	}
 	
+	/**
+	 * Initialise la vue de la tournee
+	 */
 	public void initialiserVueTournee() {
 		vuePlan.initialiserVueTournee();
 	}
 	
+	/**
+	 * Efface la vue de la tournee
+	 */
 	public void effacerVueTournee() {
 		vuePlan.effacerVueTournee();
 	}

@@ -39,11 +39,11 @@ public class VueTextuelle extends JPanel implements Observer {
 	
 	protected static final String MODIFIER = "Modifier la tournée";
 	protected static final String AJOUT = "Ajouter une livraison";
-	protected static final String SUPRESSION = "Suprimer";
+	protected static final String SUPRESSION = "Supprimer";
 	protected static final String INVERSER = "Inverser"; 
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	private ArrayList<JButton> boutons;
-	private final String[] intitulesBoutons = new String[]{MODIFIER, AJOUT, SUPRESSION, INVERSER}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+	private final String[] intitulesBoutons = new String[]{MODIFIER, AJOUT, SUPRESSION, INVERSER};
 	private final int hauteurBouton = 50;  
 	LinkedList<VueLivraison> vueLivraisons = null;
 	
@@ -70,7 +70,6 @@ public class VueTextuelle extends JPanel implements Observer {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 				onMotion(e.getX(), e.getY()); 
 			}
 		});
@@ -98,7 +97,6 @@ public class VueTextuelle extends JPanel implements Observer {
 	}
 
 	protected void onMotion(int x, int y) {
-		// TODO Auto-generated method stub
 		for (int i = 0; i < vueLivraisons.size(); i++) {   
 			vueLivraisons.get(i).onMotion(x, y);
 	    }  
