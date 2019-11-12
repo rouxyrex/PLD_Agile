@@ -119,5 +119,15 @@ public class Controleur {
 
 		}
 
+	}  
+
+	public void ajouterLivraison(boolean valider) {
+		// TODO Auto-generated method stub
+		if(!valider) fenetre.ajouterLivraison();
+		else fenetre.validerLivraison(this);
+	}
+
+	public void validerAjoutLivraison(Livraison livraison) {
+		// TODO Auto-generated method stub 
 	}
 }

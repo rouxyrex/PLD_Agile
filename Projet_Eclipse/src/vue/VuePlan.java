@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
@@ -43,7 +44,7 @@ public class VuePlan extends JPanel implements Observer {
 	private int modifLongitude; 
 	private Plan plan;
 	private DemandeLivraison dl;
-	private Tournee tournee;
+	private Intersection enlevement;
 	private Fenetre f;
 	
 	
@@ -59,11 +60,13 @@ public class VuePlan extends JPanel implements Observer {
 	protected static final String DROITE = "Droite";
 	protected static final String GAUCHE = "Gauche";
 	protected static final String HAUT = "Haut";
-	protected static final String BAS = "Bas";
+	protected static final String BAS = "Bas"; 
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	private ArrayList<JButton> boutons;
 	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 	private final int hauteurBouton = 50;
+	private boolean ajouter = false;
+	private boolean ajouter2 = false;
 	
 	Color[] colors = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
 	LinkedList<VueTroncon> tronconsTraces = null; 
@@ -84,7 +87,7 @@ public class VuePlan extends JPanel implements Observer {
 		this.f = f;
 		this.plan = plan;
 		this.dl = demandeLivraison;
-		this.tournee = tournee;
+	//	this.tournee = tournee;
 		
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
@@ -97,25 +100,35 @@ public class VuePlan extends JPanel implements Observer {
 		modifLatitude = 0;
 		modifLongitude = 0;
 		this.setPreferredSize(new Dimension(300,100));
-		creeBoutons(c);
-
-	/*	JScrollBar scrollBarVertical = new JScrollBar();
-		scrollBarVertical.setOrientation(1);
-		scrollBarVertical.setVisible(true);
-		this.add(scrollBarVertical, BorderLayout.EAST);
-		JScrollBar scrollBarHorizontal = new JScrollBar();
-		scrollBarHorizontal.setOrientation(0);
-		scrollBarHorizontal.setVisible(true);
-		this.add(scrollBarHorizontal, BorderLayout.SOUTH);*/
-
+		creeBoutons(c); 
 		setBackground(Color.white);
+		
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	           onClick(getMousePosition().x, getMousePosition().y);
+	          
+	        	 
+	        	 if(ajouter2) {  
+	        		//on stocke la deuxième intersection    
+	        		Intersection depot = onClick(getMousePosition().x, getMousePosition().y); 
+	        		 if(depot != null) {
+		        		f.transfertIntersection(enlevement, depot);
+		        		ajouter2 = false;
+	        		 }
+	        	 }
+	        	 if(ajouter) {
+	        		 //on stocke la première intersection 
+	        		 enlevement = onClick(getMousePosition().x, getMousePosition().y);
+	        		 if(enlevement != null) { 
+		        		 ajouter = false;
+		        		 ajouter2 = true;
+		        		 f.afficheMessage("Veuillez cliquer sur l'adresse de dépot");
+	        		 }
+	        	 }
 	         }
 	    });
 
-		addMouseMotionListener(new MouseMotionListener() {
+	/*	addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -128,7 +141,7 @@ public class VuePlan extends JPanel implements Observer {
 				if (i != null) f.afficheMessage("La souris est sur l'intersection "+i.getId());
 
 			}
-		});
+		});*/
 		f.getContentPane().add(this,  BorderLayout.CENTER);
 		
 		repaint();
@@ -301,23 +314,23 @@ public class VuePlan extends JPanel implements Observer {
 	 * Retour : rien
 	 */
 	public void gauche() {
-		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin))*getWidth());
+		modifLongitude = (int) (modifLongitude + (longitudeMax-longitudeMin)*2*getWidth());
 		if(modifLongitude >= 0) modifLongitude = 0;
 		repaint();
 	}
 	public void droite() {
-		int memoire = (int) (modifLongitude - (longitudeMax-longitudeMin)*getWidth());
+		int memoire = (int) (modifLongitude - (longitudeMax-longitudeMin)*2*getWidth());
 		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
 		repaint();
 	}
 	public void haut() {
-		modifLatitude = (int) (modifLatitude + (latitudeMax-latitudeMin)*getHeight());
+		modifLatitude = (int) (modifLatitude + (latitudeMax-latitudeMin)*2*getHeight());
 		if(modifLatitude >= 0) modifLatitude = 0;
 		repaint();
 
 	}
 	public void bas() {
-		int memoire = (int) (modifLatitude - (latitudeMax-latitudeMin)*getHeight());
+		int memoire = (int) (modifLatitude - (latitudeMax-latitudeMin)*2*getHeight());
 		if((((latitudeMax-latitudeMin)*getHeight()/intervalleLatitude - memoire) < (getHeight()*echelle))) modifLatitude = memoire;
 		repaint();
 
@@ -345,5 +358,9 @@ public class VuePlan extends JPanel implements Observer {
 	    }
 		return null;
 	}
+	
+	public void setAjouter(boolean ajouter) {
+		this.ajouter = ajouter;
+	} 
 	
 }

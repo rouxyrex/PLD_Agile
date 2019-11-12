@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import controleur.Controleur;
 import modele.DemandeLivraison;
+import modele.Intersection;
 import modele.Plan;
 import modele.Tournee;
 
@@ -183,6 +184,20 @@ public class Fenetre extends JFrame {
 	public void ajouterLivraison() {
 		// TODO Auto-generated method stub
 		vueTextuelle.ajouterLivraison();
+	}
+	
+	public void setAjouterValue(boolean value) {
+		vuePlan.setAjouter(value);
+	}
+
+	public void transfertIntersection(Intersection enlevement, Intersection depot) {
+		// TODO Auto-generated method stub
+		vueTextuelle.transfertIntersection(enlevement, depot);
+	}
+
+	public void validerLivraison(Controleur c) {
+		// TODO Auto-generated method stub
+		vueTextuelle.validerAjout(c);
 	}
 	
 	
