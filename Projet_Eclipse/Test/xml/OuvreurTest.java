@@ -14,9 +14,15 @@ public class OuvreurTest {
 	}
 
 	@Test
-	public void testAccepteFichier() throws ExceptionXml {
+	public void testAccepteFichier_rejet() throws ExceptionXml {
 		boolean result = OuvreurDeFichierXml.getInstance().accept(new File("/Projet_Eclipse/Ressources/docIncorrect.txt"));
 		assertFalse(result);
+	}
+	
+	@Test
+	public void testAccepteFichier_accepte() throws ExceptionXml {
+		boolean result = OuvreurDeFichierXml.getInstance().accept(new File("/Projet_Eclipse/Ressources/petitPlan.xml"));
+		assertTrue(result);
 	}
 
 }
