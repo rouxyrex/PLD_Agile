@@ -12,8 +12,8 @@ public Livraison(Intersection adresseEnlevement, Intersection adresseDepot, int 
 		
 		this.adresseEnlevement = adresseEnlevement;
 		this.adresseDepot = adresseDepot;
-		this.dureeEnlevement = dureeEnlevement;
-		this.dureeDepot = dureeDepot;
+		this.dureeEnlevement = dureeEnlevement/60;
+		this.dureeDepot = dureeDepot/60;
 		
 	}
 	

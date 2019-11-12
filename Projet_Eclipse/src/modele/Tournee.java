@@ -53,17 +53,11 @@ public class Tournee {
 					compteur++;
 				}
 				
-				System.out.println("compteur : "+compteur);
-				System.out.println("nombre de sommets: "+nbSommets);
-				System.out.println("i : "+intersectionNum.get(t.getIntersectionOrigine().getId()));
-				System.out.println("j : " + intersectionNum.get(t.getIntersectionDestination().getId()));
-				
+		
 				cout[intersectionNum.get(t.getIntersectionOrigine().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getId())]=t.getTempsParcours();
 				
-				System.out.println(cout[intersectionNum.get(t.getIntersectionOrigine().getId())]
-						[intersectionNum.get(t.getIntersectionDestination().getId())]);
-				
+
 				trajets[intersectionNum.get(t.getIntersectionOrigine().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getId())] = t;
 				
@@ -73,7 +67,6 @@ public class Tournee {
 		
 		for(Livraison l : demandeLivraison.getLivraisons())
 		{
-			System.out.println(l.getDureeDepot());
 			duree[intersectionNum.get(l.getAdresseDepot().getId())]=l.getDureeDepot();
 			duree[intersectionNum.get(l.getAdresseEnlevement().getId())]=l.getDureeEnlevement();
 			
@@ -90,13 +83,10 @@ public class Tournee {
 		
 		
 		for (int i=0; i<nbSommets-1; i++){
-			parcours.add(trajets[i][i+1]);
+			parcours.add(trajets[meilleureSolution[i]][meilleureSolution[i+1]]);
 		}
-		System.out.println(Arrays.deepToString(trajets));
-		for(Trajet t : parcours){
-			System.out.println(t);
-		}
-		
+		parcours.add(trajets[meilleureSolution[nbSommets-1]][0]);
+
 	}
 	
 	public void initialiserGraphePCC(GraphePCC graphePCC) {
@@ -115,21 +105,21 @@ public class Tournee {
 	    		vus.toArray(meilleureSolution);
 	    		coutMeilleureSolution = coutVus;
 	    	}
-	    } else if (coutVus + bound(sommetCrt, nonVus, cout, duree) < coutMeilleureSolution){
+	    } else if (coutVus + bound(sommetCrt, nonVus, cout) < coutMeilleureSolution){
 	    	 Iterator<Integer> iter = new IteratorSeq(nonVus);
 	    	 Integer prochainSommet;
 	        while(iter.hasNext()){
 	        	prochainSommet=iter.next();
 	        	vus.add(prochainSommet);
 	        	nonVus.remove(prochainSommet);
-	        	branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] + duree[prochainSommet], cout, duree, tpsDebut, tempsLimite);
+	        	branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] , cout, duree, tpsDebut, tempsLimite);
 	        	vus.remove(prochainSommet);
 	        	nonVus.add(prochainSommet);
 	        }	    
 	    }
 	}
 	
-	private float bound(int SommetCrt, ArrayList<Integer> nonVus, float[][] cout, float duree[]){
+	private float bound(int SommetCrt, ArrayList<Integer> nonVus, float[][] cout){
 		float bound = 0;
 		for(Integer i : nonVus){
 			float min = 0;
@@ -138,7 +128,7 @@ public class Tournee {
 					min = cout[i][j];
 				}
 			}
-			bound += min;
+			bound = min;
 		}
 		return bound;
 	}
