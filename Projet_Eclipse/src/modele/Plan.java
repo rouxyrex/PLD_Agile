@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
+import javafx.util.Pair;
+
 public class Plan extends Observable {
 	Map<String, Intersection> intersections;
 	List<Troncon> troncons;
@@ -27,7 +29,7 @@ public class Plan extends Observable {
 	}
 	
 	
-	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Intersection intersectionInitiale){
+	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Pair<Integer, Intersection> intersectionInitiale){
 		
 		//declaration
 				LinkedList<Trajet> listeTrajets = new LinkedList<Trajet>();
@@ -36,14 +38,14 @@ public class Plan extends Observable {
 				Map<Intersection, Troncon> tronconOrigine = new HashMap<>();
 				Map<Intersection, Boolean> visite = new HashMap<>();
 				
-				List<Intersection> ptsInteret = demandeLivraison.getPtsPassage();
-				ptsInteret.add(demandeLivraison.getEntrepot());
+				List<Pair<Integer, Intersection>> ptsInteret = demandeLivraison.getPtsPassage();
+				ptsInteret.add(new Pair<Integer, Intersection>(0, demandeLivraison.getEntrepot()));
 				
 				Intersection curr_i;
 				Intersection interVoisine;
 				float zero = 0;
 				
-				String idInterInit = intersectionInitiale.getId();
+				String idInterInit = intersectionInitiale.getValue().getId();
 				
 				//initialisation
 				intersections.forEach((key,value)->temps.put(value, Float.POSITIVE_INFINITY));
@@ -70,9 +72,9 @@ public class Plan extends Observable {
 					}
 				}
 				
-				for (Intersection i : ptsInteret) {
+				for (Pair<Integer, Intersection> i : ptsInteret) {
 					LinkedList<Troncon> tronconsParcourus = new LinkedList<Troncon>();
-					curr_i = intersections.get(i.getId());
+					curr_i = intersections.get(i.getValue().getId());
 					Troncon curr_tv;
 					
 					while (curr_i.getId() != idInterInit) {

@@ -2,6 +2,8 @@ package modele;
 
 import java.util.LinkedList;
 
+import javafx.util.Pair;
+
 
 public class GraphePCC {
 	private int nbSommets;
@@ -20,7 +22,7 @@ public class GraphePCC {
 		
 		LinkedList<Trajet> grapheIntermediaire;
 		
-		grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getEntrepot());
+		grapheIntermediaire = plan.Dijkstra(demandeLivraison, new Pair<Integer, Intersection>(0, demandeLivraison.getEntrepot()));
 		ajouterGraphIntermediaire(grapheIntermediaire, 0);
 		
 		for(int i = 1; i < nbSommets; i++) {
