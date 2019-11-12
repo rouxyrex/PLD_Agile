@@ -242,12 +242,12 @@ public class VuePlan extends JPanel implements Observer {
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();
 		for(int i= 0; i < livraisons.size(); i++) {
-			float xDepot = livraisons.get(i).getAdresseDepot().getLatitude();
-			float yDepot = livraisons.get(i).getAdresseDepot().getLongitude();
-			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getLatitude();
-			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getLongitude();
+			float xDepot = livraisons.get(i).getAdresseDepot().getValue().getLatitude();
+			float yDepot = livraisons.get(i).getAdresseDepot().getValue().getLongitude();
+			float xEnlevement = livraisons.get(i).getAdresseEnlevement().getValue().getLatitude();
+			float yEnlevement = livraisons.get(i).getAdresseEnlevement().getValue().getLongitude();
 			adressesDepot.add(new VueAdresseDepot(xDepot,yDepot));
-			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement()));
+			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement().getValue()));
 		}
 	} 
 	

@@ -1,20 +1,24 @@
 package modele;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
-public class Tournee {
+import javafx.util.Pair;
+
+public class Tournee extends Observable {
 	
-	Map <Intersection, String> pointsPassage;
+	Map <Pair<Integer, Intersection>, String> pointsPassage;
 	List <Trajet> parcours;
 	float duree;
 	
 	GraphePCC graphePCC;
 	
 	public Tournee() {//Constructeur a faire
-		pointsPassage = new HashMap<Intersection, String>();
+		pointsPassage = new HashMap<Pair<Integer, Intersection>, String>();
 		parcours = new LinkedList <Trajet>();
 		
 	}
@@ -28,7 +32,25 @@ public class Tournee {
 		
 	}
 	
-	public Map <Intersection, String> getPointsPassage(){
+	public void reset() {
+		
+		pointsPassage.clear();
+		
+		Iterator<Trajet> it2 = parcours.iterator();
+		
+		while (it2.hasNext()){
+			it2.next();
+			it2.remove();
+		}
+		
+		duree = 0;
+		
+		setChanged();
+		notifyObservers();	
+		
+	}
+	
+	public Map <Pair<Integer, Intersection>, String> getPointsPassage(){
 		return this.pointsPassage;
 	}
 	

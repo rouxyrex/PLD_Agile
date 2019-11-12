@@ -2,14 +2,16 @@ package modele;
 
 import java.util.List;
 
+import javafx.util.Pair;
+
 public class Trajet {
 	
 	List <Troncon> trajet;
-	Intersection intersectionOrigine;
-	Intersection intersectionDestination;
+	Pair<Integer, Intersection> intersectionOrigine;
+	Pair<Integer, Intersection> intersectionDestination;
 	float tempsParcours;
 	
-	public Trajet(List <Troncon> trajet, Intersection intersectionOrigine, Intersection intersectionDestination) {
+	public Trajet(List <Troncon> trajet, Pair<Integer, Intersection> intersectionOrigine, Pair<Integer, Intersection> intersectionDestination) {
 		this.trajet = trajet;
 		
 		this.intersectionOrigine = intersectionOrigine;
@@ -29,11 +31,11 @@ public class Trajet {
 		return this.trajet;
 	}
 	
-	public Intersection getIntersectionOrigine() {
+	public Pair<Integer, Intersection> getIntersectionOrigine() {
 		return this.intersectionOrigine;
 	}
 	
-	public Intersection getIntersectionDestination() {
+	public Pair<Integer, Intersection> getIntersectionDestination() {
 		return this.intersectionDestination;
 	}
 	

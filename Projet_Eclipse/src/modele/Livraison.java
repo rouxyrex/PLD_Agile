@@ -1,5 +1,6 @@
 package modele;
 
+import javafx.util.Pair;
 
 public class Livraison {
 	
@@ -7,6 +8,7 @@ public class Livraison {
 	Intersection adresseDepot;
 	int dureeEnlevement; //en secondes
 	int dureeDepot; //en secondes
+	int id;
 	
 public Livraison(Intersection adresseEnlevement, Intersection adresseDepot, int dureeEnlevement, int dureeDepot) {
 		
@@ -17,12 +19,20 @@ public Livraison(Intersection adresseEnlevement, Intersection adresseDepot, int 
 		
 	}
 	
-	public Intersection getAdresseEnlevement() {
-		return adresseEnlevement;
+	public int getId() {
+		return this.id;
 	}
 	
-	public Intersection getAdresseDepot() {
-		return adresseDepot;
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public Pair<Integer, Intersection> getAdresseEnlevement() {
+		return new Pair<Integer, Intersection>(this.id, this.adresseEnlevement);
+	}
+	
+	public Pair<Integer, Intersection> getAdresseDepot() {
+		return new Pair<Integer, Intersection>(this.id, this.adresseDepot);
 	}
 	
 	public int getDureeEnlevement() {

@@ -14,14 +14,14 @@ public interface Etat {
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void chargerPlan(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison){};
+	public default void chargerPlan(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee){};
 	
 	/**
 	 * Methode appelee par controleur apres un clic sur le bouton "Charger une demande de livraison"
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void chargerDemandeLivraison(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison){};
+	public default void chargerDemandeLivraison(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee){};
 	
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
@@ -35,7 +35,7 @@ public interface Etat {
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void supprimerLivraison(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison) {};
+	public default void supprimerLivraison(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, GraphePCC graphePCC, Tournee tournee) {};
 	
 	/**
 	 * Methode appelee par le controleur apres un clic sur le bouton "Undo"

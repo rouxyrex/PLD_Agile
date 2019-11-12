@@ -14,7 +14,7 @@ public class GraphePCC {
 	
 	public void initialiserGraphePCC(Plan plan, DemandeLivraison demandeLivraison) {
 		
-		nbSommets = demandeLivraison.getPtsInteret();
+		nbSommets = demandeLivraison.getNbPtsInteret();
 		
 		listeAdjacence = new LinkedList[nbSommets];
 		

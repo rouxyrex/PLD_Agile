@@ -20,7 +20,7 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	
 	
 	@Override
-	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison) {
+	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 		
 		fenetre.afficheMessage("Chargement d'un plan : Veuillez saisir le fichier XML représentant le plan.");
 		
@@ -44,7 +44,7 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	
 	
 	@Override
-	public void chargerDemandeLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison) {
+	public void chargerDemandeLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 		
 		fenetre.afficheMessage("Chargement d'une demande de livraison : Veuillez saisir le fichier XML représentant la demande de livraison.");
 		
@@ -73,11 +73,12 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		tournee.calculerUneTournee();
 		
 		fenetre.initialiserVueTournee();
+		controleur.setEtatCourant(controleur.etatTourneeCalculee);
 	}
 	
 	
 	@Override
-	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison) {
+	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, GraphePCC graphePCC, Tournee tournee) {
 		
 		fenetre.afficheMessage("Suppression d'une livraison.");
 		

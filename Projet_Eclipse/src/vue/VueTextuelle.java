@@ -113,7 +113,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		
 		vueLivraisons.add(new VueLivraison("Adresse de depart : ", dl.getEntrepot().getId(), -1, -1));
 		for(Livraison livraison : dl.getLivraisons()) { 
-			vueLivraisons.add(new VueLivraison(livraison.getAdresseDepot().getId(), livraison.getAdresseEnlevement().getId(), livraison.getDureeDepot(), livraison.getDureeEnlevement())); 
+			vueLivraisons.add(new VueLivraison(livraison.getAdresseDepot().getValue().getId(), livraison.getAdresseEnlevement().getValue().getId(), livraison.getDureeDepot(), livraison.getDureeEnlevement())); 
 		}
 	}
 	
