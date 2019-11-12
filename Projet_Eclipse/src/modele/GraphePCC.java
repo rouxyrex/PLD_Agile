@@ -9,13 +9,15 @@ import javafx.util.Pair;
 public class GraphePCC {
 	private int nbSommets;
 	private LinkedList<Trajet>[] listeAdjacence;
+	Plan plan;
+	DemandeLivraison demandeLivraison;
 	
-	
-	public GraphePCC(){
-		
+	public GraphePCC(Plan plan, DemandeLivraison demandeLivraison){
+		this.plan = plan;
+		this.demandeLivraison = demandeLivraison;
 	}
 	
-	public void initialiserGraphePCC(Plan plan, DemandeLivraison demandeLivraison) {
+	public void initialiserGraphePCC() {
 		
 		nbSommets = demandeLivraison.getNbPtsInteret();
 		
@@ -102,6 +104,10 @@ public class GraphePCC {
 		listeAdjacence = null;
 		
 		nbSommets = 0;
+	}
+	
+	public LinkedList<Trajet>[] getListeAdjacence() {
+		return listeAdjacence;
 	}
 	
 	public int getNbSommets() {

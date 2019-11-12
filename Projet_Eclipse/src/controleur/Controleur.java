@@ -33,7 +33,7 @@ public class Controleur {
 		etatCourant = etatInit;
 		plan = new Plan();
 		demandeLivraison = new DemandeLivraison();
-		graphePCC = new GraphePCC();
+		graphePCC = new GraphePCC(plan, demandeLivraison);
 		tournee = new Tournee();
 		listeDeCdes = new ListeDeCdes();
 		

@@ -68,9 +68,9 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		
 		fenetre.afficheMessage("Calcul d'une tournee.");
 		
-		graphePCC.initialiserGraphePCC(plan, demandeLivraison);
+		graphePCC.initialiserGraphePCC();
 		tournee.initialiserGraphePCC(graphePCC);
-		tournee.calculerUneTournee();
+		tournee.calculerUneTournee(1000000, demandeLivraison);
 		
 		listeDeCdes.reset();
 		

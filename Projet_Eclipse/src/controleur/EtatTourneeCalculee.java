@@ -78,9 +78,9 @@ public class EtatTourneeCalculee implements Etat {
 		
 		listeDeCdes.reset();
 		
-		graphePCC.initialiserGraphePCC(plan, demandeLivraison);
+		graphePCC.initialiserGraphePCC();
 		tournee.initialiserGraphePCC(graphePCC);
-		tournee.calculerUneTournee();
+		tournee.calculerUneTournee(1000000, demandeLivraison);
 		
 		fenetre.initialiserVueTournee();
 		
