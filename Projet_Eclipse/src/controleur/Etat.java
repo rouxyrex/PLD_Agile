@@ -28,14 +28,14 @@ public interface Etat {
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {};
+	public default void calculerTournee(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {};
 	
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le chois d'une livraison par l'utilisateur
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void supprimerLivraison(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, GraphePCC graphePCC, Tournee tournee) {};
+	public default void supprimerLivraison(Controleur c, Fenetre f, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, Tournee tournee) {};
 	
 	/**
 	 * Methode appelee par le controleur apres un clic sur le bouton "Undo"

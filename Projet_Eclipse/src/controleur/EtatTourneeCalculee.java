@@ -70,11 +70,13 @@ public class EtatTourneeCalculee implements Etat {
 	
 	
 	@Override
-	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
+	public void calculerTournee(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
 		fenetre.afficheMessage("Calcul d'une tournee.");
 		
 		tournee.reset();
 		fenetre.effacerVueTournee();
+		
+		listeDeCdes.reset();
 		
 		graphePCC.initialiserGraphePCC(plan, demandeLivraison);
 		tournee.initialiserGraphePCC(graphePCC);
@@ -86,16 +88,18 @@ public class EtatTourneeCalculee implements Etat {
 	
 	
 	@Override
-	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, GraphePCC graphePCC, Tournee tournee) {
+	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, Tournee tournee) {
 		
 		fenetre.afficheMessage("Suppression d'une livraison et calcul d'une nouvelle tournee.");
 		
-		listeDeCdes.ajoute(new CdeInverse(new CdeAjoutLivraison(demandeLivraison, livraison)));
+		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee));
 		
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();
+		fenetre.effacerVueTournee();
+		fenetre.initialiserVueTournee();
 		
-		//Recalculer tournee
+		
 	}
 	
 	
@@ -106,7 +110,8 @@ public class EtatTourneeCalculee implements Etat {
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();
 		
-		//Recalculer tournee
+		fenetre.effacerVueTournee();
+		fenetre.initialiserVueTournee();
 	}
 	
 	
@@ -117,7 +122,10 @@ public class EtatTourneeCalculee implements Etat {
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();
 		
-		//Recalculer tournee
+		fenetre.effacerVueTournee();
+		fenetre.initialiserVueTournee();
+		
+		
 	}
 	
 	

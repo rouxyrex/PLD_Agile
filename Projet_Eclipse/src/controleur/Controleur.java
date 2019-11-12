@@ -69,7 +69,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
 	 */
 	public void calculerTournee() {
-		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison, graphePCC, tournee);
+		etatCourant.calculerTournee(this, fenetre, listeDeCdes, plan, demandeLivraison, graphePCC, tournee);
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le choix d'une livraison par l'utilisateur
 	 */
 	public void supprimerLivraison(Livraison livraison) {
-		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison, graphePCC, tournee);
+		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison, tournee);
 	}
 	
 	/**

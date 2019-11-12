@@ -64,7 +64,7 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	
 	
 	@Override
-	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
+	public void calculerTournee(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
 		
 		fenetre.afficheMessage("Calcul d'une tournee.");
 		
@@ -72,17 +72,19 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		tournee.initialiserGraphePCC(graphePCC);
 		tournee.calculerUneTournee();
 		
+		listeDeCdes.reset();
+		
 		fenetre.initialiserVueTournee();
 		controleur.setEtatCourant(controleur.etatTourneeCalculee);
 	}
 	
 	
 	@Override
-	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, GraphePCC graphePCC, Tournee tournee) {
+	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, Tournee tournee) {
 		
 		fenetre.afficheMessage("Suppression d'une livraison.");
 		
-		listeDeCdes.ajoute(new CdeInverse(new CdeAjoutLivraison(demandeLivraison, livraison)));
+		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee));
 		
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();

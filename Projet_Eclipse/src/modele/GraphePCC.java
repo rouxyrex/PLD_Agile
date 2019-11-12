@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javafx.util.Pair;
@@ -27,7 +28,7 @@ public class GraphePCC {
 		
 		for(int i = 1; i < nbSommets; i++) {
 			
-			grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getPtsPassage().get(i));
+			grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getPtsPassage().get(i-1));
 			ajouterGraphIntermediaire(grapheIntermediaire, i);
 			
 		}
@@ -38,6 +39,69 @@ public class GraphePCC {
 		
 		listeAdjacence[position] = grapheIntermediaire;
 		
+	}
+	
+	public Trajet obtenirTrajetEntreIntersections(Pair<Integer, Intersection> interOrigine, Pair<Integer, Intersection> interDestination) {
+		
+		for(int i = 0; i < nbSommets; i++) {
+			
+			LinkedList<Trajet> grapheIntermediaire = listeAdjacence[i];
+			
+			if( (grapheIntermediaire.getFirst().getIntersectionOrigine().getKey() == interOrigine.getKey()) && (grapheIntermediaire.getFirst().getIntersectionOrigine().getValue().getId() == interOrigine.getValue().getId()) ) {
+				
+				for(int j = 0 ; j < grapheIntermediaire.size(); j++) {
+					
+					if( (grapheIntermediaire.get(j).getIntersectionDestination().getKey() == interDestination.getKey()) && (grapheIntermediaire.get(j).getIntersectionDestination().getValue().getId() == interDestination.getValue().getId()) ) {
+						return grapheIntermediaire.get(j);
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public void supprimerLivraison(Livraison livraison) {
+		
+		int idLivraisonASupprimer = livraison.getId();
+		
+		LinkedList<Trajet>[] nouvListeAdjacence = new LinkedList[nbSommets - 2];
+		int compteur = 0;
+		
+		for(int i = 0; i < nbSommets; i++) {
+			
+			LinkedList<Trajet> grapheIntermediaire = listeAdjacence[i];
+			
+			if(grapheIntermediaire.getFirst().getIntersectionOrigine().getKey() != idLivraisonASupprimer ) {
+				nouvListeAdjacence[compteur] = grapheIntermediaire;
+				compteur++;
+			}
+		}
+		
+		this.nbSommets = this.nbSommets - 2;
+		
+		for(int i = 0; i < nbSommets; i++) {
+			
+			LinkedList<Trajet> grapheIntermediaire = nouvListeAdjacence[i];
+			
+			for(int j = 0 ; j < grapheIntermediaire.size(); j++) {
+				
+				if(grapheIntermediaire.get(j).getIntersectionDestination().getKey() == idLivraisonASupprimer) {
+					grapheIntermediaire.remove(j);
+				}
+			}
+			
+			nouvListeAdjacence[i] = grapheIntermediaire;
+		}
+		
+		this.listeAdjacence = nouvListeAdjacence;
+	}
+	
+	public void reset() {
+		
+		listeAdjacence = null;
+		
+		nbSommets = 0;
 	}
 	
 	public int getNbSommets() {

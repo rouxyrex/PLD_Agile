@@ -56,6 +56,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
+		tournee.addObserver(this); // this observe tournee
 		
 		vueLivraisons = new LinkedList<VueLivraison>(); 
 		this.setPreferredSize(new Dimension(300,100)); 

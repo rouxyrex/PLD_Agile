@@ -90,6 +90,7 @@ public class VuePlan extends JPanel implements Observer {
 		
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
+		tournee.addObserver(this); // this observe tournee
 		
 		tronconsTraces = new LinkedList<VueTroncon>(); 
 		tronconsTournee = new LinkedList<VueTroncon>();
