@@ -1,5 +1,6 @@
 package vue;
  
+import java.awt.Color;
 import java.awt.Graphics;
 
 import modele.Intersection;
@@ -11,14 +12,17 @@ class VueAdresseDepot{
     int x = -1;
     int y = -1;
     final int tailleDepot = 20;
+    Color color;
 
-    public VueAdresseDepot(Intersection adresse) {
+    public VueAdresseDepot(Intersection adresse, Color color) {
         this.adresse = adresse;
         this.latitude = adresse.getLatitude();
         this.longitude = adresse.getLongitude();
+        this.color = color;
     }             
     
     public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
+    	g.setColor(color);
     	int x = (int) ((latitude-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
 		int y = (int) ((longitude-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude); 
 		this.x = y-(tailleDepot/2)+modifLongitude;

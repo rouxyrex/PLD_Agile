@@ -2,6 +2,7 @@ package controleur;
 
 import vue.Fenetre;
 import modele.Plan;
+import modele.Tournee;
 import modele.DemandeLivraison;
 import modele.Livraison;
 
@@ -46,4 +47,10 @@ public interface Etat {
 	 * @param l la liste des commandes en cours
 	 */
 	public default void redo(Fenetre f, ListeDeCdes l){};
+
+	/**
+	 * Methode appelee par le controleur apres un clic sur le bouton "Redo"
+	 *  
+	 */
+	public default void genererFeuilleRoute(Controleur controleur, Fenetre fenetre, Tournee tournee) {};
 }

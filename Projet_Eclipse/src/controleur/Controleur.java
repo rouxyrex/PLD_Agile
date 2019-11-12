@@ -75,7 +75,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Generer feuille de route"
 	 */
 	public void genererFeuilleRoute() {
-		//Creer un methode generer feuille de route dans etat
+		etatCourant.genererFeuilleRoute(this, fenetre, tournee);
 	}
 
 	/**

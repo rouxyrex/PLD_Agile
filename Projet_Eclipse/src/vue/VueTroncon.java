@@ -1,6 +1,9 @@
 package vue;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import modele.Intersection;
 
@@ -10,7 +13,7 @@ class VueTroncon{
     float latitudeDest;
     float longitudeDest;    
     Intersection origine;
-    Intersection destination;
+    Intersection destination; 
     int xOrigine = -1;
     int yOrigine = -1;
     int xDest = -1;
@@ -23,10 +26,10 @@ class VueTroncon{
        this.latitudeOrigine = origine.getLatitude();
        this.longitudeOrigine = origine.getLongitude();
        this.latitudeDest = destination.getLatitude();
-       this.longitudeDest = destination.getLongitude(); 
+       this.longitudeDest = destination.getLongitude();  
    } 
    
-   public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude, boolean fleche) {   
+   public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude, boolean fleche) {  
 	   int x11 = (int) ((latitudeOrigine-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
 	   int x21 = (int) ((latitudeDest-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
 	   int y11 = (int) ((longitudeOrigine-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);
@@ -35,7 +38,8 @@ class VueTroncon{
 	   yOrigine = height-x11+modifLatitude;
 	   xDest = y21+modifLongitude;
 	   yDest = height-x21+modifLatitude;
-	   if(yDest != yOrigine) { 
+	  
+	   if(yDest != yOrigine && fleche) {  
 		   float pente = -(xDest-xOrigine)/(yDest-yOrigine); 
 		   float xC = (xOrigine+xDest)/2;
 		   float yC = (yOrigine+yDest)/2;
@@ -47,14 +51,14 @@ class VueTroncon{
 		   int xD =  (int) ((-b+Math.sqrt(delta)) / (2*a));
 		   int xE = (int) ((-b-Math.sqrt(delta)) / (2*a));
 		   int yD = (int) (pente*xD+origine);
-		   int yE = (int) (pente*xE+origine); 
-		   g.drawLine(xOrigine, yOrigine, xDest, yDest); 
-		   if(fleche) {
-			   int[] tab = {xOrigine, xD, xE};
-			   int[] tab2 = {yOrigine, yD,  yE};
-			   g.fillPolygon(tab, tab2, 3); 
-		   }
-	   }
+		   int yE = (int) (pente*xE+origine);  
+		   int[] tab = {xDest, xD, xE};
+		   int[] tab2 = {yDest, yD,  yE};
+		   g.fillPolygon(tab, tab2, 3);  
+		   Graphics2D g2 = (Graphics2D) g;
+           g2.setStroke(new BasicStroke(6));
+           g.drawLine(xOrigine, yOrigine, xDest, yDest);  
+	   }else  g.drawLine(xOrigine, yOrigine, xDest, yDest);  
    }
 
 	public Intersection onClick(int x, int y) {

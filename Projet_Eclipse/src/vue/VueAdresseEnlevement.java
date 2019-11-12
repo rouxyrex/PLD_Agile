@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import modele.Intersection;
@@ -11,11 +12,14 @@ class VueAdresseEnlevement{
     int[] tab = new int[3];
     int[] tab2 = new int[3];
     Intersection adresse;
+    Color color;
+    
 
-    public VueAdresseEnlevement(Intersection adresse) {
+    public VueAdresseEnlevement(Intersection adresse, Color color) {
         this.latitude = adresse.getLatitude();
         this.longitude = adresse.getLongitude(); 
         this.adresse = adresse;
+        this.color = color;
         tab[0] = -1;
         tab[1] = -1;
         tab[2] = -1;
@@ -26,6 +30,7 @@ class VueAdresseEnlevement{
     }       
     
     public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
+    	g.setColor(color);
     	int x = (int) ((latitude-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
 		int y = (int) ((longitude-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);
 		int[] tab = {height-x-TAILLE_TRIANGLE+modifLatitude, height-x+TAILLE_TRIANGLE+modifLatitude, height-x+TAILLE_TRIANGLE+modifLatitude};

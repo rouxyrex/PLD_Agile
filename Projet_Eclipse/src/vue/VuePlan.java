@@ -65,7 +65,7 @@ public class VuePlan extends JPanel implements Observer {
 	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 	private final int hauteurBouton = 50;
 	
-	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
+	Color[] colors = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
 	LinkedList<VueTroncon> tronconsTraces = null; 
 	LinkedList<VueTroncon> tronconsTournee = null;
 	LinkedList<VueAdresseDepot> adressesDepot = null;
@@ -174,13 +174,11 @@ public class VuePlan extends JPanel implements Observer {
 	    	troncon.dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude, true);
 	    }
 
-		for(int i = 0; i < adressesDepot.size(); i++) {
-			g.setColor(colors[i]);
+		for(int i = 0; i < adressesDepot.size(); i++) { 
 			adressesDepot.get(i).dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
 	    }
 
-		for(int i = 0; i < adressesEnlevement.size(); i++) {
-			g.setColor(colors[i]);
+		for(int i = 0; i < adressesEnlevement.size(); i++) { 
 			adressesEnlevement.get(i).dessiner(g, echelle*this.getWidth(), echelle*this.getHeight(), modifLatitude, modifLongitude);
 	    }
 
@@ -236,8 +234,8 @@ public class VuePlan extends JPanel implements Observer {
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();
 		for(int i= 0; i < livraisons.size(); i++) { 
-			adressesDepot.add(new VueAdresseDepot(livraisons.get(i).getAdresseDepot()));
-			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement()));
+			adressesDepot.add(new VueAdresseDepot(livraisons.get(i).getAdresseDepot(), colors[i]));
+			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement(), colors[i]));
 		}
 	} 
 	
@@ -255,14 +253,16 @@ public class VuePlan extends JPanel implements Observer {
 	 */
 	public void initialiserVueTournee() {
 		
-		List<Trajet> trajets = tournee.getParcours();
+	//	List<Trajet> trajets = tournee.getParcours();
+		List<Trajet> trajets = plan.Dijkstra(dl, dl.getEntrepot()); 
 		
 		for (Trajet trajet : trajets) {
 			List<Troncon> troncons = trajet.getTrajet();
-			for (Troncon troncon : troncons) {
-				tronconsTournee.add(new VueTroncon(troncon.getIntersectionOrigine(), troncon.getIntersectionDestination()));
+			for (int i = 0; i < troncons.size(); i++) {
+				tronconsTournee.add(new VueTroncon(troncons.get(i).getIntersectionOrigine(), troncons.get(i).getIntersectionDestination()));
 			}
 		}
+		repaint();
 	}
 	
 	public void effacerVueTournee() {

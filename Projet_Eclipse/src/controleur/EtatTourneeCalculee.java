@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import modele.DemandeLivraison;
 import modele.Livraison;
 import modele.Plan;
+import modele.Tournee;
 import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
@@ -37,7 +38,7 @@ public class EtatTourneeCalculee implements Etat {
 			controleur.setEtatCourant(controleur.etatPlanCharge);
 		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
-			fenetre.afficheMessage(e.getMessage());
+			fenetre.afficheAlerte(e.getMessage());
 		}
 	}
 	
@@ -60,7 +61,7 @@ public class EtatTourneeCalculee implements Etat {
 			controleur.setEtatCourant(controleur.etatDemandeLivraisonCharge);
 		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
-			fenetre.afficheMessage(e.getMessage());
+			fenetre.afficheAlerte(e.getMessage());
 		}
 	}
 	
@@ -70,6 +71,12 @@ public class EtatTourneeCalculee implements Etat {
 		
 		
 	}
+	
+	@Override
+	public void genererFeuilleRoute(Controleur c, Fenetre f, Tournee tournee) {
+		tournee.genererFeuilleRoute();
+	}
+	
 	
 	
 	@Override

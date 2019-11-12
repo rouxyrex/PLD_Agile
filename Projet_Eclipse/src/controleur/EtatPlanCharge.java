@@ -28,7 +28,7 @@ public class EtatPlanCharge implements Etat {
 			fenetre.initialiserVuePlan();
 		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
-			fenetre.afficheMessage(e.getMessage());
+			fenetre.afficheAlerte(e.getMessage());
 		}
 	}
 	
@@ -46,7 +46,7 @@ public class EtatPlanCharge implements Etat {
 			controleur.setEtatCourant(controleur.etatDemandeLivraisonCharge);
 		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
-			fenetre.afficheMessage(e.getMessage());
+			fenetre.afficheAlerte(e.getMessage());
 		}
 	}
 	

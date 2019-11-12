@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,13 +21,15 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel; 
 
 import controleur.Controleur;
-import modele.DemandeLivraison; 
+import modele.DemandeLivraison;
+import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
-import modele.Tournee;
+import modele.Tournee; 
 
 public class VueTextuelle extends JPanel implements Observer {
 	 
@@ -37,19 +40,23 @@ public class VueTextuelle extends JPanel implements Observer {
 	private Tournee tournee; 
 	
 	
-	Color[] colors = {Color.cyan, Color.BLUE, Color.green, Color.RED, Color.magenta, Color.LIGHT_GRAY, Color.ORANGE, Color.YELLOW, Color.PINK, Color.white};
+	Color[] colors = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
 	
-	protected static final String MODIFIER = "Modifier la tournée";
 	protected static final String AJOUT = "Ajouter une livraison";
-	protected static final String SUPRESSION = "Suprimer";
-	protected static final String INVERSER = "Inverser"; 
+	protected static final String SUPRESSION = "Suprimmer"; 
+	protected static final String UNDO = "undo"; 
+	protected static final String REDO = "redo"; 
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	private ArrayList<JButton> boutons;
-	private final String[] intitulesBoutons = new String[]{MODIFIER, AJOUT, SUPRESSION, INVERSER}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+	private final String[] intitulesBoutons = new String[]{AJOUT, SUPRESSION, UNDO, REDO};
 	private final int hauteurBouton = 50;  
-	LinkedList<VueLivraison> vueLivraisons = null;
-	private boolean onMotion = false;
+	LinkedList<VueLivraison> vueLivraisons = null; 
 	private boolean supprimer = false;
+	private boolean ajouter = false;
+	private boolean ajouter2 = false;
+	private boolean ajout = false;
+	private JLabel texte = null;
+	private String idEnlevement = "";
 	
 	public VueTextuelle(Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee, Controleur controleur) {
 		
@@ -66,22 +73,44 @@ public class VueTextuelle extends JPanel implements Observer {
 		setBorder(BorderFactory.createTitledBorder("Demande de livraison"));  
 		fenetre.getContentPane().add(this, BorderLayout.EAST);  
 		creeBoutons(controleur);
-		addMouseMotionListener(new MouseMotionListener() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub 
-			}
+		addMouseMotionListener(new MouseMotionListener() { 
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				// TODO Auto-generated method stub
-				if(onMotion) onMotion(e.getX(), e.getY()); 
+				if(supprimer|| ajout) onMotion(e.getX(), e.getY());  
 			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) { }
 		});
 		 addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	        	 if(supprimer) {
 	        		 controleur.supprimerLivraison(onClick(getMousePosition().x, getMousePosition().y));
+	        		 supprimer = false;
+	        	 } 
+	        	 if(ajouter) {
+	        		 //on stocke la première intersection
+	        		 ajouter2 = true;
+	        		 idEnlevement = fenetre.getMessage(); 
+	        		 System.out.println("ajoute fenetre");
+	        		 ajouter = false;
+	        	 }
+	        	 
+	        	 if(ajouter2) {
+	        		 texte = new JLabel("Cliquer sur l'adresse de dépot");
+	        		 repaint();
+	        		//on stocke la deuxième intersection
+	        		Intersection enlevement = plan.getIntersectionById(idEnlevement);
+	        		String idDepot = fenetre.getMessage();
+	        		Intersection depot = plan.getIntersectionById(idDepot);
+	        		//on ajoute la nouvelle livraison
+	        		Livraison l = new Livraison(enlevement, depot, 0, 0);
+	        //		vueLivraisons.add(new VueLivraison(l)); 
+	        	//	controleur
+	        		repaint();
+	        		ajouter2 = false;
 	        	 }
 	           
 	         }
@@ -96,8 +125,7 @@ public class VueTextuelle extends JPanel implements Observer {
 			JButton bouton = new JButton(intitulesBoutons[i]); 
 			boutons.add(bouton);   
 			bouton.setLocation(0,(boutons.size()-1)*hauteurBouton); 
-			bouton.addActionListener(ecouteurDeBoutons); 
-			if(i != 0) bouton.setEnabled(false);
+			bouton.addActionListener(ecouteurDeBoutons);  
 			this.add(bouton);
 			bouton.setVisible(false);
 		}
@@ -106,14 +134,23 @@ public class VueTextuelle extends JPanel implements Observer {
 	protected void onMotion(int x, int y) {
 		// TODO Auto-generated method stub
 		 for (int i = 1; i < vueLivraisons.size(); i++) {   
-			vueLivraisons.get(i).onMotion(x, y);
+			if(supprimer) vueLivraisons.get(i).onMotion(x, y, 0);
+			if(ajout)  vueLivraisons.get(i).onMotion(x, y, 1);
 		 }  
 		 repaint(); 
 	}
 	
 	protected Livraison onClick (int x, int y) {  
 		for (int i = 1; i < vueLivraisons.size(); i++) {  
-			Livraison l = vueLivraisons.get(i).onClick(x, y);
+			int choix = -1;
+			if(supprimer) choix = 0;
+			if(ajout) choix = 1;
+			Map<Livraison, Intersection> map = vueLivraisons.get(i).onClick(x, y, choix);
+			Livraison l = null;
+			for (Map.Entry<Livraison, Intersection> entry : map.entrySet())
+			{
+				l =  entry.getKey();
+			} 
 			if(l != null) {
 				vueLivraisons.remove(vueLivraisons.get(i));
 				repaint();
@@ -129,9 +166,9 @@ public class VueTextuelle extends JPanel implements Observer {
 			bouton.setVisible(true); 
 		}
 		
-		vueLivraisons.add(new VueLivraison(new Livraison(dl.getEntrepot(), null, -1, -1)));
-		for(Livraison livraison : dl.getLivraisons()) { 
-			vueLivraisons.add(new VueLivraison(livraison)); 
+		vueLivraisons.add(new VueLivraison(new Livraison(dl.getEntrepot(), null, -1, -1), Color.LIGHT_GRAY));
+		for(int i = 0; i <  dl.getLivraisons().size(); i++) { 
+			vueLivraisons.add(new VueLivraison(dl.getLivraisons().get(i), colors[i])); 
 		}
 	}
 	
@@ -150,10 +187,8 @@ public class VueTextuelle extends JPanel implements Observer {
 		float yOrigine = 130; 
 		int nbLivraisons =  vueLivraisons.size();
 		float size = (this.getHeight()-150)/nbLivraisons;  
-		for (int i = 0; i < nbLivraisons; i++) {   
-			int k = i-1;
-			if(k < 0) k = 0;
-			vueLivraisons.get(i).dessiner(g, 20, (int) yOrigine, size, this.getWidth(), this.getHeight(), colors[k]);  
+		for (int i = 0; i < nbLivraisons; i++) {    
+			vueLivraisons.get(i).dessiner(g, 20, (int) yOrigine, size, this.getWidth(), this.getHeight());  
 			yOrigine += size; 
 	    }  
 	}
@@ -166,17 +201,20 @@ public class VueTextuelle extends JPanel implements Observer {
 		repaint();
 	}
 
-	public void modifierTournee() {
-		// TODO Auto-generated method stub
-		for(int i = 0; i < boutons.size(); i++) {
-			boutons.get(i).setEnabled(true);
-		}
+	public void supprimerLivraison() {
+		// TODO Auto-generated method stub  
+		ajout = false;
+		supprimer = true;
 	}
 
-	public void supprimerLivraison() {
+	public void ajouterLivraison() {
+		supprimer = false;
+		ajout = true;
 		// TODO Auto-generated method stub
-		onMotion = true;
-		supprimer = true;
+	/*	ajouter = true;
+		texte = new JLabel("Cliquer sur l'adresse d'enlevement");
+		this.add(texte);
+		repaint(); */
 	}
  
 }

@@ -73,7 +73,6 @@ public class DemandeLivraison extends Observable {
 	
 	public void supprimerLivraison(Livraison l) {
 		livraisons.remove(l);
-		
 		ptsPassage.remove(l.getAdresseDepot());
 		ptsPassage.remove(l.getAdresseEnlevement());
 		

@@ -29,16 +29,16 @@ public class EcouteurDeBoutons implements ActionListener {
 			case VuePlan.HAUT: fenetre.haut(); break;
 			case VuePlan.BAS: fenetre.bas(); break;
 			case VuePlan.GAUCHE: fenetre.gauche(); break;
-			case VuePlan.DROITE: fenetre.droite(); break;
-			case VueTextuelle.MODIFIER : fenetre.modifierTournee(); break;
+			case VuePlan.DROITE: fenetre.droite(); break; 
 			case VueTextuelle.SUPRESSION : fenetre.supprimerLivraison(); break;
+			case VueTextuelle.AJOUT : fenetre.ajouterLivraison(); break;
+			case VueTextuelle.UNDO: controleur.undo(); break;
+			case VueTextuelle.REDO: controleur.redo(); break;
 		}
 		/*case Fenetre.AJOUTER_RECTANGLE: controleur.ajouterRectangle(); break;
 		case Fenetre.SUPPRIMER: controleur.supprimer(); break;
 		case Fenetre.SAUVER: controleur.sauver(); break;
-		case Fenetre.OUVRIR: controleur.ouvrir(); break;
-		case Fenetre.UNDO: controleur.undo(); break;
-		case Fenetre.REDO: controleur.redo(); break;
+		case Fenetre.OUVRIR: controleur.ouvrir(); break; 
 		case Fenetre.DEPLACER: controleur.deplacer();break;
 		case Fenetre.DIMINUER_ECHELLE: controleur.diminuerEchelle(); break;
 		case Fenetre.AUGMENTER_ECHELLE: controleur.augmenterEchelle(); break;*/

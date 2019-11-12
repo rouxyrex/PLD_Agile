@@ -29,7 +29,7 @@ public class EtatInit implements Etat {
 			controleur.setEtatCourant(controleur.etatPlanCharge);
 		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
-			fenetre.afficheMessage(e.getMessage());
+			fenetre.afficheAlerte(e.getMessage());
 		}
 	}
 

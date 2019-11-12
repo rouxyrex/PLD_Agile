@@ -11,6 +11,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controleur.Controleur;
@@ -104,8 +105,9 @@ public class Fenetre extends JFrame {
 	 * @param hauteurVue
 	 */
 	private void setTailleFenetre() {
-		setSize(1000, 800);
-		cadreMessages.setSize(500,60);
+	//	setSize(1000, 800); 
+		this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
+  		cadreMessages.setSize(500,60);
 		cadreMessages.setLocation(0,800-hauteurCadreMessages);
 	}
 	
@@ -115,6 +117,14 @@ public class Fenetre extends JFrame {
 	 */
 	public void afficheMessage(String m) {
 		cadreMessages.setText(m);
+	}
+	
+	public void afficheAlerte(String m) {
+		JOptionPane.showMessageDialog(null, m);
+	}
+	
+	public String getMessage() {
+		return cadreMessages.getText().substring("La souris est sur l'intersection ".length());
 	}
 	
 	public void zoom() {
@@ -163,16 +173,16 @@ public class Fenetre extends JFrame {
 	
 	public void effacerVueTournee() {
 		vuePlan.effacerVueTournee();
-	}
-
-	public void modifierTournee() {
-		// TODO Auto-generated method stub
-		vueTextuelle.modifierTournee();
-	}
+	} 
 
 	public void supprimerLivraison() {
 		// TODO Auto-generated method stub
 		vueTextuelle.supprimerLivraison();
+	}
+
+	public void ajouterLivraison() {
+		// TODO Auto-generated method stub
+		vueTextuelle.ajouterLivraison();
 	}
 	
 	
