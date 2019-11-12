@@ -169,6 +169,12 @@ public class LectureXMLtests {
 		Plan plan = lecteur.creerPlan(new File("./Ressources/Test18_DoublonTroncon.xml"));
 		
 	}
+	@Test(expected=ExceptionXml.class)
+	public void testDoublon_Livraison() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
+		
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test19_DoublonLivraison.xml"));
+	}
 	
 	
 }
