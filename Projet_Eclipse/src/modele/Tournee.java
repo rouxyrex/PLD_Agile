@@ -1,7 +1,9 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,22 +38,29 @@ public class Tournee {
 				
 				if(intersectionNum.get(t.getIntersectionOrigine().getId())==null){
 					intersectionNum.put(t.getIntersectionOrigine().getId(), compteur);
-					numIntersection.put(compteur++, t.getIntersectionOrigine());
+					numIntersection.put(compteur, t.getIntersectionOrigine());
+					compteur++;
 				}
 				
 				if(intersectionNum.get(t.getIntersectionDestination().getId())==null){
 					intersectionNum.put(t.getIntersectionDestination().getId(), compteur);
-					numIntersection.put(compteur++, t.getIntersectionDestination());
+					numIntersection.put(compteur, t.getIntersectionDestination());
+					compteur++;
 				}
+				
 				System.out.println("compteur : "+compteur);
 				System.out.println("nombre de sommets: "+nbSommets);
 				System.out.println("i : "+intersectionNum.get(t.getIntersectionOrigine().getId()));
 				System.out.println("j : " + intersectionNum.get(t.getIntersectionDestination().getId()));
+				
 				cout[intersectionNum.get(t.getIntersectionOrigine().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getId())]=t.getTempsParcours();
+				
 				System.out.println(cout[intersectionNum.get(t.getIntersectionOrigine().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getId())]);
 				
+				trajets[intersectionNum.get(t.getIntersectionOrigine().getId())]
+						[intersectionNum.get(t.getIntersectionDestination().getId())] = t;
 				
 				
 			}
@@ -62,11 +71,10 @@ public class Tournee {
 			System.out.println(l.getDureeDepot());
 			duree[intersectionNum.get(l.getAdresseDepot().getId())]=l.getDureeDepot();
 			duree[intersectionNum.get(l.getAdresseEnlevement().getId())]=l.getDureeEnlevement();
+			
 		}
 		
-		for (int i=0; i<nbSommets; i++){
-			System.out.println(duree[i]);
-		}
+		
 		tempsLimiteAtteint = false;
 		coutMeilleureSolution = Float.MAX_VALUE;
 		meilleureSolution = new Integer[nbSommets];
@@ -77,7 +85,13 @@ public class Tournee {
 		branchAndBound(0, nonVus, vus, 0, cout, duree, System.currentTimeMillis(), tempsLimite);
 		
 		
-		
+		for (int i=0; i<nbSommets-1; i++){
+			parcours.add(trajets[i][i+1]);
+		}
+		System.out.println(Arrays.deepToString(trajets));
+		for(Trajet t : parcours){
+			System.out.println(t);
+		}
 	}
 	
 	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, long tpsDebut, int tempsLimite){
@@ -92,7 +106,10 @@ public class Tournee {
 	    		coutMeilleureSolution = coutVus;
 	    	}
 	    } else if (coutVus + bound(sommetCrt, nonVus, cout, duree) < coutMeilleureSolution){
-	        for(Integer prochainSommet : nonVus){
+	    	 Iterator<Integer> iter = new IteratorSeq(nonVus);
+	    	 Integer prochainSommet;
+	        while(iter.hasNext()){
+	        	prochainSommet=iter.next();
 	        	vus.add(prochainSommet);
 	        	nonVus.remove(prochainSommet);
 	        	branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] + duree[prochainSommet], cout, duree, tpsDebut, tempsLimite);
