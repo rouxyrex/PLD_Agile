@@ -2,21 +2,36 @@ package vue;
 
 import java.awt.Graphics;
 
-class VueAdresseEnlevement{ 
-    final float x1; 
-    final float y1;   
-    final int tailleRectangle = 10;
+import modele.Intersection;
 
-    public VueAdresseEnlevement(float x1, float y1) {
-        this.x1 = x1;
-        this.y1 = y1; 
+class VueAdresseEnlevement{ 
+    final float latitude; 
+    final float longitude;   
+    final int TAILLE_TRIANGLE = 10;
+    int[] tab;
+    int[] tab2;
+    Intersection adresse;
+
+    public VueAdresseEnlevement(Intersection adresse) {
+        this.latitude = adresse.getLatitude();
+        this.longitude = adresse.getLongitude(); 
+        this.adresse = adresse;
     }       
     
-    public void dessiner(Graphics g, int width, int height) {
-    	int x = (int) ((x1-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
-		int y = (int) ((y1-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);
-		int[] tab = {height-x-tailleRectangle, height-x+tailleRectangle, height-x+tailleRectangle};
-		int[] tab2 = {y, y-tailleRectangle, y+tailleRectangle};
+    public void dessiner(Graphics g, int width, int height, int modifLatitude, int modifLongitude) {
+    	int x = (int) ((latitude-VuePlan.latitudeMin)*height/VuePlan.intervalleLatitude);
+		int y = (int) ((longitude-VuePlan.longitudeMin)*width/VuePlan.intervalleLongitude);
+		int[] tab = {height-x-TAILLE_TRIANGLE+modifLatitude, height-x+TAILLE_TRIANGLE+modifLatitude, height-x+TAILLE_TRIANGLE+modifLatitude};
+		int[] tab2 = {y+modifLongitude, y-TAILLE_TRIANGLE+modifLongitude, y+TAILLE_TRIANGLE+modifLongitude};
+		this.tab = tab;
+		this.tab2 = tab2;
     	g.fillPolygon(tab2, tab, 3); 
     }
+
+	public Intersection onClick(int x, int y) {
+		// TODO Auto-generated method stub
+		boolean touche= false; 
+		if(touche) return adresse;
+		else return null;
+	}
 }

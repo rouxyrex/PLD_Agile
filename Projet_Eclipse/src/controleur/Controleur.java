@@ -1,48 +1,103 @@
 package controleur;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
+import java.util.LinkedList;
 
 import modele.DemandeLivraison;
+import modele.GraphePCC;
+import modele.Intersection;
+import modele.Livraison;
 import modele.Plan;
-import xml.ExceptionXml;
-import xml.LectureXml;
+import modele.Tournee;
+import modele.Trajet;
 import vue.Fenetre;
 
 public class Controleur {
 	
-	private Plan plan;
 	private Fenetre fenetre;
-	private LectureXml l;
+	private Plan plan;
+	private DemandeLivraison demandeLivraison;
+	private GraphePCC graphePCC;
+	private Tournee tournee;
+	private ListeDeCdes listeDeCdes;
 	
-	public Controleur( int echelle)
+	private Etat etatCourant;
+	// Instances associees a chaque etat possible du controleur
+	protected final EtatInit etatInit = new EtatInit();
+	protected final EtatPlanCharge etatPlanCharge = new EtatPlanCharge();
+	protected final EtatDemandeLivraisonCharge etatDemandeLivraisonCharge = new EtatDemandeLivraisonCharge();
+	protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
+		
+	
+	public Controleur(int echelle)
 	{
-		l = new LectureXml();
-		//etatCourant = etatInit;
-		fenetre = new Fenetre(plan, echelle, this);
+		etatCourant = etatInit;
+		plan = new Plan();
+		demandeLivraison = new DemandeLivraison();
+		graphePCC = new GraphePCC();
+		tournee = new Tournee();
+		listeDeCdes = new ListeDeCdes();
+		
+		fenetre = new Fenetre(plan, demandeLivraison, tournee, echelle, this);
 	}
-
-
-	public void chargerPlan() throws IOException, NumberFormatException, ParserConfigurationException, SAXException, ExceptionXml {
-
-
-		String cheminPlan = "\\\\servif-home\\homes\\alafaille\\Téléchargements\\fichiersXML2019\\fichiersXML2019\\petitPlan.xml";
-		
-		plan = l.creerPlan();
-		
-		fenetre.passerPlan(plan);
-		
-		
+	
+	/**
+	 * Change l'etat courant du controleur
+	 * @param etat le nouvel etat courant
+	 */
+	protected void setEtatCourant(Etat etat){
+		etatCourant = etat;
 	}
 	
 	
-	public void chargerDemandeLivraison() throws Exception{
-		
-		DemandeLivraison dl = l.creerDemandeDeLivraison(plan);
-		
-		fenetre.afficherDemandeLivraison(dl);
+	// Methodes correspondant aux evenements utilisateur
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Charger un plan"
+	 */
+	public void chargerPlan() {
+		etatCourant.chargerPlan(this, fenetre, listeDeCdes, plan, demandeLivraison);
 	}
+	
+	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Charger une demande de livraison"
+	 */
+	public void chargerDemandeLivraison() {
+		etatCourant.chargerDemandeLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison);
+	}
+	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
+	 */
+	public void calculerTournee() {
+		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison, graphePCC, tournee);
+	}
+	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Generer feuille de route"
+	 */
+	public void genererFeuilleRoute() {
+		//Creer un methode generer feuille de route dans etat
+	}
+	
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le choix d'une livraison par l'utilisateur
+	 */
+	public void supprimerLivraison(Livraison livraison) {
+		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison);
+	}
+	
+	/**
+	 * Methode appelee par la fenetre quand l'utilisateur clique sur le bouton "Undo"
+	 */
+	public void undo(){
+		etatCourant.undo(fenetre, listeDeCdes);
+	}
+
+	/**
+	 * Methode appelee par fenetre apres un clic sur le bouton "Redo"
+	 */
+	public void redo(){
+		etatCourant.redo(fenetre, listeDeCdes);
+	}
+	
 }
