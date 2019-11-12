@@ -69,7 +69,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
 	 */
 	public void calculerTournee() {
-		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison);
+		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison, graphePCC, tournee);
 	}
 	
 	/**

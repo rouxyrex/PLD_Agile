@@ -7,8 +7,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import modele.DemandeLivraison;
+import modele.GraphePCC;
 import modele.Livraison;
 import modele.Plan;
+import modele.Tournee;
 import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
@@ -62,11 +64,13 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	
 	
 	@Override
-	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison) {
+	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
 		
 		fenetre.afficheMessage("Calcul d'une tournee.");
 		
-		//Code pour calculer la tournee ici
+		graphePCC.initialiserGraphePCC(plan, demandeLivraison);
+		tournee.initialiserGraphePCC(graphePCC);
+		tournee.calculerUneTournee();
 		
 		fenetre.initialiserVueTournee();
 	}

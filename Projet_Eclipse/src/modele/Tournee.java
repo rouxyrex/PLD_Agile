@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +11,19 @@ public class Tournee {
 	List <Trajet> parcours;
 	float duree;
 	
+	GraphePCC graphePCC;
+	
 	public Tournee() {//Constructeur a faire
+		pointsPassage = new HashMap<Intersection, String>();
+		parcours = new LinkedList <Trajet>();
 		
+	}
+	
+	public void initialiserGraphePCC(GraphePCC graphePCC) {
+		this.graphePCC = graphePCC;
+	}
+	
+	public void calculerUneTournee() {
 		
 		
 	}

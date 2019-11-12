@@ -215,7 +215,7 @@ public class LectureXml {
 	   		throw new ExceptionXml("L'entrepot ne correspond a aucune intersection du plan.");
 	   	}
 	   	
-	   	entrepot = new Intersection(entrepotACopier.getId(), entrepotACopier.getLatitude(), entrepotACopier.getLongitude());
+	   	entrepot = entrepotACopier;
 	   	
 	   	//System.out.println("Entrepot: heureDepart= "+heureDepart+" adresse= "+idAdresse);
 	   	
@@ -261,14 +261,14 @@ public class LectureXml {
 	   		throw new ExceptionXml("Il y a au moins une adresse d'enlevement qui ne correspond a aucune intersection du plan.");
 	   	}
 	   	
-	   	Intersection adresseEnlevement = new Intersection(adresseEnlevementACopier.getId(), adresseEnlevementACopier.getLatitude(), adresseEnlevementACopier.getLongitude());
-	    
+	   	Intersection adresseEnlevement = adresseEnlevementACopier;
+	   			
 	   	if(adresseDepotACopier == null) {
 	   		throw new ExceptionXml("Il y a au moins une adresse de depot qui ne correspond a aucune intersection du plan.");
 	   	}
 	   	
-	   	Intersection adresseDepot = new Intersection(adresseDepotACopier.getId(), adresseDepotACopier.getLatitude(), adresseDepotACopier.getLongitude());
-	   	
+	   	Intersection adresseDepot = adresseDepotACopier;
+	   			
 	   	Livraison l = new Livraison(adresseEnlevement, adresseDepot, dureeEnlevement, dureeDepot);
 	   	
 	   	return l;

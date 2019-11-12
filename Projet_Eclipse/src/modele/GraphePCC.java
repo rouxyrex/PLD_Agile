@@ -11,29 +11,30 @@ public class GraphePCC {
 	public GraphePCC(){
 		
 	}
+	
 	public void initialiserGraphePCC(Plan plan, DemandeLivraison demandeLivraison) {
 		
 		nbSommets = demandeLivraison.getPtsInteret();
 		
 		listeAdjacence = new LinkedList[nbSommets];
 		
-		LinkedList<Trajet> graphe1Sommet;
+		LinkedList<Trajet> grapheIntermediaire;
 		
-		graphe1Sommet = plan.Dijkstra(demandeLivraison, demandeLivraison.getEntrepot());
-		ajouterGraphe1Sommet(graphe1Sommet, 0);
+		grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getEntrepot());
+		ajouterGraphIntermediaire(grapheIntermediaire, 0);
 		
 		for(int i = 1; i < nbSommets; i++) {
 			
-			graphe1Sommet = plan.Dijkstra(demandeLivraison, demandeLivraison.getPtsPassage().get(i));
-			ajouterGraphe1Sommet(graphe1Sommet, i);
+			grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getPtsPassage().get(i));
+			ajouterGraphIntermediaire(grapheIntermediaire, i);
 			
 		}
 		
 	}
 	
-	public void ajouterGraphe1Sommet(LinkedList<Trajet> graphe1Sommet, int position) {
+	public void ajouterGraphIntermediaire(LinkedList<Trajet> grapheIntermediaire, int position) {
 		
-		listeAdjacence[position] = graphe1Sommet;
+		listeAdjacence[position] = grapheIntermediaire;
 		
 	}
 	

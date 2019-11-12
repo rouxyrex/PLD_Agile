@@ -2,7 +2,9 @@ package controleur;
 
 import vue.Fenetre;
 import modele.Plan;
+import modele.Tournee;
 import modele.DemandeLivraison;
+import modele.GraphePCC;
 import modele.Livraison;
 
 public interface Etat {
@@ -26,7 +28,7 @@ public interface Etat {
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {};
+	public default void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {};
 	
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le chois d'une livraison par l'utilisateur
