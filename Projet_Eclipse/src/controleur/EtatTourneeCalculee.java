@@ -7,8 +7,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import modele.DemandeLivraison;
+import modele.GraphePCC;
 import modele.Livraison;
 import modele.Plan;
+import modele.Tournee;
 import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
@@ -66,7 +68,7 @@ public class EtatTourneeCalculee implements Etat {
 	
 	
 	@Override
-	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison) {
+	public void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
 		
 		
 	}
