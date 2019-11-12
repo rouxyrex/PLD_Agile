@@ -239,6 +239,8 @@ public Plan creerPlan( File xml) throws IOException, ParserConfigurationExceptio
 	   	
 	   	Troncon t = new Troncon(interOrigine, interDestination, longueur, nomRue);
 	   	
+	   	interOrigine.addTronconVoisin(t);
+	   	
 	   	return t;
 	}
 	
