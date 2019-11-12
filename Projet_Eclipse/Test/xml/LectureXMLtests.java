@@ -151,23 +151,29 @@ public class LectureXMLtests {
 		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test15_Demande_DureeNeg.xml"));
 	}
 	@Test(expected=ExceptionXml.class)
-	public void testDoublonPlan_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
+	public void testCreerPlan_IdNonUnique() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
 		Plan plan = lecteur.creerPlan(new File("./Ressources/Test16_IdNonUnique.xml"));
 		
 	}
 	
 	@Test(expected=ExceptionXml.class)
-	public void testOrigineEgaleDestination_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
+	public void testCreerPlan_OrigineEgaleDestination() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
 		Plan plan = lecteur.creerPlan(new File("./Ressources/Test17_OrigineEgaleDestination.xml"));
 		
 	}
 	@Test(expected=ExceptionXml.class)
-	public void testDoublonTroncon_FormatXML() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
+	public void testCreerPlan_DoublonTroncon() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
 		
 		Plan plan = lecteur.creerPlan(new File("./Ressources/Test18_DoublonTroncon.xml"));
 		
+	}
+	@Test(expected=ExceptionXml.class)
+	public void testCreerDemandeDeLivraison_DoublonLivraison() throws NumberFormatException, IOException, ParserConfigurationException, SAXException, ExceptionXml{
+		
+		Plan plan = lecteur.creerPlan(new File("./Ressources/petitPlan.xml"));
+		DemandeLivraison demande = lecteur.creerDemandeDeLivraison(plan, new File("./Ressources/Test19_DoublonLivraison.xml"));
 	}
 	
 	

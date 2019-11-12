@@ -311,6 +311,23 @@ public DemandeLivraison creerDemandeDeLivraison(Plan plan, File xml) throws IOEx
 	    List<Livraison> livraisons = new ArrayList<Livraison>();
 	       	
 	    NodeList listeLivraisons = noeudDOMRacine.getElementsByTagName("livraison");
+	    ArrayList<String> listelivraison = new ArrayList<String>();
+		boolean verifierDoublonsLivraison = false;
+		for(int i=0; i<listeLivraisons.getLength(); i++) {
+			String nomLivraison = "";
+			nomLivraison = listeLivraisons.item(i).getAttributes().getNamedItem("adresseLivraison").getNodeValue().concat(listeLivraisons.item(i).getAttributes().getNamedItem("adresseEnlevement").getNodeValue()).concat(listeLivraisons.item(i).getAttributes().getNamedItem("dureeLivraison").getNodeValue().concat(listeLivraisons.item(i).getAttributes().getNamedItem("dureeEnlevement").getNodeValue()));
+			listelivraison.add(nomLivraison);
+		}
+		for(int i=0; i<listeLivraisons.getLength(); i++) {
+			if(listelivraison.indexOf(listelivraison.get(i)) != listelivraison.lastIndexOf(listelivraison.get(i))) {
+				verifierDoublonsLivraison = true;
+				break;
+			}
+		}
+		if(verifierDoublonsLivraison==true)
+		{
+			throw new ExceptionXml("il y a au moins un doublon dans la livraison ");
+		}
 	    
 	    for (int i = 0; i < listeLivraisons.getLength(); i++) {
 	        
