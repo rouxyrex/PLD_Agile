@@ -33,6 +33,7 @@ public class Controleur {
 		etatCourant = etatInit;
 		plan = new Plan();
 		demandeLivraison = new DemandeLivraison();
+		graphePCC = new GraphePCC();
 		tournee = new Tournee();
 		listeDeCdes = new ListeDeCdes();
 
@@ -68,7 +69,8 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
 	 */
 	public void calculerTournee() {
-		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison);
+		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison, graphePCC, tournee);
+
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class Controleur {
 
 		}
 
-	}  
+	}
 
 	public void ajouterLivraison(boolean valider) {
 		// TODO Auto-generated method stub
@@ -128,6 +130,6 @@ public class Controleur {
 	}
 
 	public void validerAjoutLivraison(Livraison livraison) {
-		// TODO Auto-generated method stub 
+		// TODO Auto-generated method stub
 	}
 }

@@ -40,9 +40,7 @@ public class Fenetre extends JFrame {
 	private final int hauteurBouton = 50;
 	private final int largeurBouton = 300;
 	private final int hauteurCadreMessages = 80;
-	private final int largeurVueTextuelle = 400;
 
-	private boolean demandeLivraisonChargee = false;
 
 	/**
 	 * Cree une fenetre avec des boutons, une zone graphique pour dessiner le plan p avec l'echelle e,
@@ -54,7 +52,7 @@ public class Fenetre extends JFrame {
 	 */
 	public Fenetre(Plan plan, DemandeLivraison demandeLivraison, Tournee tournee, int echelle, Controleur controleur){
 		setLayout(new BorderLayout());
-		
+
 		cadreBoutons = new JPanel();
 		cadreBoutons.setSize(300, 100);
 		cadreBoutons.setLayout(new BoxLayout(cadreBoutons, BoxLayout.PAGE_AXIS) );

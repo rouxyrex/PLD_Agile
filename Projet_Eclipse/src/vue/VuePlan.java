@@ -87,7 +87,7 @@ public class VuePlan extends JPanel implements Observer {
 		this.f = f;
 		this.plan = plan;
 		this.dl = demandeLivraison;
-	//	this.tournee = tournee;
+		this.tournee = tournee;
 
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
@@ -258,6 +258,79 @@ public class VuePlan extends JPanel implements Observer {
 		entrepot = null;
 	}
 
+
+	/**
+	 * Methode appelee pour initialiser le vue de la tournee
+	 * Parametre : rien
+	 * Retour : rien
+	 */
+	public void initialiserVueTournee() {
+
+		List<Trajet> trajets = tournee.getParcours();
+
+		for (Trajet trajet : trajets) {
+			List<Troncon> troncons = trajet.getTrajet();
+			for (Troncon troncon : troncons) {
+				tronconsTournee.add(new VueTroncon(troncon.getIntersectionOrigine(), troncon.getIntersectionDestination()));
+			}
+		}
+	}
+
+	public void effacerVueTournee() {
+		tronconsTournee.clear();
+	}
+
+	/**
+	 * Methode appelee pour zommer sur le plan
+	 * Parametre : aucun
+	 * Retour : rien
+	 */
+	public void zoom() {
+		echelle = echelle + 1;
+		repaint();
+	}
+
+
+	/**
+	 * Methode appelee pour dezoomer sur le plan
+	 * Parametre : aucun
+	 * Retour : rien
+	 */
+	public void dezoom() {
+		echelle = echelle - 1;
+		if(echelle <= 0) echelle = 1;
+		boolean res = (int) (((longitudeMax-VuePlan.longitudeMin)*getWidth()*echelle/VuePlan.intervalleLongitude)+modifLongitude)  < getWidth();
+		if(res) modifLongitude = 0;
+		if((int) (((latitudeMax-VuePlan.latitudeMin)*getHeight()*echelle/VuePlan.intervalleLatitude)+modifLatitude)  < getHeight()) modifLatitude = 0;
+		repaint();
+	}
+
+
+	/**
+	 * Methodes appelees pour se deplacer a droite, gauche, haut, bas sur le plan
+	 * Parametre : aucun
+	 * Retour : rien
+	 */
+	public void droite() {
+		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/3)*getWidth());
+		if(modifLongitude >= 0) modifLongitude = 0;
+		repaint();
+	}
+	public void gauche() {
+		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/3)*getWidth());
+		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
+		repaint();
+	}
+	public void haut() {
+		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin)/5)*getHeight());
+		if(modifLatitude >= 0) modifLatitude = 0;
+		repaint();
+
+	}
+	public void bas() {
+		int memoire = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight());
+		if((((latitudeMax-latitudeMin)*getHeight()/intervalleLatitude - memoire) < (getHeight()*echelle))) modifLatitude = memoire;
+		repaint();
 
 	/**
 	 * Methode appelee pour initialiser le vue de la tournee
