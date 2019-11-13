@@ -44,6 +44,21 @@ public class LectureXml {
 	    
 	}
 	
+	public static void creerPlan(Plan plan, File xml) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+		
+		//File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
+	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
+	    Document document = docBuilder.parse(xml);
+	    Element racine = document.getDocumentElement();
+	    if (racine.getNodeName().equals("reseau")) {
+	       construirePlanAPartirDeDOMXML(racine, plan);
+	    }
+	    else {
+	        throw new ExceptionXml("Document de plan non conforme");
+	    }
+	    
+	}
+	
 	/** Remplit un plan a partir d'un fichier XML lorsque le noeud racine est identifie comme correct
 	 * @param noeudDOMRacine Element de base de l'arborescence
 	 * @param plan Le plan a remplir
@@ -195,6 +210,21 @@ public class LectureXml {
 	public static void creerDemandeDeLivraison(Plan plan, DemandeLivraison demande) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
+	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
+	    Document document = docBuilder.parse(xml);
+	    Element racine = document.getDocumentElement();
+	    if (racine.getNodeName().equals("demandeDeLivraisons")) {
+	    	construireDemandeLivraisonAPartirDeDOMXML(racine, plan, demande);
+	    }
+	    else {
+	        throw new ExceptionXml("Document de demande de livraisons non conforme");
+	    }
+	    
+	}
+	
+public static void creerDemandeDeLivraison(Plan plan, DemandeLivraison demande, File xml) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
+		
+		//File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
 	    DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
 	    Document document = docBuilder.parse(xml);
 	    Element racine = document.getDocumentElement();
