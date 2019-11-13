@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,23 +21,27 @@ public class Tournee extends Observable {
 	private float coutMeilleureSolution;
 	private boolean tempsLimiteAtteint;
 	private Integer[] meilleureSolution;
-	
+	private Integer[] numPtAssocie;
+	private int nbSommets;
+
 	GraphePCC graphePCC;
 	
 	public Tournee() {
 		pointsPassage = new HashMap<Pair<Integer, Intersection>, String>();
 		parcours = new LinkedList <Trajet>();
 		
+		
 	}
 	
 	public void initialiserGraphePCC(GraphePCC graphePCC) {
 		this.graphePCC = graphePCC;
+		
 	}
 	
 	public void calculerUneTournee(int tempsLimite, DemandeLivraison demandeLivraison) {
 		this.initialise = true;
 		
-		int nbSommets = graphePCC.getNbSommets();
+		nbSommets = graphePCC.getNbSommets();
 		HashMap<String,Integer> intersectionNum = new HashMap<String,Integer>();
 		HashMap<Integer,Pair<Integer,Intersection>> numPtsPassages = new HashMap<Integer,Pair<Integer,Intersection>>();
 		HashMap<Pair<Integer,Intersection>, Integer> ptsPassagesNum= new HashMap<Pair<Integer,Intersection>,Integer>();
@@ -58,13 +63,19 @@ public class Tournee extends Observable {
 		
 		//HashMap<Integer, Intersection> numPtPassage = new HashMap<Integer,Intersection>();
 		Boolean[] isPtEnlevement = new Boolean[nbSommets];
-		Integer[] numPtAssocie = new Integer[nbSommets];
+		numPtAssocie = new Integer[nbSommets];
+		Boolean[] ptVisitable = new Boolean[nbSommets];
 		Boolean[] ptAssocieVus = new Boolean[nbSommets];
-		
 
+		numPtAssocie[0]=0;
+		for(int i = 0;i<nbSommets;i++){
+			ptVisitable[i]=true;
+		}
+		
 		for(int i = 0; i<nbSommets;i++){
 			for(Trajet t : graphePCC.getListeAdjacence()[i]){
-				
+				System.out.println("origine = " +intersectionNum.get(t.getIntersectionDestination().getValue().getId()));
+				System.out.println("origine = "+ intersectionNum.get(t.getIntersectionDestination().getValue().getId()));
 				cout[intersectionNum.get(t.getIntersectionOrigine().getValue().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getValue().getId())]=t.getTempsParcours();
 				
@@ -82,7 +93,16 @@ public class Tournee extends Observable {
 			duree[intersectionNum.get(l.getAdresseEnlevement().getValue().getId())]=l.getDureeEnlevement();
 			
 		}
-		
+		Iterator<Pair<Integer, Intersection>> it = passages.iterator();
+		while(it.hasNext()){
+			Pair<Integer, Intersection> adresseEnlevement = it.next();
+			Pair<Integer, Intersection> adresseDepot = it.next();
+			numPtAssocie[ptsPassagesNum.get(adresseEnlevement)]=ptsPassagesNum.get(adresseDepot);
+			numPtAssocie[ptsPassagesNum.get(adresseDepot)]=ptsPassagesNum.get(adresseEnlevement);
+			ptVisitable[ptsPassagesNum.get(adresseEnlevement)]=false;
+		}
+		System.out.println(Arrays.toString(numPtAssocie));
+		System.out.println(Arrays.toString(ptVisitable));
 		tempsLimiteAtteint = false;
 		coutMeilleureSolution = Float.MAX_VALUE;
 		meilleureSolution = new Integer[nbSommets];
@@ -90,16 +110,17 @@ public class Tournee extends Observable {
 		for (int i=1; i<nbSommets; i++) nonVus.add(i);
 		ArrayList<Integer> vus = new ArrayList<Integer>(nbSommets);
 		vus.add(0); // le premier sommet visite est 0
-		branchAndBound(0, nonVus, vus, 0, cout, duree, System.currentTimeMillis(), tempsLimite);
+		branchAndBound(0, nonVus, vus, 0, cout, duree, ptVisitable, System.currentTimeMillis(), tempsLimite);
 		
-		
+
 		for (int i=0; i<nbSommets-1; i++){
 			parcours.add(trajets[meilleureSolution[i]][meilleureSolution[i+1]]);
 		}
 		parcours.add(trajets[meilleureSolution[nbSommets-1]][0]);
+		
 	}
 	
-	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, long tpsDebut, int tempsLimite){
+	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, Boolean[] ptVisitable, long tpsDebut, int tempsLimite){
 		 if (System.currentTimeMillis() - tpsDebut > tempsLimite){
 			 tempsLimiteAtteint = true;
 			 return;
@@ -109,18 +130,28 @@ public class Tournee extends Observable {
 	    	if (coutVus < coutMeilleureSolution){ // on a trouve une solution meilleure que meilleureSolution
 	    		vus.toArray(meilleureSolution);
 	    		coutMeilleureSolution = coutVus;
+
 	    	}
 	    } else if ((coutVus + bound(sommetCrt, nonVus, cout) < coutMeilleureSolution)/*&& (ptEnlevement[i] == true || ptAssocieVus(ptAssocie[i]))*/){ //donner bonne valeur a i
 	    	 Iterator<Integer> iter = new IteratorSeq(nonVus);
 	    	 Integer prochainSommet;
-	        while(iter.hasNext()){
-	        	prochainSommet=iter.next();
-	        	vus.add(prochainSommet);
-	        	nonVus.remove(prochainSommet);
-	        	branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] , cout, duree, tpsDebut, tempsLimite);
-	        	vus.remove(prochainSommet);
-	        	nonVus.add(prochainSommet);
-	        }	    
+	    	 
+				while(iter.hasNext()){
+					prochainSommet=iter.next();
+					if(ptVisitable[prochainSommet]==true){
+						Boolean[] copiedArray = Arrays.copyOf(ptVisitable,nbSommets);
+						copiedArray[numPtAssocie[prochainSommet]]=true;
+						System.out.println("sommet  " +prochainSommet);
+						System.out.println("asso  " + numPtAssocie[prochainSommet]);
+						vus.add(prochainSommet);
+						nonVus.remove(prochainSommet);
+						branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] , cout, duree, copiedArray, tpsDebut, tempsLimite);
+						vus.remove(prochainSommet);
+						nonVus.add(prochainSommet);	
+					}
+					
+				}
+	    	 
 	    }
 	}
 	
