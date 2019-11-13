@@ -1,8 +1,11 @@
 package modele;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
+/** Represente une intersection
+*/
 public class Intersection {
 	String id;
 	float latitude;
@@ -16,6 +19,9 @@ public class Intersection {
 		tronconsVoisins = new ArrayList<Troncon>();
 	}
 	
+	/** Ajoute un troncon a la liste des troncons lies a cette intersection
+	 * @param troncon Le troncon a ajouter
+	*/
 	public void addTronconVoisin(Troncon troncon) {
 		
 		tronconsVoisins.add(troncon);

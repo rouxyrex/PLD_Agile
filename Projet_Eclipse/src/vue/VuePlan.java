@@ -35,6 +35,8 @@ import modele.Trajet;
 import vue.VueTroncon;
 import modele.Troncon;
 
+/** Contient la representation graphique d'un plan : c'est a dire de l'ensemble des troncons et intersections qui le composent
+*/
 public class VuePlan extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;

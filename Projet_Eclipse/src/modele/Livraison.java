@@ -2,6 +2,8 @@ package modele;
 
 import javafx.util.Pair;
 
+/** Represente une livraison
+*/
 public class Livraison {
 	
 	Intersection adresseEnlevement;

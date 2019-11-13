@@ -6,7 +6,8 @@ import javax.swing.JFileChooser;
 
 import javax.swing.filechooser.*;
 
-
+/** Classe permettant l'ouverture et la verification des fichiers XML a partir d'un JFileChooser
+*/
 public class OuvreurDeFichierXml extends FileFilter {// Singleton
 
 	
@@ -14,6 +15,7 @@ public class OuvreurDeFichierXml extends FileFilter {// Singleton
 	private static OuvreurDeFichierXml instance = null;
 
 	private OuvreurDeFichierXml(){}
+	
 
 	protected static OuvreurDeFichierXml getInstance(){
 
@@ -24,7 +26,11 @@ public class OuvreurDeFichierXml extends FileFilter {// Singleton
 	}
 
 
-
+	/** Methode renvoyant un fichier en ouvrant ou en sauvegardant un fichier XML
+	 * @param lecture Definit le mode lecure (1) ou ecriture (0)
+	 * @return Le fichier XML en question 
+	 * @throws Souleve une exception en cas de non conformite du fichier
+	*/
  	public File ouvre(boolean lecture) throws ExceptionXml{
 
  		int returnVal;
@@ -53,8 +59,11 @@ public class OuvreurDeFichierXml extends FileFilter {// Singleton
 
  	
 
+ 	/** Methode un booleen selon la conformite du fichier
+	 * @param f le fichier a verifier
+	 * @return True si le fichier est correct, false sinon
+	*/
  	@Override
-
     public boolean accept(File f) {
 
     	if (f == null) return false;
@@ -72,7 +81,6 @@ public class OuvreurDeFichierXml extends FileFilter {// Singleton
 
 
 	@Override
-
 	public String getDescription() {
 
 		return "Fichier XML";
@@ -80,7 +88,10 @@ public class OuvreurDeFichierXml extends FileFilter {// Singleton
 	}
 
 
-
+	/** Methode renvoyant l'extension d'un fichier 
+	 * @param f le fichier a verifier
+	 * @return un string correspondant a l'extension
+	*/
     private String getExtension(File f) {
 
 	    String filename = f.getName();

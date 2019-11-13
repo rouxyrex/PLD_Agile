@@ -3,6 +3,9 @@ package vue;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/** Contient la representation graphique des adresses 
+ * d'enlevement et de depot d'une livraison
+*/
 public class VueLivraison { 
     String idDepot;
     String idEnlevement;

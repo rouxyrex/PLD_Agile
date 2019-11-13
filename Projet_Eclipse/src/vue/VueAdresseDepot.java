@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import modele.Intersection;
 
+/** Representation graphique de l'adresse de depot d'une livraison
+*/
 class VueAdresseDepot{
     final float latitude; 
     final float longitude;    

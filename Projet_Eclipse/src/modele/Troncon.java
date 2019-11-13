@@ -1,4 +1,7 @@
 package modele;
+
+/** Represente un troncon entre deux intersections
+*/
 public class Troncon {
 	Intersection intersectionOrigine;
 	Intersection intersectionDestination;
