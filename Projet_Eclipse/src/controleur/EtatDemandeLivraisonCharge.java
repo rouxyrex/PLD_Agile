@@ -84,7 +84,7 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		
 		fenetre.afficheMessage("Suppression d'une livraison.");
 		
-		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee));
+		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, null, null));
 		
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();

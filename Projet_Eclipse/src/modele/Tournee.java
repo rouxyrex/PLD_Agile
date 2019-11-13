@@ -25,7 +25,6 @@ public class Tournee extends Observable {
 	
 	public Tournee() {
 		pointsPassage = new HashMap<Pair<Integer, Intersection>, String>();
-		parcours = new LinkedList <Trajet>();
 		
 	}
 	
@@ -35,6 +34,7 @@ public class Tournee extends Observable {
 	
 	public void calculerUneTournee(int tempsLimite, DemandeLivraison demandeLivraison) {
 		this.initialise = true;
+		parcours = new LinkedList <Trajet>();
 		
 		int nbSommets = graphePCC.getNbSommets();
 		HashMap<String,Integer> intersectionNum = new HashMap<String,Integer>();
