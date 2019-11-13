@@ -21,29 +21,31 @@ import modele.Plan;
 import modele.Tournee;
 
 public class Fenetre extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
-	// Intitulés des boutons de la fenêtre
+	// Intitulï¿½s des boutons de la fenï¿½tre
 	protected static final String CHARGER_PLAN = "Charger un plan";
 	protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
-	protected static final String CALCULER_TOURNEE = "Calculer la tournée";
-	protected static final String GENERER_FEUILLE_ROUTE = "Générer la feuille de route";
+	protected static final String CALCULER_TOURNEE = "Calculer la tournï¿½e";
+	protected static final String GENERER_FEUILLE_ROUTE = "Gï¿½nï¿½rer la feuille de route";
 	private ArrayList<JButton> boutons;
 	private JLabel cadreMessages;
 	private JPanel cadreBoutons;
 	private VuePlan vuePlan;
 	private VueTextuelle vueTextuelle;
 	private EcouteurDeBoutons ecouteurDeBoutons;
-	
+
 	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
 
 	private final int hauteurBouton = 50;
 	private final int largeurBouton = 300;
 	private final int hauteurCadreMessages = 80;
-	
-	
+	private final int largeurVueTextuelle = 400;
+
+	private boolean demandeLivraisonChargee = false;
+
 	/**
-	 * Cree une fenetre avec des boutons, une zone graphique pour dessiner le plan p avec l'echelle e, 
+	 * Cree une fenetre avec des boutons, une zone graphique pour dessiner le plan p avec l'echelle e,
 	 * un cadre pour afficher des messages, une zone textuelle decrivant les formes de p,
 	 * et des ecouteurs de boutons, de clavier et de souris qui envoient des messages au controleur c
 	 * @param plan le plan
@@ -63,12 +65,12 @@ public class Fenetre extends JFrame {
 		cadreMessages = new JLabel();
 		cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complementaires"));
 		getContentPane().add(cadreMessages, BorderLayout.SOUTH);
-		
+
 		vuePlan = new VuePlan(this, plan, demandeLivraison, tournee, controleur);
-		
+
 		vueTextuelle = new VueTextuelle(this, plan, demandeLivraison, tournee, controleur);
 		vueTextuelle.setVisible(false);
-		
+
 		setTailleFenetre();
 		setVisible(true);
 		getContentPane().add(vuePlan, BorderLayout.CENTER);
@@ -77,8 +79,8 @@ public class Fenetre extends JFrame {
 				repaint();
 		    }
 		});
-	} 
-	
+	}
+
 	/**
 	 * Cree les boutons correspondant aux intitules contenus dans intitulesBoutons
 	 * cree un ecouteur de boutons qui ecoute ces boutons
@@ -99,19 +101,19 @@ public class Fenetre extends JFrame {
 			cadreBoutons.add(bouton);
 		}
 	}
-	
+
 	/**
 	 * Definit la taille du cadre et de ses composants en fonction de la taille de la vue
 	 * @param largeurVue
 	 * @param hauteurVue
 	 */
 	private void setTailleFenetre() {
-	//	setSize(1000, 800); 
+	//	setSize(1000, 800);
 		this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
   		cadreMessages.setSize(500,60);
 		cadreMessages.setLocation(0,800-hauteurCadreMessages);
 	}
-	
+
 	/**
 	 * Affiche message dans la fenetre de dialogue avec l'utilisateur
 	 * @param m le message a afficher
@@ -119,15 +121,15 @@ public class Fenetre extends JFrame {
 	public void afficheMessage(String m) {
 		cadreMessages.setText(m);
 	}
-	
+
 	public void afficheAlerte(String m) {
 		JOptionPane.showMessageDialog(null, m);
 	}
-	
+
 	public String getMessage() {
 		return cadreMessages.getText().substring("La souris est sur l'intersection ".length());
 	}
-	
+
 	public void zoom() {
 		vuePlan.zoom();
 	}
@@ -146,35 +148,35 @@ public class Fenetre extends JFrame {
 	public void gauche() {
 		vuePlan.gauche();
 	}
-	
-	
+
+
 	public void initialiserVuePlan() {
 		vuePlan.initialiserVuePlan();
 	}
-	
+
 	public void effacerVuePlan() {
 		vuePlan.effacerVuePlan();
 	}
-	
+
 	public void initialiserVueDemandeLivraison() {
 		vuePlan.initialiserVueDemandeLivraison();
 		vueTextuelle.initialiserVueDemandeLivraison();
 		vueTextuelle.setVisible(true);
 	}
-	
+
 	public void effacerVueDemandeLivraison() {
 		vuePlan.effacerVueDemandeLivraison();
 		vueTextuelle.effacerVueDemandeLivraison();
 		vueTextuelle.setVisible(false);
 	}
-	
+
 	public void initialiserVueTournee() {
 		vuePlan.initialiserVueTournee();
 	}
-	
+
 	public void effacerVueTournee() {
 		vuePlan.effacerVueTournee();
-	} 
+	}
 
 	public void supprimerLivraison() {
 		// TODO Auto-generated method stub
@@ -185,7 +187,7 @@ public class Fenetre extends JFrame {
 		// TODO Auto-generated method stub
 		vueTextuelle.ajouterLivraison();
 	}
-	
+
 	public void setAjouterValue(boolean value) {
 		vuePlan.setAjouter(value);
 	}
@@ -199,6 +201,6 @@ public class Fenetre extends JFrame {
 		// TODO Auto-generated method stub
 		vueTextuelle.validerAjout(c);
 	}
-	
-	
+
+
 }
