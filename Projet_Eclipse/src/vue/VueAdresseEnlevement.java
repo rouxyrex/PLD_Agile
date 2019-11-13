@@ -46,4 +46,8 @@ class VueAdresseEnlevement{
 		if(x >= tab2[1] && x <= tab2[2] && y >= tab[0] && y <= tab[1])  return adresse.getValue();
 		else return null;
 	}
+	
+	public String getIdIntersection() {
+		return adresse.getValue().getId();
+	}
 }

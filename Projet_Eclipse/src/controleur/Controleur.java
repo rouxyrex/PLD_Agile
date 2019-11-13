@@ -101,10 +101,9 @@ public class Controleur {
 		etatCourant.redo(fenetre, listeDeCdes);
 	}  
 
-	public void validerAjoutLivraison(Livraison livraison, Intersection interAvantEnlevement, Intersection interAvantDepot) {
-		// TODO Auto-generated method stub
-		System.out.println("ajout");
-		
-		// etatCourant.
+	public void validerAjoutLivraison(Livraison livraison, Pair<Integer, Intersection> interAvantEnlevement, Pair<Integer, Intersection> interAvantDepot) {
+		// TODO Auto-generated method stub 
+		etatCourant.ajouterLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot);
+
 	}
 }

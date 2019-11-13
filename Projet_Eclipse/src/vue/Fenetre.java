@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import controleur.Controleur;
 import modele.DemandeLivraison;
 import modele.Intersection;
+import modele.Livraison;
 import modele.Plan;
 import modele.Tournee;
 
@@ -26,8 +27,8 @@ public class Fenetre extends JFrame {
 	// Intitulï¿½s des boutons de la fenï¿½tre
 	protected static final String CHARGER_PLAN = "Charger un plan";
 	protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
-	protected static final String CALCULER_TOURNEE = "Calculer la tournï¿½e";
-	protected static final String GENERER_FEUILLE_ROUTE = "Gï¿½nï¿½rer la feuille de route";
+	protected static final String CALCULER_TOURNEE = "Calculer la tournee";
+	protected static final String GENERER_FEUILLE_ROUTE = "Generer la feuille de route";
 	private ArrayList<JButton> boutons;
 	private JLabel cadreMessages;
 	private JPanel cadreBoutons;
@@ -56,6 +57,7 @@ public class Fenetre extends JFrame {
 		cadreBoutons = new JPanel();
 		cadreBoutons.setSize(300, 100);
 		cadreBoutons.setLayout(new BoxLayout(cadreBoutons, BoxLayout.PAGE_AXIS) );
+		
 	    getContentPane().add(cadreBoutons, BorderLayout.WEST);
 
 		creeBoutons(controleur);
@@ -98,6 +100,14 @@ public class Fenetre extends JFrame {
 			bouton.addActionListener(ecouteurDeBoutons);
 			cadreBoutons.add(bouton);
 		}
+		cadreBoutons.add(new JLabel(" "));
+		cadreBoutons.add(new JLabel(" "));
+		cadreBoutons.add(new JLabel(" "));
+		cadreBoutons.add(new JLabel("   [Rond] = Depot"));
+		cadreBoutons.add(new JLabel(" "));
+		cadreBoutons.add(new JLabel("   [Triangle] = Enlevement"));
+		cadreBoutons.add(new JLabel(" "));
+		cadreBoutons.add(new JLabel("   [Carré] = Entrepot"));
 	}
 
 	/**
@@ -166,6 +176,16 @@ public class Fenetre extends JFrame {
 		vuePlan.effacerVueDemandeLivraison();
 		vueTextuelle.effacerVueDemandeLivraison();
 		vueTextuelle.setVisible(false);
+	}
+	
+	public void supprimerVueDemandeLivraison(Livraison l) {
+		vuePlan.supprimerLivraison(l);
+		vueTextuelle.supprimerVueDemandeLivraison(l); 
+	}
+	
+	public void ajouterVueDemandeLivraison(Livraison l) {
+		vuePlan.ajouterLivraison(l);
+		vueTextuelle.ajouterVueDemandeLivraison(l); 
 	}
 
 	public void initialiserVueTournee() {

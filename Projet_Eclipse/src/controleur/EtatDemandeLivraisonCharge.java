@@ -86,30 +86,26 @@ public class EtatDemandeLivraisonCharge implements Etat {
 
 		fenetre.afficheMessage("Suppression d'une livraison.");
 
-		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, null, null));
+		listeDeCdes.ajoute(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, null, null));
 
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
+		fenetre.supprimerVueDemandeLivraison(livraison);
 
 	}
 
 	@Override
 	public void ajouterLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, Tournee tournee, Pair<Integer, Intersection> interAvantEnlevement, Pair<Integer, Intersection> interAvantDepot) {
 		
-		fenetre.afficheMessage("Ajout d'une livraison et calcul d'une nouvelle tournee.");
+		fenetre.afficheMessage("Ajout d'une livraison.");
 		
-		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
+		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
 		
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
+		fenetre.ajouterVueDemandeLivraison(livraison);
 	}
 	
 	@Override
 	public void undo(Fenetre fenetre, ListeDeCdes listeDeCdes) {
 		listeDeCdes.undo();
 
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
 	}
 
 
@@ -117,8 +113,6 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	public void redo(Fenetre fenetre, ListeDeCdes listeDeCdes) {
 		listeDeCdes.redo();
 
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
 	}
 
 

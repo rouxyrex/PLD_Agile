@@ -252,7 +252,6 @@ public class VuePlan extends JPanel implements Observer {
 	}
 
 	public void effacerVueDemandeLivraison() {
-		System.out.println("passe");
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		tronconsTournee.clear();
@@ -360,6 +359,24 @@ public class VuePlan extends JPanel implements Observer {
 
 	public void setAjouter(boolean ajouter) {
 		this.ajouter = ajouter;
+	}
+	
+	public void ajouterLivraison(Livraison l) {
+		adressesDepot.add(new VueAdresseDepot(l.getAdresseDepot(), colors[adressesDepot.size()]));
+		adressesEnlevement.add(new VueAdresseEnlevement(l.getAdresseEnlevement(), colors[adressesEnlevement.size()]));
+	}
+	
+	public void supprimerLivraison(Livraison l) {
+		for(int i = 0; i < adressesDepot.size(); i++) {
+			if(adressesDepot.get(i).getIdIntersection().equals(l.getAdresseDepot().getValue().getId())){
+				adressesDepot.remove(adressesDepot.get(i));
+			}
+		}
+		for(int i = 0; i < adressesEnlevement.size(); i++) {
+			if(adressesEnlevement.get(i).getIdIntersection().equals(l.getAdresseEnlevement().getValue().getId())){
+				adressesEnlevement.remove(adressesEnlevement.get(i));
+			}
+		}
 	}
 
 }

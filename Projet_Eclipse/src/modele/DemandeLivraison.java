@@ -73,8 +73,8 @@ public class DemandeLivraison extends Observable {
 
 		livraisons.add(l);
 
-		ptsPassage.add(l.getAdresseDepot());
 		ptsPassage.add(l.getAdresseEnlevement());
+		ptsPassage.add(l.getAdresseDepot());
 
 		setChanged();
 		notifyObservers();

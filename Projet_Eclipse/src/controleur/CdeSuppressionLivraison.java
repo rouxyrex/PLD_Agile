@@ -5,9 +5,11 @@ import modele.DemandeLivraison;
 import modele.Intersection;
 import modele.Livraison;
 import modele.Tournee;
+import vue.Fenetre;
 
 public class CdeSuppressionLivraison implements Commande {
 	
+	private Fenetre fenetre;
 	private DemandeLivraison demandeLivraison;
 	private Livraison livraison;
 	private Tournee tournee;
@@ -19,7 +21,8 @@ public class CdeSuppressionLivraison implements Commande {
 	 * @param d la demande de livraison dans laquelle ajouter l
 	 * @param l la livraison a ajouter dans d
 	 */
-	public CdeSuppressionLivraison(DemandeLivraison d, Livraison l, Tournee t, Pair<Integer, Intersection> interAvantEnlevement2, Pair<Integer, Intersection> interAvantDepot2){
+	public CdeSuppressionLivraison(Fenetre f, DemandeLivraison d, Livraison l, Tournee t, Pair<Integer, Intersection> interAvantEnlevement2, Pair<Integer, Intersection> interAvantDepot2){
+		this.fenetre = f;
 		this.demandeLivraison = d;
 		this.livraison = l;
 		this.tournee = t;
@@ -37,6 +40,8 @@ public class CdeSuppressionLivraison implements Commande {
 	public void doCde() {
 		demandeLivraison.supprimerLivraison(livraison);
 		
+		fenetre.supprimerVueDemandeLivraison(livraison);
+		
 		if(tournee.estInitialise()) {
 			Pair<Pair<Integer, Intersection>, Pair<Integer, Intersection>> paire = tournee.supprimerLivraison(livraison);
 			this.interAvantEnlevement = paire.getKey();
@@ -47,6 +52,8 @@ public class CdeSuppressionLivraison implements Commande {
 	@Override
 	public void undoCde() {
 		demandeLivraison.ajouterLivraison(livraison);
+		
+		fenetre.ajouterVueDemandeLivraison(livraison);
 		
 		if(tournee.estInitialise()) {
 			tournee.ajouterLivraison(livraison, interAvantEnlevement, interAvantDepot);

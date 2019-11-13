@@ -61,8 +61,8 @@ public class VueTextuelle extends JPanel implements Observer {
 	JTextArea textZone2 = new JTextArea("0");
 	Intersection enlevementAjout;
 	Intersection depotAjout;
-	private Intersection interAvantEnlevement;
-	private Intersection interAvantDepot;
+	private Pair<Integer, Intersection> interAvantEnlevement;
+	private Pair<Integer,Intersection> interAvantDepot;
 	private boolean ajouter2 = false;
 	
 
@@ -107,8 +107,11 @@ public class VueTextuelle extends JPanel implements Observer {
 	         public void mousePressed(MouseEvent me) {
 	        	 if(supprimer) {
 	        		 //ici à partir de l'intersection on se débrouille pour réccupérer la livraison
-	        		// controleur.supprimerLivraison(onClick(getMousePosition().x, getMousePosition().y));
-	        		 supprimer = false;
+	        		 Livraison l = onClick2(getMousePosition().x, getMousePosition().y); 
+	        		 if(l != null) { 
+		        		controleur.supprimerLivraison(l);
+		        		supprimer = false;
+	        		 }
 	        	 }
 	        	 
 	        	 if(ajouter2) {
@@ -129,7 +132,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		        		 }
 		        	 }
 	         }
-
+ 
 			
 	    });
 		repaint();
@@ -156,16 +159,26 @@ public class VueTextuelle extends JPanel implements Observer {
 		 repaint();
 	}
 
-	protected Intersection onClick (int x, int y) {
+	protected Pair<Integer, Intersection> onClick (int x, int y) {
 		for (int i = 1; i < vueLivraisons.size(); i++) {
 			 
-			Intersection inter = vueLivraisons.get(i).onClick(x, y);  
-			if(inter != null) {
-			/*	vueLivraisons.remove(vueLivraisons.get(i));*/
+			Pair<Integer, Intersection> inter = vueLivraisons.get(i).onClick(x, y);  
+			if(inter != null) { 
 				repaint();
 				return inter;
 			}  
-	    }
+	    } 
+		return null;
+	}
+	
+	protected Livraison onClick2 (int x, int y) {
+		for (int i = 1; i < vueLivraisons.size(); i++) {
+			 
+			Livraison l = vueLivraisons.get(i).onClick2(x, y);  
+			if(l != null) { 
+				return l;
+			}  
+	    } 
 		return null;
 	}
 
@@ -176,11 +189,11 @@ public class VueTextuelle extends JPanel implements Observer {
 		}
 		boutons.get(4).setVisible(false);
 
-		vueLivraisons.add(new VuePointInteret(null, Color.LIGHT_GRAY, -1, -1));
+		vueLivraisons.add(new VuePointInteret(null, null, Color.LIGHT_GRAY, -1, -1));
 		for(int i = 0; i <  dl.getLivraisons().size(); i++) {
 			
-			VuePointInteret ptinterretDepot = new VuePointInteret(dl.getLivraisons().get(i).getAdresseDepot().getValue(), colors[i], 0, dl.getLivraisons().get(i).getDureeDepot());
-			VuePointInteret ptinterretEnelevement = new VuePointInteret(dl.getLivraisons().get(i).getAdresseEnlevement().getValue(), colors[i], 1, dl.getLivraisons().get(i).getDureeEnlevement());
+			VuePointInteret ptinterretDepot = new VuePointInteret(dl.getLivraisons().get(i), dl.getLivraisons().get(i).getAdresseDepot().getValue(), colors[i], 0, dl.getLivraisons().get(i).getDureeDepot());
+			VuePointInteret ptinterretEnelevement = new VuePointInteret(dl.getLivraisons().get(i), dl.getLivraisons().get(i).getAdresseEnlevement().getValue(), colors[i], 1, dl.getLivraisons().get(i).getDureeEnlevement());
 
 			vueLivraisons.add(ptinterretDepot);
 			vueLivraisons.add(ptinterretEnelevement);
@@ -190,19 +203,25 @@ public class VueTextuelle extends JPanel implements Observer {
 	}
 
 	public void initialiserVueTournee() { 
- 
+		//copier stock et ne pas le modifier derriere
+		
+		LinkedList<VuePointInteret> nouvStock = new LinkedList<VuePointInteret>();
+		for(int i = 0; i < stock.size(); i++) {
+			nouvStock.add(stock.get(i));
+		}
+		
 		vueLivraisons.clear();
 		List<Trajet> trajets = tournee.getParcours();
-		vueLivraisons.add(new VuePointInteret(null, Color.LIGHT_GRAY, -1, -1));
+		vueLivraisons.add(new VuePointInteret(null, null, Color.LIGHT_GRAY, -1, -1));
 		for(int i = 0; i < trajets.size(); i++) {
-			for(int j = 0; j < stock.size(); j++) {
-				if(stock.get(j).getIntersection().getId().equals(trajets.get(i).getIntersectionOrigine().getValue().getId())) {
-					vueLivraisons.add(stock.get(j));
-					stock.remove(stock.get(j));
+			for(int j = 0; j < nouvStock.size(); j++) {
+				if(nouvStock.get(j).getIntersection().getId().equals(trajets.get(i).getIntersectionOrigine().getValue().getId())) {
+					vueLivraisons.add(nouvStock.get(j));
+					nouvStock.remove(nouvStock.get(j));
 				}
-				if(stock.get(j).getIntersection().getId().equals(trajets.get(i).getIntersectionDestination().getValue().getId())) {
-					vueLivraisons.add(stock.get(j));
-					stock.remove(stock.get(j));
+				if(nouvStock.get(j).getIntersection().getId().equals(trajets.get(i).getIntersectionDestination().getValue().getId())) {
+					vueLivraisons.add(nouvStock.get(j));
+					nouvStock.remove(nouvStock.get(j));
 				}
 			}
  
@@ -216,15 +235,14 @@ public class VueTextuelle extends JPanel implements Observer {
 			bouton.setVisible(false);
 		}
 
-	}
-
+	} 
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		float yOrigine = 130;
 		int nbLivraisons =  vueLivraisons.size()*2;
-		float size = (this.getHeight()-150)/nbLivraisons;
+		float size = (this.getHeight()-150)/nbLivraisons*2;
 		for (int i = 0; i < nbLivraisons/2; i++) {
 			vueLivraisons.get(i).dessiner(g, 20, (int) yOrigine, size, this.getWidth(), this.getHeight());
 			yOrigine += size;
@@ -255,23 +273,15 @@ public class VueTextuelle extends JPanel implements Observer {
 
 		fenetre.afficheMessage("Veuillez entrer les temps de depot et d'enlevement, une fois entres, appuyer sur valider une livraison, puis cliquer sur l'intersection que vous souhaitez qui précède l'enelevement");
 //		boutons.get(4).setVisible(false);
+		this.enlevementAjout = enlevement;
+		this.depotAjout = depot;
 		textZone.setVisible(true);
 		textZone2.setVisible(true);
 		textZoneDepot.setVisible(true);
 		textZoneEnlevement.setVisible(true);
 		ajouter = true;
 		repaint();
-	}
-
-/*	public void avancerAjout() {
-		textZone.setVisible(false);
-		textZone2.setVisible(false); 
-		textZoneDepot.setVisible(false);
-		textZoneEnlevement.setVisible(false);
-		fenetre.afficheMessage(" ");
-		ajouter = true;
-		fenetre.afficheMessage("Cliquer sur le point que vous voulez qui précède l'enelvement"); 
-	}*/
+	} 
 	
 	public void validerAjoutLivraison(Controleur c, boolean valider) {
 		// TODO Auto-generated method stub
@@ -279,6 +289,28 @@ public class VueTextuelle extends JPanel implements Observer {
 		if(valider) {
 			c.validerAjoutLivraison(new Livraison(enlevementAjout, depotAjout, Integer.parseInt(textZone.getText()), Integer.parseInt(textZone2.getText())), interAvantEnlevement, interAvantDepot);
 			boutons.get(4).setVisible(false);
+		}
+	}
+
+	public void ajouterVueDemandeLivraison(Livraison l) {
+		vueLivraisons.add(new VuePointInteret(l, l.getAdresseDepot().getValue(), colors[(int)(vueLivraisons.size()/2)], 0, l.getDureeDepot())) ;
+		vueLivraisons.add(new VuePointInteret(l, l.getAdresseEnlevement().getValue(), colors[(int)(vueLivraisons.size()/2)-1], 1, l.getDureeEnlevement())) ;
+		repaint();
+	}
+	
+	public void supprimerVueDemandeLivraison(Livraison l) { 
+		for(int i = 1; i < vueLivraisons.size(); i++) {  
+			
+			if(vueLivraisons.get(i).getLivraison().getId() == l.getId()){ 
+				vueLivraisons.remove(vueLivraisons.get(i));  
+			}
+		}
+		
+		for(int i = 1; i < vueLivraisons.size(); i++) {  
+			
+			if(vueLivraisons.get(i).getLivraison().getId() == l.getId()){ 
+				vueLivraisons.remove(vueLivraisons.get(i));  
+			}
 		}
 	}
 

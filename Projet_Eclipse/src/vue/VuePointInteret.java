@@ -11,6 +11,7 @@ public class VuePointInteret {
     String id; 
     Intersection i;
     int temps; 
+    Livraison l;
     Color colorRect = Color.LIGHT_GRAY; 
     Color color;
     int xHautDroite;
@@ -19,13 +20,14 @@ public class VuePointInteret {
     int width; 
     int type; //0 --> depot, 1 --> enlevement
 
-    public VuePointInteret(Intersection i, Color color, int type, int temps) {
+    public VuePointInteret(Livraison l, Intersection i, Color color, int type, int temps) {
     	if(i == null) this.id = "Adresse de depart : ";
     	else this.id = i.getId(); 
     	this.temps = temps;
     	this.i = i;
     	this.color = color;
     	this.type = type;
+    	this.l = l;
     }
 
     public void dessiner(Graphics g, int xHautDroite, int yHautDroite, float size, int width, int height) {
@@ -39,9 +41,9 @@ public class VuePointInteret {
     	if(temps  != -1) {
 			g.setColor(color);
 			g.fillRect(xHautDroite, yHautDroite, 15, (int)size);
-			if(type == 0) g.fillOval(xHautDroite+30, yHautDroite, 10, 10);
+			if(type == 0) g.fillOval(xHautDroite+30, yHautDroite + size2, 15, 15);
 			if(type == 1) { 
-				int[] tab = {(int) (yHautDroite), (int) (yHautDroite+10), (int) (yHautDroite+10)};
+				int[] tab = {(int) (yHautDroite)+ size2, (int) (yHautDroite+15)+ size2, (int) (yHautDroite+15)+ size2};
 				int[] tab2 = {xHautDroite+35, xHautDroite+30, xHautDroite+40};
 				g.fillPolygon(tab2, tab, 3);
 			}
@@ -68,19 +70,32 @@ public class VuePointInteret {
 		}
 	}
 
-	public Intersection onClick(int x, int y) {
+	public Pair<Integer, Intersection> onClick(int x, int y) {
 		// TODO Auto-generated method stub
 		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) { 
 			colorRect = Color.lightGray; 
-			return i;
-		} 
-		else {
-			return null;
-		}
+			return new Pair<Integer, Intersection>(l.getId(), i);
+		}  else  return null; 
+	}
+	
+	public Livraison onClick2(int x, int y) {
+		// TODO Auto-generated method stub
+		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) { 
+			colorRect = Color.lightGray; 
+			return l;
+		}  else  return null; 
 	}
 	
 	public Intersection getIntersection() {
 		return i;
 	}
-
+	
+	public Livraison getLivraison() {
+		return l;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
 }

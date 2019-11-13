@@ -16,7 +16,8 @@ class VueAdresseDepot{
     Color color;
 
     public VueAdresseDepot(Pair<Integer, Intersection> pair, Color color) {
-        this.adresse = pair;
+    	
+        this.adresse = pair; 
         this.latitude = pair.getValue().getLatitude();
         this.longitude = pair.getValue().getLongitude();
         this.color = color;
@@ -37,5 +38,9 @@ class VueAdresseDepot{
 		int centrey = this.y+(tailleDepot/2);
 		if(Math.sqrt((x-centrex)*(x-centrex)+(y-centrey)*(y-centrey)) <= (tailleDepot/2)) return adresse.getValue();
 		return null;
+	}
+	
+	public String getIdIntersection() {
+		return adresse.getValue().getId();
 	}
 }

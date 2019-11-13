@@ -100,10 +100,9 @@ public class EtatTourneeCalculee implements Etat {
 
 		fenetre.afficheMessage("Suppression d'une livraison et calcul d'une nouvelle tournee.");
 
-		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, null, null));
+		listeDeCdes.ajoute(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, null, null));
 
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
+		fenetre.supprimerVueDemandeLivraison(livraison);
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();
 
@@ -115,10 +114,9 @@ public class EtatTourneeCalculee implements Etat {
 		
 		fenetre.afficheMessage("Ajout d'une livraison et calcul d'une nouvelle tournee.");
 		
-		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
+		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
 		
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
+		fenetre.ajouterVueDemandeLivraison(livraison);
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();
 	}
@@ -126,9 +124,6 @@ public class EtatTourneeCalculee implements Etat {
 	@Override
 	public void undo(Fenetre fenetre, ListeDeCdes listeDeCdes) {
 		listeDeCdes.undo();
-
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
 
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();
@@ -138,9 +133,6 @@ public class EtatTourneeCalculee implements Etat {
 	@Override
 	public void redo(Fenetre fenetre, ListeDeCdes listeDeCdes) {
 		listeDeCdes.redo();
-
-		fenetre.effacerVueDemandeLivraison();
-		fenetre.initialiserVueDemandeLivraison();
 
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();

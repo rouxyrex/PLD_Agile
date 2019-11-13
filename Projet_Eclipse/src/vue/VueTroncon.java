@@ -65,8 +65,8 @@ class VueTroncon{
 
 	public Intersection onClick(int x, int y) {
 		// TODO Auto-generated method stub
-		if(Math.sqrt((x-xOrigine)*(x-xOrigine)) + ((y-yOrigine)*(y-yOrigine)) < 5) {return origine;}
-		if(Math.sqrt((x-xDest)*(x-xDest)) + ((y-yDest)*(y-yDest)) < 5) {return destination; }
+		if(Math.sqrt((x-xOrigine)*(x-xOrigine)) + ((y-yOrigine)*(y-yOrigine)) < 10) {return origine;}
+		if(Math.sqrt((x-xDest)*(x-xDest)) + ((y-yDest)*(y-yDest)) < 10) {return destination; }
 		return null;
 	}
 }
