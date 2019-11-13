@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import modele.Intersection;
 
+/** Representation graphique d'un troncon appartenant a un plan
+*/
 class VueTroncon{
     float latitudeOrigine; 
     float longitudeOrigine;

@@ -3,6 +3,8 @@ package modele;
 import java.util.Collection;
 import java.util.Iterator;
 
+/** Iterateur specifique à la liste des sommets non vus
+*/
 public class IteratorSeq implements Iterator<Integer> {
 
 	private Integer[] candidats;

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javafx.util.Pair;
 
+/** Represente un trajet entre deux intersections
+*/
 public class Trajet {
 	
 	List <Troncon> trajet;

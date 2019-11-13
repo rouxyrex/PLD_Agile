@@ -5,7 +5,8 @@ import java.util.LinkedList;
 
 import javafx.util.Pair;
 
-
+/** Represente un graphe des plus courts chemins pour les trajets d'une demande
+*/
 public class GraphePCC {
 	private int nbSommets;
 	private LinkedList<Trajet>[] listeAdjacence;
@@ -17,6 +18,8 @@ public class GraphePCC {
 		this.demandeLivraison = demandeLivraison;
 	}
 	
+	/** Calcule les plus courts chemins entre toutes les points de passage de la demande de livraison pour le plan donne
+	*/
 	public void initialiserGraphePCC() {
 		
 		nbSommets = demandeLivraison.getNbPtsInteret();
@@ -37,12 +40,22 @@ public class GraphePCC {
 		
 	}
 	
+	//a revoir
+	/** Ajoute un graphe intermediaire ( gcc partant d'une intersection ) a la liste d'adjacence 
+	 * @param grapheIntermediaire  
+	 * @param position la position a laquelle ajouter le graphe
+	*/
 	public void ajouterGraphIntermediaire(LinkedList<Trajet> grapheIntermediaire, int position) {
 		
 		listeAdjacence[position] = grapheIntermediaire;
 		
 	}
 	
+	/** Calcule le trajet le plus court entre deux intersections données
+	 * @param interOrigine pair constituee de l'id de l'intersection de depart et de celle-ci
+	 * @param interDestination pair constituee de l'id de l'intersection cible et de celle-ci
+	 * @return le trajet le plus court entre ces deux intersections
+	*/
 	public Trajet obtenirTrajetEntreIntersections(Pair<Integer, Intersection> interOrigine, Pair<Integer, Intersection> interDestination) {
 		
 		for(int i = 0; i < nbSommets; i++) {
@@ -63,6 +76,9 @@ public class GraphePCC {
 		return null;
 	}
 	
+	/** Supprime une livraison du graphe : enleve les deux intersections correspondantes de la liste d'adjacence
+	 * @param livraison La livraison a retirer
+	*/
 	public void supprimerLivraison(Livraison livraison) {
 		
 		int idLivraisonASupprimer = livraison.getId();
@@ -99,6 +115,8 @@ public class GraphePCC {
 		this.listeAdjacence = nouvListeAdjacence;
 	}
 	
+	/** Reinitialise la liste d'adjacence
+	*/
 	public void reset() {
 		
 		listeAdjacence = null;
@@ -106,6 +124,8 @@ public class GraphePCC {
 		nbSommets = 0;
 	}
 	
+	/** Renvoie la liste d'adjacence
+	*/
 	public LinkedList<Trajet>[] getListeAdjacence() {
 		return listeAdjacence;
 	}

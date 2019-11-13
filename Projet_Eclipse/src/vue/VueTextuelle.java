@@ -27,6 +27,9 @@ import modele.Livraison;
 import modele.Plan;
 import modele.Tournee;
 
+/** Contient la representation graphique textuelle : les boutons d'option pour Modifier, Ajouter, Supprimer ou inverser des livraisons,
+ *  la liste des livraisons et les informations sur celles-ci
+*/
 public class VueTextuelle extends JPanel implements Observer {
 	 
 	private static final long serialVersionUID = 1L;
@@ -78,6 +81,11 @@ public class VueTextuelle extends JPanel implements Observer {
 		repaint();
 	}
 	
+	/**
+	 * Cree les boutons correspondant aux intitules contenus dans intitulesBoutons
+	 * cree un ecouteur de boutons qui ecoute ces boutons
+	 * @param controleur
+	 */
 	private void creeBoutons(Controleur controleur){
 		ecouteurDeBoutons = new EcouteurDeBoutons(controleur, fenetre);
 		boutons = new ArrayList<JButton>();

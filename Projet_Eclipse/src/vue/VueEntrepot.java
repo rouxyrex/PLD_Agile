@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 import modele.Intersection;
 
+/** Representation graphique de l'entrept d'une demande de livraison
+*/
 class VueEntrepot{ 
     final float x1; 
     final float y1;   

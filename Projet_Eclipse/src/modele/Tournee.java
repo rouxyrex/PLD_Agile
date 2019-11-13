@@ -12,6 +12,8 @@ import java.util.Observable;
 
 import javafx.util.Pair;
 
+/** Represente une tournee
+*/
 public class Tournee extends Observable {
 	
 	Map <Pair<Integer, Intersection>, String> pointsPassage;
@@ -28,18 +30,25 @@ public class Tournee extends Observable {
 	
 	public Tournee() {
 		pointsPassage = new HashMap<Pair<Integer, Intersection>, String>();
-		parcours = new LinkedList <Trajet>();
 		
 		
 	}
 	
+	/** Initialise le graphe des plus courts chemins correspondant a cette tournee
+	 * @param graphePCC le graphe a retenir
+	*/
 	public void initialiserGraphePCC(GraphePCC graphePCC) {
 		this.graphePCC = graphePCC;
 		
 	}
 	
+	/** Calcule une tournee selon les paramètres donnes ( dont le graphe pcc )
+	 * @param tempsLimite le temps de calcul a ne pas depasser en secondes 
+	 * @param demandeLivraison la demande pour laquelle calculer la tournee
+	*/
 	public void calculerUneTournee(int tempsLimite, DemandeLivraison demandeLivraison) {
 		this.initialise = true;
+		parcours = new LinkedList <Trajet>();
 		
 		nbSommets = graphePCC.getNbSommets();
 		HashMap<String,Integer> intersectionNum = new HashMap<String,Integer>();
@@ -120,7 +129,21 @@ public class Tournee extends Observable {
 		
 	}
 	
+
+	/** Methode generique d'optimisation combinatoire 
+	 * @param sommetCrt numero du sommet courant 
+	 * @param nonVus liste des numeros des sommets non vus 
+	 * @param vus liste des numeros des sommets vus 
+	 * @param coutVus somme des couts des sommets vus 
+	 * @param cout tableau des couts pour aller d'un sommet a un autre 
+	 * @param duree duree de passage a un sommet donne 
+	 * @param tpsDebut temps de calcul deja ecoule
+	 * @param tempsLimite temps total de calcul limite
+	*/
+	
+
 	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, Boolean[] ptVisitable, long tpsDebut, int tempsLimite){
+
 		 if (System.currentTimeMillis() - tpsDebut > tempsLimite){
 			 tempsLimiteAtteint = true;
 			 return;
@@ -155,6 +178,11 @@ public class Tournee extends Observable {
 	    }
 	}
 	
+	/** Methode d'approximation du cout
+	 * @param sommetCrt numero du sommet courant 
+	 * @param nonVus liste des numeros des sommets non vus 
+	 * @param cout tableau des couts pour aller d'un sommet a un autre 
+	*/
 	private float bound(int SommetCrt, ArrayList<Integer> nonVus, float[][] cout){
 		float bound = 0;
 		for(Integer i : nonVus){
@@ -176,6 +204,8 @@ public class Tournee extends Observable {
 		
 	}
 	
+	/** Reinitialisation de la tournee
+	*/
 	public void reset() {
 		
 		pointsPassage.clear();
@@ -198,6 +228,10 @@ public class Tournee extends Observable {
 		
 	}
 	
+	/** Suppression d'une livraison de la tournee
+	 * @param livraison livraison a supprimer
+	 * @return paire de deux intersections , celle visitee avant la livraison supprimee et celle a visiter ensuite
+	*/
 	public Pair <Pair<Integer, Intersection>, Pair<Integer, Intersection> > supprimerLivraison(Livraison livraison) {
 		
 		graphePCC.supprimerLivraison(livraison);
@@ -272,6 +306,12 @@ public class Tournee extends Observable {
 		return new Pair<Pair<Integer, Intersection>, Pair<Integer, Intersection>>(interAvantEnlevement, interAvantDepot);
 	}
 	
+	
+	/** Ajout d'une livraison a la tournee
+	 * @param livraison livraison a ajouter
+	 * @param interAvantEnlevement intersection a partir de laquelle ajouter la livraison 
+	 * @param interAvantDepot intersection a rejoindre apres le depot de cette livraison
+	*/
 	public void ajouterLivraison(Livraison livraison, Pair<Integer, Intersection> interAvantEnlevement, Pair<Integer, Intersection> interAvantDepot) {
 		
 		graphePCC.initialiserGraphePCC();

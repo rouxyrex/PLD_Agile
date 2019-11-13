@@ -18,6 +18,8 @@ import modele.DemandeLivraison;
 import modele.Plan;
 import modele.Tournee;
 
+/** Fenetre principale de l'IHM
+*/
 public class Fenetre extends JFrame {
 	
 	private static final long serialVersionUID = 1L;

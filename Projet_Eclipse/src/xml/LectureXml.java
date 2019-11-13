@@ -22,9 +22,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
+/** Classe permettant la lecture de fichier XML et la creation de Plans et de Demandes de Livraison a partir de ceux-ci
+*/
 public class LectureXml {
 	
+	/** Remplit un plan a partir d'un fichier XML
+	 * @param plan Le plan a remplir
+	*/
 	public static void creerPlan(Plan plan) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
@@ -40,7 +44,10 @@ public class LectureXml {
 	    
 	}
 	
-	
+	/** Remplit un plan a partir d'un fichier XML lorsque le noeud racine est identifie comme correct
+	 * @param noeudDOMRacine Element de base de l'arborescence
+	 * @param plan Le plan a remplir
+	*/
 	private static void construirePlanAPartirDeDOMXML(Element noeudDOMRacine, Plan plan) throws ExceptionXml, NumberFormatException{
 	    	
 		Map<String, Intersection> intersections = new HashMap<String, Intersection>();
@@ -119,7 +126,10 @@ public class LectureXml {
 	    
 	}
 	
-	
+	/** Cree une intersection a partir d'un element du fichier XML
+	 * @param elt Element correspondant a une Intersection
+	 * @return L'intersection creee
+	*/
 	private static Intersection creerIntersection(Element elt) throws ExceptionXml{
 	    	
 	    String id = elt.getAttribute("id");
@@ -141,7 +151,11 @@ public class LectureXml {
 	   	return inter;
 	}
 	    
-	    
+	/** Cree un troncon a partir d'un element du fichier XML
+	 * @param elt Element correspondant a un troncon
+	 * @param intersections la map des intersections et de leurs id respectives
+	 * @return Le troncon cree
+	*/
 	private static Troncon creerTroncon(Element elt, Map<String, Intersection> intersections) throws ExceptionXml{
 	    
 	   	String idOrigine = elt.getAttribute("origine");
@@ -174,7 +188,10 @@ public class LectureXml {
 	   	return t;
 	}
 	
-	
+	/** Remplit une demande de livraison a partir d'un fichier XML
+	 * @param plan Le plan charge
+	 * @param demande La demande de livraison a remplir
+	*/
 	public static void creerDemandeDeLivraison(Plan plan, DemandeLivraison demande) throws IOException, ParserConfigurationException, SAXException, NumberFormatException, ExceptionXml{
 		
 		File xml = OuvreurDeFichierXml.getInstance().ouvre(true);
@@ -190,7 +207,11 @@ public class LectureXml {
 	    
 	}
 	
-	
+	/** Remplit une demande de livraison a partir d'un fichier XML lorsque le noeud racine est identifie comme correct
+	 * @param noeudDOMRacine Element de base de l'arborescence
+	 * @param plan Le plan charge
+	 * @param demande La demande de livraison a remplir
+	*/
 	private static void construireDemandeLivraisonAPartirDeDOMXML(Element noeudDOMRacine, Plan plan, DemandeLivraison demande) throws ExceptionXml, NumberFormatException{
 	    	
 		Intersection entrepot;
@@ -236,7 +257,12 @@ public class LectureXml {
 	    
 	}
 	
-	    
+	
+	/** Cree une livraison a partir d'un element du fichier XML
+	 * @param elt Element correspondant a une livraison 
+	 * @param plan Le plan charge
+	 * @return La livraison creee
+	*/
 	private static Livraison creerLivraison(Element elt, Plan plan) throws ExceptionXml{
 	    
 	   	String idEnlevement = elt.getAttribute("adresseEnlevement");

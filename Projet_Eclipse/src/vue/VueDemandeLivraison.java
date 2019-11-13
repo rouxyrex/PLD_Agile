@@ -12,6 +12,9 @@ import modele.Livraison;
 import vue.VueAdresseDepot;
 import vue.VueAdresseEnlevement;
 
+/** Representation graphique de la livraison : contient l'ensemble des representations graphiques des adresses 
+ * d'enlevement et de depot qui la composent, ainsi que l'entrepot
+*/
 public class VueDemandeLivraison {
 
 	private static final long serialVersionUID = 1L;

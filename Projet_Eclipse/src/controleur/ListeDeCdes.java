@@ -2,7 +2,10 @@ package controleur;
 
 import java.util.LinkedList;
 
+/** Contient et gere la liste des Commandes
+ */
 public class ListeDeCdes {
+	
 	private LinkedList<Commande> liste;
 	private int indiceCrt;
 	

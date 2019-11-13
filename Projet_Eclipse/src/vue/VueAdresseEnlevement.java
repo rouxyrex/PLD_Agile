@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import modele.Intersection;
 
+/** Representation graphique de l'adresse d'enlevement d'une livraison
+*/
 class VueAdresseEnlevement{ 
     final float latitude; 
     final float longitude;   
