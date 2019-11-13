@@ -6,8 +6,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import javafx.util.Pair;
 import modele.DemandeLivraison;
 import modele.GraphePCC;
+import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
 import modele.Tournee;
@@ -98,7 +100,7 @@ public class EtatTourneeCalculee implements Etat {
 
 		fenetre.afficheMessage("Suppression d'une livraison et calcul d'une nouvelle tournee.");
 
-		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee));
+		listeDeCdes.ajoute(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, null, null));
 
 		fenetre.effacerVueDemandeLivraison();
 		fenetre.initialiserVueDemandeLivraison();
@@ -107,8 +109,20 @@ public class EtatTourneeCalculee implements Etat {
 
 
 	}
-
-
+	
+	@Override
+	public void ajouterLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, Tournee tournee, Pair<Integer, Intersection> interAvantEnlevement, Pair<Integer, Intersection> interAvantDepot) {
+		
+		fenetre.afficheMessage("Ajout d'une livraison et calcul d'une nouvelle tournee.");
+		
+		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
+		
+		fenetre.effacerVueDemandeLivraison();
+		fenetre.initialiserVueDemandeLivraison();
+		fenetre.effacerVueTournee();
+		fenetre.initialiserVueTournee();
+	}
+	
 	@Override
 	public void undo(Fenetre fenetre, ListeDeCdes listeDeCdes) {
 		listeDeCdes.undo();

@@ -19,10 +19,18 @@ public class CdeSuppressionLivraison implements Commande {
 	 * @param d la demande de livraison dans laquelle ajouter l
 	 * @param l la livraison a ajouter dans d
 	 */
-	public CdeSuppressionLivraison(DemandeLivraison d, Livraison l, Tournee t){
+	public CdeSuppressionLivraison(DemandeLivraison d, Livraison l, Tournee t, Pair<Integer, Intersection> interAvantEnlevement2, Pair<Integer, Intersection> interAvantDepot2){
 		this.demandeLivraison = d;
 		this.livraison = l;
 		this.tournee = t;
+		
+		if(interAvantEnlevement2 != null) {
+			this.interAvantEnlevement = interAvantEnlevement2;
+		}
+		
+		if(interAvantDepot2 != null) {
+			this.interAvantDepot = interAvantDepot2;
+		}
 	}
 
 	@Override
