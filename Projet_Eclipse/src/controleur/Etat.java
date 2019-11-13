@@ -28,7 +28,7 @@ public interface Etat {
 	 * @param c le controleur
 	 * @param f la fenetre
 	 */
-	public default void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {};
+//	public default void calculerTournee(Controleur c, Fenetre f, Plan plan, DemandeLivraison demandeLivraison) {};
 
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le chois d'une livraison par l'utilisateur
@@ -54,4 +54,7 @@ public interface Etat {
 	 *
 	 */
 	public default void genererFeuilleRoute(Controleur controleur, Fenetre fenetre, Tournee tournee) {};
+
+	public default void calculerTournee(Controleur controleur, Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison,
+			GraphePCC graphePCC, Tournee tournee) {};
 }

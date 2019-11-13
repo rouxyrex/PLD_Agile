@@ -104,7 +104,7 @@ public class Controleur {
 	public void creerGraphePCC() {
 
 		int nbSommets = 1 + demandeLivraison.getPtsPassage().size();
-		graphePCC = new GraphePCC(nbSommets);
+		graphePCC = new GraphePCC(/*nbSommets*/);
 
 		Intersection entrepot = demandeLivraison.getEntrepot();
 

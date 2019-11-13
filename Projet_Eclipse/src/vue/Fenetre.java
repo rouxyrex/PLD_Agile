@@ -170,6 +170,7 @@ public class Fenetre extends JFrame {
 
 	public void initialiserVueTournee() {
 		vuePlan.initialiserVueTournee();
+		vueTextuelle.initialiserVueTournee();
 	}
 
 	public void effacerVueTournee() {

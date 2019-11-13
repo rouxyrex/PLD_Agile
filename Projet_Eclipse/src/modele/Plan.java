@@ -83,24 +83,7 @@ public class Plan extends Observable {
 					Trajet curr_trajet = new Trajet(tronconsParcourus, intersectionInitiale, i);
 					listeTrajets.add(curr_trajet);
 				}
-				visite.replace(curr_i, true);
-			}
-		}
-
-		for (Intersection i : ptsInteret) {
-			LinkedList<Troncon> tronconsParcourus = new LinkedList<Troncon>();
-			curr_i = intersections.get(i.getId());
-			Troncon curr_tv;
-
-			while (curr_i.getId() != idInterInit) {
-				curr_tv = tronconOrigine.get(curr_i);
-				tronconsParcourus.addFirst(curr_tv);
-				curr_i = curr_tv.getIntersectionOrigine();
-			}
-			Trajet curr_trajet = new Trajet(tronconsParcourus, intersectionInitiale, i);
-			listeTrajets.add(curr_trajet);
-		}
-
+				
 		return listeTrajets;
 	}
 

@@ -71,7 +71,7 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		graphePCC.initialiserGraphePCC(plan, demandeLivraison);
 		tournee.initialiserGraphePCC(graphePCC);
 		tournee.CalculerTournee(10000, graphePCC, demandeLivraison);
-		c.setEtatCourant(c.etatTourneeCalculee);
+		controleur.setEtatCourant(controleur.etatTourneeCalculee);
 		fenetre.initialiserVueTournee();
 	}
 

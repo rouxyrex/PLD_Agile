@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 //import javafx.util.Pair<K,V>;
@@ -26,6 +27,8 @@ import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
 import modele.Tournee;
+import modele.Trajet;
+import modele.Troncon;
 
 public class VueTextuelle extends JPanel implements Observer {
 
@@ -158,6 +161,12 @@ public class VueTextuelle extends JPanel implements Observer {
 		for(int i = 0; i <  dl.getLivraisons().size(); i++) {
 			vueLivraisons.add(new VueLivraison(dl.getLivraisons().get(i), colors[i]));
 		}
+	}
+	
+	public void initialiserVueTournee() {
+		System.out.println("appelle");
+		List<Trajet> trajets = tournee.getParcours();
+		System.out.println(trajets.toString());
 	}
 
 	public void effacerVueDemandeLivraison() {
