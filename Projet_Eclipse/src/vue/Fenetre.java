@@ -2,6 +2,7 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class Fenetre extends JFrame {
 
 		cadreMessages = new JLabel();
 		cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complementaires"));
+		Font font = new Font("Arial",Font.BOLD,30);
+		cadreMessages.setFont(font);
 		getContentPane().add(cadreMessages, BorderLayout.SOUTH);
 
 		vuePlan = new VuePlan(this, plan, demandeLivraison, tournee, controleur);
@@ -198,12 +201,12 @@ public class Fenetre extends JFrame {
 	}
 
 	public void supprimerLivraison() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		vueTextuelle.supprimerLivraison();
 	}
 
 	public void ajouterLivraison() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		vueTextuelle.ajouterLivraison();
 	}
 
@@ -218,6 +221,9 @@ public class Fenetre extends JFrame {
 
 	public void validerLivraison(Controleur c) {
 		// TODO Auto-generated method stub 
+		for(JButton bouton : boutons) {
+			bouton.setEnabled(true);
+		}
 		vueTextuelle.validerAjoutLivraison(c, true);
 	}
 
