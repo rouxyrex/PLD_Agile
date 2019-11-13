@@ -33,7 +33,7 @@ public class Controleur {
 		etatCourant = etatInit;
 		plan = new Plan();
 		demandeLivraison = new DemandeLivraison();
-		graphePCC = new GraphePCC();
+		graphePCC = new GraphePCC(plan, demandeLivraison);
 		tournee = new Tournee();
 		listeDeCdes = new ListeDeCdes();
 
@@ -54,7 +54,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Charger un plan"
 	 */
 	public void chargerPlan() {
-		etatCourant.chargerPlan(this, fenetre, listeDeCdes, plan, demandeLivraison);
+		etatCourant.chargerPlan(this, fenetre, listeDeCdes, plan, demandeLivraison, tournee);
 	}
 
 
@@ -62,15 +62,14 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Charger une demande de livraison"
 	 */
 	public void chargerDemandeLivraison() {
-		etatCourant.chargerDemandeLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison);
+		etatCourant.chargerDemandeLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, tournee);
 	}
 
 	/**
 	 * Methode appelee par fenetre apres un clic sur le bouton "Calculer une tournee"
 	 */
 	public void calculerTournee() {
-		etatCourant.calculerTournee(this, fenetre, plan, demandeLivraison, graphePCC, tournee);
-
+		etatCourant.calculerTournee(this, fenetre, listeDeCdes, plan, demandeLivraison, graphePCC, tournee);
 	}
 
 	/**
@@ -84,7 +83,7 @@ public class Controleur {
 	 * Methode appelee par fenetre apres un clic sur le bouton "Supprimer une livraison" puis le choix d'une livraison par l'utilisateur
 	 */
 	public void supprimerLivraison(Livraison livraison) {
-		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison);
+		etatCourant.supprimerLivraison(this, fenetre, listeDeCdes, plan, demandeLivraison, livraison, tournee);
 	}
 
 	/**

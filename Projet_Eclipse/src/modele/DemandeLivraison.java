@@ -5,17 +5,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
+import javafx.util.Pair;
+
 public class DemandeLivraison extends Observable {
 
 	List<Livraison> livraisons;
 	Intersection entrepot;
 	String heureDepart; //A modifier en une vraie heure?
+	int derniereIdLivraison;
 
-	List<Intersection> ptsPassage;
+	List<Pair<Integer, Intersection>> ptsPassage;
 
 	public DemandeLivraison() {
 		livraisons = new ArrayList<Livraison>();
-		ptsPassage = new ArrayList<Intersection>();
+		ptsPassage = new ArrayList<Pair<Integer, Intersection>>();
+		derniereIdLivraison = 0;
 	}
 
 	public void initialiser(List<Livraison> livraisonsAInserer, Intersection entrepot, String heureDepart) {
@@ -46,7 +50,7 @@ public class DemandeLivraison extends Observable {
 			it.remove();
 		}
 
-		Iterator<Intersection> it2 = ptsPassage.iterator();
+		Iterator<Pair<Integer, Intersection>> it2 = ptsPassage.iterator();
 
 		while (it2.hasNext()){
 			it2.next();
@@ -55,6 +59,7 @@ public class DemandeLivraison extends Observable {
 
 		entrepot = null;
 		heureDepart = null;
+		derniereIdLivraison = 0;
 
 		setChanged();
 		notifyObservers();
@@ -62,6 +67,10 @@ public class DemandeLivraison extends Observable {
 
 
 	public void ajouterLivraison(Livraison l){
+
+		derniereIdLivraison++;
+		l.setId(derniereIdLivraison);
+
 		livraisons.add(l);
 
 		ptsPassage.add(l.getAdresseDepot());
@@ -92,11 +101,15 @@ public class DemandeLivraison extends Observable {
 		return heureDepart;
 	}
 
-	public List<Intersection> getPtsPassage() {
+	public List<Pair<Integer, Intersection>> getPtsPassage() {
 		return ptsPassage;
 	}
 
-	public int getPtsInteret() {
+	public int getDerniereIdLivraison() {
+		return this.derniereIdLivraison;
+	}
+
+	public int getNbPtsInteret() {
 
 		if(entrepot == null) {
 			return 0;
