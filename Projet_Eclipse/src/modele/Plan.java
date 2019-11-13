@@ -1,4 +1,5 @@
 package modele;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Plan extends Observable {
 				Map<Intersection, Troncon> tronconOrigine = new HashMap<>();
 				Map<Intersection, Boolean> visite = new HashMap<>();
 				
-				List<Pair<Integer, Intersection>> ptsInteret = demandeLivraison.getPtsPassage();
+				List<Pair<Integer, Intersection>> ptsInteret = new ArrayList<>(demandeLivraison.getPtsPassage());
 				ptsInteret.add(new Pair<Integer, Intersection>(0, demandeLivraison.getEntrepot()));
 				
 				Intersection curr_i;
@@ -85,7 +86,8 @@ public class Plan extends Observable {
 					Trajet curr_trajet = new Trajet(tronconsParcourus, intersectionInitiale, i);
 					listeTrajets.add(curr_trajet);
 				}
-				
+				System.out.println("Point d'interets : "+ptsInteret.size());
+				System.out.println("taille listeTrajets : "+listeTrajets.size());
 				return listeTrajets;
 	}
 	
