@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.util.Pair;
 import modele.Intersection;
 import modele.Livraison;
 
@@ -23,10 +24,10 @@ public class VueLivraison {
     Color color;
 
     public VueLivraison(Livraison l, Color color) {
-    	if(l.getAdresseDepot() == null) this.idDepot = "Adresse de depart : ";
-    	else this.idDepot = l.getAdresseDepot().getId();
+    	if(l.getAdresseDepot().getValue() == null) this.idDepot = "Adresse de depart : ";
+    	else this.idDepot = l.getAdresseDepot().getValue().getId();
     	if(l.getAdresseEnlevement() == null) this.idEnlevement = "Adresse de enlevement : ";
-    	else this.idEnlevement = l.getAdresseEnlevement().getId();
+    	else this.idEnlevement = l.getAdresseEnlevement().getValue().getId();
     	this.tempsDepot = l.getDureeDepot();
     	this.tempsEnlevement = l.getDureeEnlevement();
     	this.l = l;
@@ -85,12 +86,12 @@ public class VueLivraison {
 		}
 	}
 
-	public Map<Livraison, Intersection> onClick(int x, int y, int choix) {
+	public Pair<Livraison, Intersection> onClick(int x, int y, int choix) {
 		// TODO Auto-generated method stub
-		Map<Livraison, Intersection> map = new HashMap<Livraison, Intersection>();
+	/*	Pair<Livraison, Intersection> map = new Pair<Livraison, Intersection>();
 		if(choix== 0 && x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) {
 			map.put(l, null);
-			return map;
+			return map; 
 		}
 		else if(choix == 1 && x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+((int)size/2)) {
 			map.put(l, l.getAdresseDepot());
@@ -99,7 +100,7 @@ public class VueLivraison {
 		else if(choix == 1 && x >= xHautDroite && y >= yHautDroite+((int)size/2) && x <= width-40 && y <= yHautDroite+(int)size) {
 			map.put(l, l.getAdresseEnlevement());
 			return map;
-		} return null;
+		} */return null;
 	}
 
 }

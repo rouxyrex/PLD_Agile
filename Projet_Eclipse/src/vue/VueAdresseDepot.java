@@ -3,21 +3,22 @@ package vue;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javafx.util.Pair;
 import modele.Intersection;
 
 class VueAdresseDepot{
     final float latitude;
     final float longitude;
-    Intersection adresse;
+    Pair<Integer, Intersection> adresse;
     int x = -1;
     int y = -1;
     final int tailleDepot = 20;
     Color color;
 
-    public VueAdresseDepot(Intersection adresse, Color color) {
-        this.adresse = adresse;
-        this.latitude = adresse.getLatitude();
-        this.longitude = adresse.getLongitude();
+    public VueAdresseDepot(Pair<Integer, Intersection> pair, Color color) {
+        this.adresse = pair;
+        this.latitude = pair.getValue().getLatitude();
+        this.longitude = pair.getValue().getLongitude();
         this.color = color;
     }
 
@@ -34,7 +35,7 @@ class VueAdresseDepot{
 		// TODO Auto-generated method stub
 		int centrex = this.x+(tailleDepot/2);
 		int centrey = this.y+(tailleDepot/2);
-		if(Math.sqrt((x-centrex)*(x-centrex)+(y-centrey)*(y-centrey)) <= (tailleDepot/2)) return adresse;
+		if(Math.sqrt((x-centrex)*(x-centrex)+(y-centrey)*(y-centrey)) <= (tailleDepot/2)) return adresse.getValue();
 		return null;
 	}
 }

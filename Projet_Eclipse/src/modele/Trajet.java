@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javafx.util.Pair;
 
@@ -27,7 +28,7 @@ public class Trajet {
 	}
 
 
-	public LinkedList<Troncon> getTrajet() {
+	public List<Troncon> getTrajet() {
 		return this.trajet;
 	}
 

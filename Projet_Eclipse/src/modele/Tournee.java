@@ -316,7 +316,7 @@ public class Tournee extends Observable {
 		BufferedWriter writer;
 		String res = "***Bienvenue sur la feuille de Route****\n";
 		res += "Votre ordre de passage sera : \n";
-		for (Map.Entry<Intersection, String> entry : pointsPassage.entrySet())
+/*		for (Map.Entry<Pair<Integer,Intersection>,String> entry : pointsPassage.entrySet())
 		{
 			res += "Passage � l'intersection � : "+ entry.getKey().getId()+ " � "+ entry.getValue() +" heure\n";
 		}
@@ -332,9 +332,13 @@ public class Tournee extends Observable {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 
 
+	}
+	
+	public boolean estInitialise() {
+		return this.initialise;
 	}
 
 }

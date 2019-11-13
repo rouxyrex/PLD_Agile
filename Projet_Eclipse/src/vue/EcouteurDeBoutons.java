@@ -34,7 +34,7 @@ public class EcouteurDeBoutons implements ActionListener {
 			case VueTextuelle.AJOUT : fenetre.ajouterLivraison(); break;
 			case VueTextuelle.UNDO: controleur.undo(); break;
 			case VueTextuelle.REDO: controleur.redo(); break;
-			case VueTextuelle.VALIDER : controleur.ajouterLivraison(true );
+			case VueTextuelle.VALIDER : fenetre.validerLivraison(controleur);
 		}
 		/*case Fenetre.AJOUTER_RECTANGLE: controleur.ajouterRectangle(); break;
 		case Fenetre.SUPPRIMER: controleur.supprimer(); break;

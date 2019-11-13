@@ -28,7 +28,7 @@ public class GraphePCC {
 		grapheIntermediaire = plan.Dijkstra(demandeLivraison, new Pair<Integer, Intersection>(0, demandeLivraison.getEntrepot()));
 		ajouterGraphIntermediaire(grapheIntermediaire, 0);
 
-		for(int i = 0; i < nbSommets; i++) {
+		for(int i = 1; i < nbSommets; i++) {
 
 			grapheIntermediaire = plan.Dijkstra(demandeLivraison, demandeLivraison.getPtsPassage().get(i-1));
 			ajouterGraphIntermediaire(grapheIntermediaire, i);
@@ -112,11 +112,7 @@ public class GraphePCC {
 
 	public int getNbSommets() {
 		return nbSommets;
-	}
-
-	public LinkedList<Trajet>[] getListeAdjacence() {
-		return listeAdjacence;
-	}
+	} 
 
 	public void setNbSommets(int nbSommets) {
 		this.nbSommets = nbSommets;

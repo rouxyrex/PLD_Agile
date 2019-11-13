@@ -2,6 +2,7 @@ package controleur;
 
 import java.util.LinkedList;
 
+import javafx.util.Pair;
 import modele.DemandeLivraison;
 import modele.GraphePCC;
 import modele.Intersection;
@@ -98,37 +99,12 @@ public class Controleur {
 	 */
 	public void redo(){
 		etatCourant.redo(fenetre, listeDeCdes);
-	}
+	}  
 
-	public void creerGraphePCC() {
-
-		int nbSommets = 1 + demandeLivraison.getPtsPassage().size();
-		graphePCC = new GraphePCC(/*nbSommets*/);
-
-		Intersection entrepot = demandeLivraison.getEntrepot();
-
-		LinkedList<Trajet> graphIntermediaire;
-
-		graphIntermediaire = plan.Dijkstra(demandeLivraison, entrepot);
-		graphePCC.ajouterGraphIntermediaire(graphIntermediaire, 0);
-
-		for(int i = 1; i < nbSommets; i++) {
-
-			Intersection intersectionInitiale = demandeLivraison.getPtsPassage().get(i);
-			graphIntermediaire = plan.Dijkstra(demandeLivraison, intersectionInitiale);
-			graphePCC.ajouterGraphIntermediaire(graphIntermediaire, i);
-
-		}
-
-	}
-
-	public void ajouterLivraison(boolean valider) {
+	public void validerAjoutLivraison(Livraison livraison, Intersection interAvantEnlevement, Intersection interAvantDepot) {
 		// TODO Auto-generated method stub
-		if(!valider) fenetre.ajouterLivraison();
-		else fenetre.validerLivraison(this);
-	}
-
-	public void validerAjoutLivraison(Livraison livraison) {
-		// TODO Auto-generated method stub
+		System.out.println("ajout");
+		
+		// etatCourant.
 	}
 }

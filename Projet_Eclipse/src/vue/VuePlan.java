@@ -106,10 +106,7 @@ public class VuePlan extends JPanel implements Observer {
 		setBackground(Color.white);
 
         addMouseListener(new MouseAdapter() {
-	         public void mousePressed(MouseEvent me) {
-	           onClick(getMousePosition().x, getMousePosition().y);
-
-
+	         public void mousePressed(MouseEvent me) { 
 	        	 if(ajouter2) {
 	        		//on stocke la deuxi�me intersection
 	        		Intersection depot = onClick(getMousePosition().x, getMousePosition().y);

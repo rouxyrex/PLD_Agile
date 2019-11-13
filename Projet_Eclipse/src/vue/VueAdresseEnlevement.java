@@ -3,6 +3,7 @@ package vue;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javafx.util.Pair;
 import modele.Intersection;
 
 class VueAdresseEnlevement{
@@ -11,13 +12,13 @@ class VueAdresseEnlevement{
     final int TAILLE_TRIANGLE = 10;
     int[] tab = new int[3];
     int[] tab2 = new int[3];
-    Intersection adresse;
+    Pair<Integer, Intersection> adresse;
     Color color;
 
 
-    public VueAdresseEnlevement(Intersection adresse, Color color) {
-        this.latitude = adresse.getLatitude();
-        this.longitude = adresse.getLongitude();
+    public VueAdresseEnlevement(Pair<Integer, Intersection> adresse, Color color) {
+        this.latitude = adresse.getValue().getLatitude();
+        this.longitude = adresse.getValue().getLongitude();
         this.adresse = adresse;
         this.color = color;
         tab[0] = -1;
@@ -42,7 +43,7 @@ class VueAdresseEnlevement{
 
 	public Intersection onClick(int x, int y) {
 		//on va dire que le triangle est dans un rectangle
-		if(x >= tab2[1] && x <= tab2[2] && y >= tab[0] && y <= tab[1])  return adresse;
+		if(x >= tab2[1] && x <= tab2[2] && y >= tab[0] && y <= tab[1])  return adresse.getValue();
 		else return null;
 	}
 }

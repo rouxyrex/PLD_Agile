@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import controleur.Controleur;
+import javafx.util.Pair;
 import modele.DemandeLivraison;
 import modele.Intersection;
 import modele.Livraison;
@@ -50,15 +51,20 @@ public class VueTextuelle extends JPanel implements Observer {
 	private ArrayList<JButton> boutons;
 	private final String[] intitulesBoutons = new String[]{AJOUT, SUPRESSION, UNDO, REDO, VALIDER};
 	private final int hauteurBouton = 50;
-	LinkedList<VueLivraison> vueLivraisons = null;
+	LinkedList<VuePointInteret> stock = null;
+	LinkedList<VuePointInteret> vueLivraisons = null;
 	private boolean supprimer = false;
 	private boolean ajouter = false;
-	JLabel textZoneDepot = new JLabel("Temps dï¿½pï¿½t : ");
+	JLabel textZoneDepot = new JLabel("Temps depot : ");
 	JLabel textZoneEnlevement = new JLabel("Temps enlevement : ");
 	JTextArea textZone = new JTextArea("0");
 	JTextArea textZone2 = new JTextArea("0");
 	Intersection enlevementAjout;
 	Intersection depotAjout;
+	private Intersection interAvantEnlevement;
+	private Intersection interAvantDepot;
+	private boolean ajouter2 = false;
+	
 
 	public VueTextuelle(Fenetre fenetre, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee, Controleur controleur) {
 
@@ -71,7 +77,8 @@ public class VueTextuelle extends JPanel implements Observer {
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
 		tournee.addObserver(this); // this observe tournee
 
-		vueLivraisons = new LinkedList<VueLivraison>();
+		vueLivraisons = new LinkedList<VuePointInteret>();
+		stock = new LinkedList<VuePointInteret>();
 		this.setPreferredSize(new Dimension(300,100));
 		setBorder(BorderFactory.createTitledBorder("Demande de livraison"));
 		fenetre.getContentPane().add(this, BorderLayout.EAST);
@@ -89,19 +96,41 @@ public class VueTextuelle extends JPanel implements Observer {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				// TODO Auto-generated method stub
-				if(supprimer|| ajouter) onMotion(e.getX(), e.getY());
+				if(supprimer|| ajouter || ajouter2)  onMotion(e.getX(), e.getY()); 
 			}
 
 			@Override
 			public void mouseDragged(MouseEvent e) { }
 		});
+		
 		 addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	        	 if(supprimer) {
-	        		 controleur.supprimerLivraison(onClick(getMousePosition().x, getMousePosition().y));
+	        		 //ici à partir de l'intersection on se débrouille pour réccupérer la livraison
+	        		// controleur.supprimerLivraison(onClick(getMousePosition().x, getMousePosition().y));
 	        		 supprimer = false;
 	        	 }
+	        	 
+	        	 if(ajouter2) {
+		        		//on stocke la deuxiï¿½me intersection
+		        		interAvantDepot = onClick(getMousePosition().x, getMousePosition().y);
+		        		 if(interAvantDepot != null) { 
+			        		ajouter2 = false; 
+			        		validerAjoutLivraison(controleur, false);
+		        		 }
+		        	 }
+		        	 if(ajouter) {
+		        		 //on stocke la premiï¿½re intersection
+		        		 interAvantEnlevement = onClick(getMousePosition().x, getMousePosition().y);  
+		        		 if(interAvantEnlevement != null) {  
+			        		 ajouter = false;
+			        		 ajouter2 = true;
+			        		 fenetre.afficheMessage("Veuillez cliquer sur l'intersection que vous souhaitez avant le depot");
+		        		 }
+		        	 }
 	         }
+
+			
 	    });
 		repaint();
 	}
@@ -122,31 +151,20 @@ public class VueTextuelle extends JPanel implements Observer {
 	protected void onMotion(int x, int y) {
 		// TODO Auto-generated method stub
 		 for (int i = 1; i < vueLivraisons.size(); i++) {
-			if(supprimer) vueLivraisons.get(i).onMotion(x, y, 0);
-			if(ajouter)  vueLivraisons.get(i).onMotion(x, y, 1);
+			if(supprimer || ajouter || ajouter2) vueLivraisons.get(i).onMotion(x, y); 
 		 }
 		 repaint();
 	}
 
-	protected Livraison onClick (int x, int y) {
+	protected Intersection onClick (int x, int y) {
 		for (int i = 1; i < vueLivraisons.size(); i++) {
-			int choix = -1;
-			if(supprimer) choix = 0;
-			if(ajouter) choix = 1;
-			Map<Livraison, Intersection> map = vueLivraisons.get(i).onClick(x, y, choix);
-			Livraison l ;
-			if(map != null) {
-				for (Map.Entry<Livraison, Intersection> entry : map.entrySet())
-				{
-					l =  entry.getKey();
-					if(l != null) {
-						vueLivraisons.remove(vueLivraisons.get(i));
-						repaint();
-						return l;
-					}
-				}
-			}
-
+			 
+			Intersection inter = vueLivraisons.get(i).onClick(x, y);  
+			if(inter != null) {
+			/*	vueLivraisons.remove(vueLivraisons.get(i));*/
+				repaint();
+				return inter;
+			}  
 	    }
 		return null;
 	}
@@ -158,16 +176,38 @@ public class VueTextuelle extends JPanel implements Observer {
 		}
 		boutons.get(4).setVisible(false);
 
-		vueLivraisons.add(new VueLivraison(new Livraison(dl.getEntrepot(), null, -1, -1), Color.LIGHT_GRAY));
+		vueLivraisons.add(new VuePointInteret(null, Color.LIGHT_GRAY, -1, -1));
 		for(int i = 0; i <  dl.getLivraisons().size(); i++) {
-			vueLivraisons.add(new VueLivraison(dl.getLivraisons().get(i), colors[i]));
+			
+			VuePointInteret ptinterretDepot = new VuePointInteret(dl.getLivraisons().get(i).getAdresseDepot().getValue(), colors[i], 0, dl.getLivraisons().get(i).getDureeDepot());
+			VuePointInteret ptinterretEnelevement = new VuePointInteret(dl.getLivraisons().get(i).getAdresseEnlevement().getValue(), colors[i], 1, dl.getLivraisons().get(i).getDureeEnlevement());
+
+			vueLivraisons.add(ptinterretDepot);
+			vueLivraisons.add(ptinterretEnelevement);
+			stock.add(ptinterretDepot);
+			stock.add(ptinterretEnelevement);
 		}
 	}
 
-	public void initialiserVueTournee() {
-		System.out.println("appelle");
+	public void initialiserVueTournee() { 
+ 
+		vueLivraisons.clear();
 		List<Trajet> trajets = tournee.getParcours();
-		System.out.println(trajets.toString());
+		vueLivraisons.add(new VuePointInteret(null, Color.LIGHT_GRAY, -1, -1));
+		for(int i = 0; i < trajets.size(); i++) {
+			for(int j = 0; j < stock.size(); j++) {
+				if(stock.get(j).getIntersection().getId().equals(trajets.get(i).getIntersectionOrigine().getValue().getId())) {
+					vueLivraisons.add(stock.get(j));
+					stock.remove(stock.get(j));
+				}
+				if(stock.get(j).getIntersection().getId().equals(trajets.get(i).getIntersectionDestination().getValue().getId())) {
+					vueLivraisons.add(stock.get(j));
+					stock.remove(stock.get(j));
+				}
+			}
+ 
+		}  
+		repaint();
 	}
 
 	public void effacerVueDemandeLivraison() {
@@ -183,9 +223,9 @@ public class VueTextuelle extends JPanel implements Observer {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		float yOrigine = 130;
-		int nbLivraisons =  vueLivraisons.size();
+		int nbLivraisons =  vueLivraisons.size()*2;
 		float size = (this.getHeight()-150)/nbLivraisons;
-		for (int i = 0; i < nbLivraisons; i++) {
+		for (int i = 0; i < nbLivraisons/2; i++) {
 			vueLivraisons.get(i).dessiner(g, 20, (int) yOrigine, size, this.getWidth(), this.getHeight());
 			yOrigine += size;
 	    }
@@ -213,23 +253,33 @@ public class VueTextuelle extends JPanel implements Observer {
 
 	public void transfertIntersection(Intersection enlevement, Intersection depot) {
 
-		fenetre.afficheMessage("Veuillez entrer les temps de dï¿½pot et d'enlevement, une fois entrï¿½s, appuyer ï¿½ nouveau sur ajouter une livraison");
-		boutons.get(4).setVisible(true);
+		fenetre.afficheMessage("Veuillez entrer les temps de depot et d'enlevement, une fois entres, appuyer sur valider une livraison, puis cliquer sur l'intersection que vous souhaitez qui précède l'enelevement");
+//		boutons.get(4).setVisible(false);
 		textZone.setVisible(true);
 		textZone2.setVisible(true);
 		textZoneDepot.setVisible(true);
 		textZoneEnlevement.setVisible(true);
+		ajouter = true;
 		repaint();
 	}
 
-	public void validerAjout(Controleur c) {
+/*	public void avancerAjout() {
 		textZone.setVisible(false);
-		textZone2.setVisible(false);
-		boutons.get(4).setVisible(false);
+		textZone2.setVisible(false); 
 		textZoneDepot.setVisible(false);
 		textZoneEnlevement.setVisible(false);
 		fenetre.afficheMessage(" ");
-		c.validerAjoutLivraison(new Livraison(enlevementAjout, depotAjout, Integer.parseInt(textZone.getText()), Integer.parseInt(textZone2.getText())));
+		ajouter = true;
+		fenetre.afficheMessage("Cliquer sur le point que vous voulez qui précède l'enelvement"); 
+	}*/
+	
+	public void validerAjoutLivraison(Controleur c, boolean valider) {
+		// TODO Auto-generated method stub
+		if(!valider) boutons.get(4).setVisible(true);
+		if(valider) {
+			c.validerAjoutLivraison(new Livraison(enlevementAjout, depotAjout, Integer.parseInt(textZone.getText()), Integer.parseInt(textZone2.getText())), interAvantEnlevement, interAvantDepot);
+			boutons.get(4).setVisible(false);
+		}
 	}
 
 }

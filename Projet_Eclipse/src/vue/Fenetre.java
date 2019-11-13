@@ -197,8 +197,8 @@ public class Fenetre extends JFrame {
 	}
 
 	public void validerLivraison(Controleur c) {
-		// TODO Auto-generated method stub
-		vueTextuelle.validerAjout(c);
+		// TODO Auto-generated method stub 
+		vueTextuelle.validerAjoutLivraison(c, true);
 	}
 
 
