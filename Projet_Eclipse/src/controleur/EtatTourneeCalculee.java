@@ -115,8 +115,6 @@ public class EtatTourneeCalculee implements Etat {
 		fenetre.initialiserVueDemandeLivraison();
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();
-		
-		
 	}
 	
 	
