@@ -203,6 +203,8 @@ public class Tournee extends Observable {
 
 	}
 
+	/** Reinitialisation de la tournee
+	*/
 	public void reset() {
 
 		pointsPassage.clear();
@@ -225,6 +227,10 @@ public class Tournee extends Observable {
 
 	}
 
+	/** Suppression d'une livraison de la tournee
+	 * @param livraison livraison a supprimer
+	 * @return paire de deux intersections , celle visitee avant la livraison supprimee et celle a visiter ensuite
+	*/
 	public Pair <Pair<Integer, Intersection>, Pair<Integer, Intersection> > supprimerLivraison(Livraison livraison) {
 
 		graphePCC.supprimerLivraison(livraison);
@@ -299,6 +305,11 @@ public class Tournee extends Observable {
 		return new Pair<Pair<Integer, Intersection>, Pair<Integer, Intersection>>(interAvantEnlevement, interAvantDepot);
 	}
 
+	/** Ajout d'une livraison a la tournee
+	 * @param livraison livraison a ajouter
+	 * @param interAvantEnlevement intersection a partir de laquelle ajouter la livraison 
+	 * @param interAvantDepot intersection a rejoindre apres le depot de cette livraison
+	*/
 	public void ajouterLivraison(Livraison livraison, Pair<Integer, Intersection> interAvantEnlevement, Pair<Integer, Intersection> interAvantDepot) {
 
 		graphePCC.initialiserGraphePCC();
@@ -372,17 +383,13 @@ public class Tournee extends Observable {
 		return this.tempsLimiteAtteint;
 	}
 
+	/** Permet de generer une feuille de route textuelle
+	 * 
+	 */
 	public void genererFeuilleRoute() {
         BufferedWriter writer;
         String res = "***Feuille de Route****\n";
- /*       res += "Votre ordre de passage sera : \n";
-        
-        
-        for (Map.Entry<Pair<Integer,Intersection>,String> entry : pointsPassage.entrySet())
-        {
-                res += "Passage a l'intersection  : "+ entry.getKey().getValue().getId()+ " \n ";
-        }
-        */
+ 
         res += "Vous parcourerez les intersections dans l'ordre : \n";
         
         for(Trajet trajet : parcours) {

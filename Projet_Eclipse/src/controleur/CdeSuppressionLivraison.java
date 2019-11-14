@@ -7,19 +7,29 @@ import modele.Livraison;
 import modele.Tournee;
 import vue.Fenetre;
 
+/** Commande de suppression de la livraison
+*/
 public class CdeSuppressionLivraison implements Commande {
 	
 	private Fenetre fenetre;
 	private DemandeLivraison demandeLivraison;
 	private Livraison livraison;
 	private Tournee tournee;
+	
+	/**
+	    * Intersection visitee avant l'enlevement de la livraison consideree
+	    */
 	Pair<Integer, Intersection> interAvantEnlevement;
+	
+	/**
+	    * Intersection visitee apres le depot de la livraison consideree
+	    */
 	Pair<Integer, Intersection> interAvantDepot;
 	
 	/**
-	 * Cree la commande qui ajoute la livraison l a la demande de livraison d
-	 * @param d la demande de livraison dans laquelle ajouter l
-	 * @param l la livraison a ajouter dans d
+	 * Cree la commande qui supprime la livraison de la demande de livraison d
+	 * @param d la demande de livraison de laquelle supprimer l
+	 * @param l la retirer a de d
 	 */
 	public CdeSuppressionLivraison(Fenetre f, DemandeLivraison d, Livraison l, Tournee t, Pair<Integer, Intersection> interAvantEnlevement2, Pair<Integer, Intersection> interAvantDepot2){
 		this.fenetre = f;

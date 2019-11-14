@@ -8,6 +8,8 @@ import java.util.Observable;
 
 import javafx.util.Pair;
 
+/** Represente un plan
+*/
 public class Plan extends Observable {
 	Map<String, Intersection> intersections;
 	List<Troncon> troncons;
@@ -21,6 +23,10 @@ public class Plan extends Observable {
 
 	}
 
+	/** Initialise le plan en renseignant les variables et en notifiant les observateurs
+	 * @param intersections map de l'id des intersections et de celles-ci constituant le plan
+	 * @param troncons liste des troncons constituant le plan
+	*/
 	public void initialiser(Map<String, Intersection> intersections, List<Troncon> troncons) {
 		this.intersections = intersections;
 		this.troncons = troncons;
@@ -30,6 +36,11 @@ public class Plan extends Observable {
 	}
 
 
+	/** Calcule le trajet optimal entre un point d'interet de la demande de livraison et tous les autres par l'algorithme de Dijkstra
+	 * @param demandeLivraison la demande de livraison etudiee 
+	 * @param intersectionInitiale intersection de depart de la recherche (on utilisera un point d'interet)
+	 * @return Une linkedList de trajets representant l'ensemble des trajets allant du depart a chacun des points d'interet
+	*/
 	public LinkedList<Trajet> Dijkstra(DemandeLivraison demandeLivraison, Pair<Integer, Intersection> intersectionInitiale){
 
 		//declaration
@@ -95,6 +106,10 @@ public class Plan extends Observable {
 		return intersections;
 	}
 
+	/** Renvoie l'intersection correspondant à l'id demandee
+	 * @param id l'id demandee
+	 * @return l'intersection correspondante
+	*/
 	public Intersection getIntersectionById(String id) {
 
 		Intersection inter = intersections.get(id);

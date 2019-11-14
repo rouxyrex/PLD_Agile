@@ -17,10 +17,19 @@ import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
 
+/** Etat a la suite d'un chargement de demande de livraison reussi
+*/
 public class EtatDemandeLivraisonCharge implements Etat {
-	// Etat initial
 
-
+	
+	/** Une fois la demande de livraison chargée, il est possible de charger un plan différent
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param tournee La tournée courante, peut être vide
+	*/
 	@Override
 	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 
@@ -45,6 +54,14 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	}
 
 
+	/** Une fois la demande de livraison chargée, il est possible de charger une demande différente
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param tournee La tournée courante, peut être vide
+	*/
 	@Override
 	public void chargerDemandeLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 
@@ -65,6 +82,14 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	}
 
 
+	/** Une fois la demande de livraison chargée, il est possible de calculer la tournée 
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param tournee La tournée courante, peut être vide
+	*/
 	@Override
 	public void calculerTournee(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
 
@@ -83,6 +108,15 @@ public class EtatDemandeLivraisonCharge implements Etat {
 	}
 
 
+	/** Une fois la demande de livraison chargée, il est possible de supprimer des livraisons de la liste
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param livraison La livraison à supprimer
+	 *   @param tournee La tournée courante, peut être vide
+	*/
 	@Override
 	public void supprimerLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Livraison livraison, Tournee tournee) {
 
