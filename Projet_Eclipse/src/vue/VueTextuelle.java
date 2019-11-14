@@ -215,10 +215,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		for(JButton bouton : boutons) {
 			bouton.setEnabled(true);
 		}
-		LinkedList<VuePointInteret> nouvStock = new LinkedList<VuePointInteret>();
-		for(int i = 0; i < stock.size(); i++) {
-			nouvStock.add(stock.get(i));
-		}
+		LinkedList<VuePointInteret> nouvStock = (LinkedList<VuePointInteret>) stock.clone();
 		
 		vueLivraisons.clear();
 		List<Trajet> trajets = tournee.getParcours();
@@ -242,7 +239,9 @@ public class VueTextuelle extends JPanel implements Observer {
 
 	public void effacerVueDemandeLivraison() {
 		vueLivraisons.clear();
-		colors = colorsSave;
+		
+		colors = (LinkedList<Color>)colorsSave.clone();
+		
 		for (JButton bouton : boutons){
 			bouton.setVisible(false);
 		}
@@ -322,25 +321,57 @@ public class VueTextuelle extends JPanel implements Observer {
 	public void ajouterVueDemandeLivraison(Livraison l) {  
 		vueLivraisons.add(new VuePointInteret(l, l.getAdresseDepot().getValue(), colors.getFirst(), 0, l.getDureeDepot())) ;
 		vueLivraisons.add(new VuePointInteret(l, l.getAdresseEnlevement().getValue(), colors.getFirst(), 1, l.getDureeEnlevement())) ;
+		stock.add(new VuePointInteret(l, l.getAdresseDepot().getValue(), colors.getFirst(), 0, l.getDureeDepot())) ;
+		stock.add(new VuePointInteret(l, l.getAdresseEnlevement().getValue(), colors.getFirst(), 1, l.getDureeEnlevement())) ;
 		colors.removeFirst();
 		repaint();
 	}
 	
 	public void supprimerVueDemandeLivraison(Livraison l) { 
-		for(int i = 2; i < vueLivraisons.size(); i++) {  
-			
-			if(vueLivraisons.get(i).getLivraison().getId() == l.getId()){ 
-				colors.addFirst(vueLivraisons.get(i).getColor());
-				vueLivraisons.remove(vueLivraisons.get(i));  
-			}
-		}
+		
+		int i1 = 0;
+		int i2 = 0;
 		
 		for(int i = 2; i < vueLivraisons.size(); i++) {  
 			
 			if(vueLivraisons.get(i).getLivraison().getId() == l.getId()){ 
-				vueLivraisons.remove(vueLivraisons.get(i));  
+				if(i1 == 0) {
+					i1 = i;
+				}
+				else {
+					i2 = i;
+				}
 			}
 		}
+		
+		colors.addFirst(vueLivraisons.get(i2).getColor());
+		vueLivraisons.remove(vueLivraisons.get(i2));
+		vueLivraisons.remove(vueLivraisons.get(i1));
+		
+		i1 = 0;
+		i2 = 0;
+		for(int i = 0; i < stock.size(); i++) {  
+			
+			if(stock.get(i).getLivraison().getId() == l.getId()){ 
+				if(i1 == 0) {
+					i1 = i;
+				}
+				else {
+					i2 = i;
+				}
+			}
+		}
+
+		stock.remove(stock.get(i2)); 
+		stock.remove(stock.get(i1)); 
+		
+		/*for(int i = 2; i < vueLivraisons.size(); i++) {  
+			
+			if(vueLivraisons.get(i).getLivraison().getId() == l.getId()){ 
+				vueLivraisons.remove(vueLivraisons.get(i));  
+				stock.remove(vueLivraisons.get(i));  
+			}
+		}*/
 	}
 
 }

@@ -1,15 +1,12 @@
 package controleur;
-
-import java.util.LinkedList;
-
+ 
 import javafx.util.Pair;
 import modele.DemandeLivraison;
 import modele.GraphePCC;
 import modele.Intersection;
 import modele.Livraison;
 import modele.Plan;
-import modele.Tournee;
-import modele.Trajet;
+import modele.Tournee; 
 import vue.Fenetre;
 
 public class Controleur {

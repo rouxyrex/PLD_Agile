@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Map; 
 import java.util.Observable;
 
 import javafx.util.Pair;
@@ -25,7 +24,7 @@ public class Tournee extends Observable {
 	float duree;
 	boolean initialise = false;
 	private float coutMeilleureSolution;
-	private boolean tempsLimiteAtteint;
+	private boolean tempsLimiteAtteint = false;
 	private Integer[] meilleureSolution;
 	private Integer[] numPtAssocie;
 	private int nbSommets;
@@ -368,6 +367,10 @@ public class Tournee extends Observable {
 	public float getDuree(){
 		return this.duree;
 	}
+	
+	public boolean getTempsLimiteAtteint(){
+		return this.tempsLimiteAtteint;
+	}
 
 	public void genererFeuilleRoute() {
         BufferedWriter writer;
@@ -389,7 +392,7 @@ public class Tournee extends Observable {
                 for(Troncon tronc : troncs) {
                         res+=tronc.getNomRue()+"\n";
                 }
-                res +=" Arrivee: " + trajet.getIntersectionDestination().getValue().getId()+"\n";
+                res +="Arrivee: " + trajet.getIntersectionDestination().getValue().getId()+"\n";
         }
         try {
                 writer = new BufferedWriter(new FileWriter(new File("./Feuille_De_Route" , "FeuilleRoute"+Integer.toString(numeroFichier)+".txt")));

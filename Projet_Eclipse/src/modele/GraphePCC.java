@@ -1,6 +1,5 @@
 package modele;
-
-import java.util.Iterator;
+ 
 import java.util.LinkedList;
 
 import javafx.util.Pair;
@@ -17,6 +16,7 @@ public class GraphePCC {
 		this.demandeLivraison = demandeLivraison;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void initialiserGraphePCC() {
 
 		nbSommets = demandeLivraison.getNbPtsInteret();
@@ -67,6 +67,7 @@ public class GraphePCC {
 
 		int idLivraisonASupprimer = livraison.getId();
 
+		@SuppressWarnings("unchecked")
 		LinkedList<Trajet>[] nouvListeAdjacence = new LinkedList[nbSommets - 2];
 		int compteur = 0;
 

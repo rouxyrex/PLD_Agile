@@ -82,8 +82,12 @@ public class EtatTourneeCalculee implements Etat {
 
 		graphePCC.initialiserGraphePCC();
 		tournee.initialiserGraphePCC(graphePCC);
-		tournee.calculerUneTournee(1000000, demandeLivraison);
-
+		tournee.calculerUneTournee(10000, demandeLivraison);
+		
+		if(tournee.getTempsLimiteAtteint() == true) {
+			fenetre.afficheAlerte("Le calcul de la tournee a depasse le temps limite, la tournee n'est donc pas optimale.");
+		}
+		
 		fenetre.initialiserVueTournee();
 
 	}

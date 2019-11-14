@@ -264,7 +264,7 @@ public class VuePlan extends JPanel implements Observer {
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		tronconsTournee.clear();
-		colors = colorsSave;
+		colors = (LinkedList<Color>) colorsSave.clone();
 		entrepot = null;
 	}
 
@@ -323,23 +323,24 @@ public class VuePlan extends JPanel implements Observer {
 	 * Retour : rien
 	 */
 	public void droite() {
-		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin)/3)*getWidth());
-		if(modifLongitude >= 0) modifLongitude = 0;
-		repaint();
-	}
-	public void gauche() {
-		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin)/3)*getWidth());
+		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin))*getWidth());
 		if((((longitudeMax-longitudeMin)*getWidth()/intervalleLongitude - memoire) < (getWidth()*echelle))) modifLongitude = memoire;
 		repaint();
 	}
+	public void gauche() {
+		
+		modifLongitude = (int) (modifLongitude + ((longitudeMax-longitudeMin))*getWidth());
+		if(modifLongitude >= 0) modifLongitude = 0;
+		repaint();
+	}
 	public void haut() {
-		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin)/5)*getHeight());
+		modifLatitude = (int) (modifLatitude + ((latitudeMax-latitudeMin))*getHeight());
 		if(modifLatitude >= 0) modifLatitude = 0;
 		repaint();
 
 	}
 	public void bas() {
-		int memoire = (int) (modifLatitude - ((latitudeMax-latitudeMin)/5)*getHeight());
+		int memoire = (int) (modifLatitude - ((latitudeMax-latitudeMin))*getHeight());
 		if((((latitudeMax-latitudeMin)*getHeight()/intervalleLatitude - memoire) < (getHeight()*echelle))) modifLatitude = memoire;
 		repaint();
 

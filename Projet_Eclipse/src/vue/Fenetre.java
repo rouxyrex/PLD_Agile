@@ -65,7 +65,7 @@ public class Fenetre extends JFrame {
 
 		cadreMessages = new JLabel();
 		cadreMessages.setBorder(BorderFactory.createTitledBorder("Infos complementaires"));
-		Font font = new Font("Arial",Font.BOLD,30);
+		Font font = new Font("Arial",Font.BOLD,25);
 		cadreMessages.setFont(font);
 		getContentPane().add(cadreMessages, BorderLayout.SOUTH);
 
