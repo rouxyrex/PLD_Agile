@@ -88,8 +88,6 @@ public class EtatDemandeLivraisonCharge implements Etat {
 
 		listeDeCdes.ajoute(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, null, null));
 
-		fenetre.supprimerVueDemandeLivraison(livraison);
-
 	}
 
 	@Override
@@ -98,8 +96,6 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		fenetre.afficheMessage("Ajout d'une livraison.");
 		
 		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
-		
-		fenetre.ajouterVueDemandeLivraison(livraison);
 	}
 	
 	@Override

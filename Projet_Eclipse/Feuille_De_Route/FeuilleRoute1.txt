@@ -1,0 +1,72 @@
+***Feuille de Route****
+Votre ordre de passage sera : 
+Ainsi, vous parcourerez les intersections dans l'ordre : 
+
+Depart :2835339774
+Impasse de l'Ordre
+Rue Antoine Charial
+Rue Antoine Charial
+Rue Turbil
+Rue Turbil
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+ Arrivee: 25336179
+
+Depart :25336179
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+Avenue Félix Faure
+Petite Rue Saint-Eusèbe
+Rue Saint-Eusèbe
+Rue Antoine Charial
+Rue de l'Espérance
+Rue de l'Espérance
+Rue Édouard Aynard
+Place Marengo
+Place Marengo
+Avenue Antoine de Saint-Exupéry
+
+Rue Richelieu
+Rue Richelieu
+ Arrivee: 208769457
+
+Depart :208769457
+Rue Frédéric Passy
+Rue Édouard Aynard
+Rue Lafontaine
+Rue Lafontaine
+Avenue Marc Sangnier
+Rue Clos Poncet
+ Arrivee: 1679901320
+
+Depart :1679901320
+Rue Pascal
+Rue Pascal
+Rue Pascal
+Rue François Gillet
+Place de la Ferrandière
+Place de la Ferrandière
+Place de la Ferrandière
+Place de la Ferrandière
+Place de la Ferrandière
+Place de la Ferrandière
+ Arrivee: 208769120
+
+Depart :208769120
+Rue Nazareth
+Rue Louis Jasseron
+Place de la Ferrandière
+Place de la Ferrandière
+Avenue Georges Pompidou
+Avenue Georges Pompidou
+Rue Étienne Richerand
+Rue Étienne Richerand
+Rue Antoine Charial
+Impasse de l'Ordre
+ Arrivee: 2835339774

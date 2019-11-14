@@ -37,8 +37,9 @@ public class VueTextuelle extends JPanel implements Observer {
 	private Tournee tournee;
 
 
-	Color[] colors = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
-
+	Color[] colors2 = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
+	LinkedList<Color> colors = new LinkedList<Color>();
+	LinkedList<Color> colorsSave = new LinkedList<Color>();
 	protected static final String AJOUT = "Ajouter une livraison";
 	protected static final String SUPRESSION = "Suprimmer";
 	protected static final String UNDO = "undo";
@@ -73,6 +74,11 @@ public class VueTextuelle extends JPanel implements Observer {
 		plan.addObserver(this); // this observe plan
 		demandeLivraison.addObserver(this); // this observe demandeLivraison
 		tournee.addObserver(this); // this observe tournee
+		
+		for(int i = 0; i < colors2.length; i++) {
+			colors.add(colors2[i]);
+			colorsSave.add(colors2[i]);
+		}
 
 		vueLivraisons = new LinkedList<VuePointInteret>();
 		stock = new LinkedList<VuePointInteret>();
@@ -194,9 +200,9 @@ public class VueTextuelle extends JPanel implements Observer {
 		vueLivraisons.add(new VuePointInteret(null, dl.getEntrepot(), Color.LIGHT_GRAY, -1, -1));
 		for(int i = 0; i <  dl.getLivraisons().size(); i++) {
 			
-			VuePointInteret ptinterretDepot = new VuePointInteret(dl.getLivraisons().get(i), dl.getLivraisons().get(i).getAdresseDepot().getValue(), colors[i], 0, dl.getLivraisons().get(i).getDureeDepot());
-			VuePointInteret ptinterretEnelevement = new VuePointInteret(dl.getLivraisons().get(i), dl.getLivraisons().get(i).getAdresseEnlevement().getValue(), colors[i], 1, dl.getLivraisons().get(i).getDureeEnlevement());
-
+			VuePointInteret ptinterretDepot = new VuePointInteret(dl.getLivraisons().get(i), dl.getLivraisons().get(i).getAdresseDepot().getValue(), colors.getFirst(), 0, dl.getLivraisons().get(i).getDureeDepot());
+			VuePointInteret ptinterretEnelevement = new VuePointInteret(dl.getLivraisons().get(i), dl.getLivraisons().get(i).getAdresseEnlevement().getValue(), colors.getFirst(), 1, dl.getLivraisons().get(i).getDureeEnlevement());
+			colors.removeFirst();
 			vueLivraisons.add(ptinterretDepot);
 			vueLivraisons.add(ptinterretEnelevement);
 			stock.add(ptinterretDepot);
@@ -236,6 +242,7 @@ public class VueTextuelle extends JPanel implements Observer {
 
 	public void effacerVueDemandeLivraison() {
 		vueLivraisons.clear();
+		colors = colorsSave;
 		for (JButton bouton : boutons){
 			bouton.setVisible(false);
 		}
@@ -282,7 +289,7 @@ public class VueTextuelle extends JPanel implements Observer {
 
 	public void transfertIntersection(Intersection enlevement, Intersection depot) {
 
-		fenetre.afficheMessage("Veuillez entrer les temps de depot et d'enlevement, une fois entres, appuyer sur valider une livraison, puis cliquer sur l'intersection que vous souhaitez qui précède l'enelevement");
+		fenetre.afficheMessage("Entrez les temps (depot et enlevement), puis appuyez sur valider une livraison, puis cliquez sur les intersections précédante enlevement et depot");
 		this.enlevementAjout = enlevement;
 		this.depotAjout = depot;
 		textZone.setVisible(true);
@@ -304,13 +311,18 @@ public class VueTextuelle extends JPanel implements Observer {
 		if(valider) {
 			c.validerAjoutLivraison(new Livraison(enlevementAjout, depotAjout, Integer.parseInt(textZone.getText()), Integer.parseInt(textZone2.getText())), interAvantEnlevement, interAvantDepot);
 			boutons.get(4).setVisible(false);
+			textZone.setVisible(false);
+			textZone2.setVisible(false);
+			textZoneDepot.setVisible(false);
+			textZoneEnlevement.setVisible(false);
 		}
 		
 	}
 
-	public void ajouterVueDemandeLivraison(Livraison l) {
-		vueLivraisons.add(new VuePointInteret(l, l.getAdresseDepot().getValue(), colors[(int)(vueLivraisons.size()/2)], 0, l.getDureeDepot())) ;
-		vueLivraisons.add(new VuePointInteret(l, l.getAdresseEnlevement().getValue(), colors[(int)(vueLivraisons.size()/2)-1], 1, l.getDureeEnlevement())) ;
+	public void ajouterVueDemandeLivraison(Livraison l) {  
+		vueLivraisons.add(new VuePointInteret(l, l.getAdresseDepot().getValue(), colors.getFirst(), 0, l.getDureeDepot())) ;
+		vueLivraisons.add(new VuePointInteret(l, l.getAdresseEnlevement().getValue(), colors.getFirst(), 1, l.getDureeEnlevement())) ;
+		colors.removeFirst();
 		repaint();
 	}
 	
@@ -318,6 +330,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		for(int i = 2; i < vueLivraisons.size(); i++) {  
 			
 			if(vueLivraisons.get(i).getLivraison().getId() == l.getId()){ 
+				colors.addFirst(vueLivraisons.get(i).getColor());
 				vueLivraisons.remove(vueLivraisons.get(i));  
 			}
 		}

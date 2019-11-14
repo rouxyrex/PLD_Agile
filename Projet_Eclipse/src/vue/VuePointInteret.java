@@ -52,7 +52,7 @@ public class VuePointInteret {
     	g.setColor(Color.BLACK);
 		g.drawString(id, xHautDroite+60, yHautDroite+size2+10); 
 		if(temps != -1) {
-			g.drawString(Integer.toString(temps)+" secondes.", xHautDroite+200, yHautDroite+size2+10); 
+			g.drawString(Integer.toString(temps)+" minutes.", xHautDroite+200, yHautDroite+size2+10); 
 		}
 		g.drawLine(xHautDroite, yHautDroite, width-20, yHautDroite);
 		g.drawLine(xHautDroite, yHautDroite+(int)size, width-20, yHautDroite+(int)size);

@@ -68,7 +68,9 @@ public class VuePlan extends JPanel implements Observer {
 	private boolean ajouter = false;
 	private boolean ajouter2 = false;
 
-	Color[] colors = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
+	Color[] colors2 = {Color.cyan, Color.green, Color.RED, Color.magenta, Color.ORANGE, Color.YELLOW, Color.PINK, new Color((float) 1.0, (float) 0.1, (float) 0.4), new Color((float) 0.9, (float) 0.5, (float) 0.2), new Color((float) 0.8, (float) 0.5, (float) 0.3), new Color((float) 0.7, (float) 1.0, (float) 0.7), new Color((float) 0.6, (float) 0.3, (float) 0.6), new Color((float) 0.1, (float) 0.4, (float) 0.2), new Color((float) 0.9, (float) 0.8, (float) 0.9), new Color((float) 0.3, (float) 0.0, (float) 0.4)};
+	LinkedList<Color> colors = new LinkedList<Color>();
+	LinkedList<Color> colorsSave = new LinkedList<Color>();
 	LinkedList<VueTroncon> tronconsTraces = null;
 	LinkedList<VueTroncon> tronconsTournee = null;
 	LinkedList<VueAdresseDepot> adressesDepot = null;
@@ -104,6 +106,11 @@ public class VuePlan extends JPanel implements Observer {
 		this.setPreferredSize(new Dimension(300,100));
 		creeBoutons(c);
 		setBackground(Color.white);
+		
+		for(int i = 0; i < colors2.length; i++) {
+			colors.add(colors2[i]);
+			colorsSave.add(colors2[i]);
+		}
 
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) { 
@@ -121,7 +128,7 @@ public class VuePlan extends JPanel implements Observer {
 	        		 if(enlevement != null) {
 		        		 ajouter = false;
 		        		 ajouter2 = true;
-		        		 f.afficheMessage("Veuillez cliquer sur l'adresse de d�pot");
+		        		 f.afficheMessage("Veuillez cliquer sur l'adresse de depot");
 	        		 }
 	        	 }
 	         }
@@ -236,6 +243,7 @@ public class VuePlan extends JPanel implements Observer {
 		echelle = 1;
 	    modifLatitude = 0;
 	    modifLongitude = 0;
+	    
 	    for (JButton bouton : boutons){
 	        bouton.setVisible(false);
 	    }
@@ -246,8 +254,9 @@ public class VuePlan extends JPanel implements Observer {
 		dl.getEntrepot().getLatitude();
 		List<Livraison> livraisons = dl.getLivraisons();
 		for(int i= 0; i < livraisons.size(); i++) {
-			adressesDepot.add(new VueAdresseDepot(livraisons.get(i).getAdresseDepot(), colors[i]));
-			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement(), colors[i]));
+			adressesDepot.add(new VueAdresseDepot(livraisons.get(i).getAdresseDepot(), colors.getFirst()));
+			adressesEnlevement.add(new VueAdresseEnlevement(livraisons.get(i).getAdresseEnlevement(), colors.getFirst()));
+			colors.removeFirst();
 		}
 	}
 
@@ -255,6 +264,7 @@ public class VuePlan extends JPanel implements Observer {
 		adressesEnlevement.clear();
 		adressesDepot.clear();
 		tronconsTournee.clear();
+		colors = colorsSave;
 		entrepot = null;
 	}
 
@@ -361,15 +371,17 @@ public class VuePlan extends JPanel implements Observer {
 		this.ajouter = ajouter;
 	}
 	
-	public void ajouterLivraison(Livraison l) {
-		adressesDepot.add(new VueAdresseDepot(l.getAdresseDepot(), colors[adressesDepot.size()]));
-		adressesEnlevement.add(new VueAdresseEnlevement(l.getAdresseEnlevement(), colors[adressesEnlevement.size()]));
+	public void ajouterLivraison(Livraison l) { 
+		adressesDepot.add(new VueAdresseDepot(l.getAdresseDepot(), colors.getFirst()));
+		adressesEnlevement.add(new VueAdresseEnlevement(l.getAdresseEnlevement(), colors.getFirst())); 
+		colors.removeFirst();
 	}
 	
 	public void supprimerLivraison(Livraison l) {
 		for(int i = 0; i < adressesDepot.size(); i++) {
 			if(adressesDepot.get(i).getIdIntersection().equals(l.getAdresseDepot().getValue().getId())){
-				adressesDepot.remove(adressesDepot.get(i));
+				colors.addFirst(adressesDepot.get(i).getColor());
+				adressesDepot.remove(adressesDepot.get(i)); 
 			}
 		}
 		for(int i = 0; i < adressesEnlevement.size(); i++) {

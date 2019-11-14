@@ -1,3 +1,0 @@
-***Bienvenue sur la feuille de Route****
-Votre ordre de passage sera : 
-Ainsi, vous parcourerez les intersection dans l'ordre : 

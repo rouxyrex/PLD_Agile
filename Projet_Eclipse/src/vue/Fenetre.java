@@ -197,7 +197,7 @@ public class Fenetre extends JFrame {
 	}
 
 	public void effacerVueTournee() {
-		vuePlan.effacerVueTournee();
+		vuePlan.effacerVueTournee(); 
 	}
 
 	public void supprimerLivraison() {

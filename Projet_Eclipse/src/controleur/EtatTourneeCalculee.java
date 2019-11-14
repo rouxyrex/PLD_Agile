@@ -102,7 +102,6 @@ public class EtatTourneeCalculee implements Etat {
 
 		listeDeCdes.ajoute(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, null, null));
 
-		fenetre.supprimerVueDemandeLivraison(livraison);
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();
 
@@ -116,7 +115,6 @@ public class EtatTourneeCalculee implements Etat {
 		
 		listeDeCdes.ajoute(new CdeInverse(new CdeSuppressionLivraison(fenetre, demandeLivraison, livraison, tournee, interAvantEnlevement, interAvantDepot)));
 		
-		fenetre.ajouterVueDemandeLivraison(livraison);
 		fenetre.effacerVueTournee();
 		fenetre.initialiserVueTournee();
 	}

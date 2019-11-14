@@ -43,4 +43,8 @@ class VueAdresseDepot{
 	public String getIdIntersection() {
 		return adresse.getValue().getId();
 	}
+	
+	public Color getColor() {
+		return color;
+	}
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,8 +16,10 @@ import java.util.Observable;
 
 import javafx.util.Pair;
 
+/** Represente une tournee
+*/
 public class Tournee extends Observable {
-
+	
 	Map <Pair<Integer, Intersection>, String> pointsPassage;
 	List <Trajet> parcours;
 	float duree;
@@ -24,66 +27,92 @@ public class Tournee extends Observable {
 	private float coutMeilleureSolution;
 	private boolean tempsLimiteAtteint;
 	private Integer[] meilleureSolution;
+	private Integer[] numPtAssocie;
+	private int nbSommets;
+	private int numeroFichier = 1;
 
 	GraphePCC graphePCC;
-
+	
 	public Tournee() {
 		pointsPassage = new HashMap<Pair<Integer, Intersection>, String>();
+		
+		
 	}
-
+	
+	/** Initialise le graphe des plus courts chemins correspondant a cette tournee
+	 * @param graphePCC le graphe a retenir
+	*/
 	public void initialiserGraphePCC(GraphePCC graphePCC) {
 		this.graphePCC = graphePCC;
+		
 	}
-
+	
+	/** Calcule une tournee selon les paramètres donnes ( dont le graphe pcc )
+	 * @param tempsLimite le temps de calcul a ne pas depasser en secondes 
+	 * @param demandeLivraison la demande pour laquelle calculer la tournee
+	*/
 	public void calculerUneTournee(int tempsLimite, DemandeLivraison demandeLivraison) {
 		this.initialise = true;
-		
 		parcours = new LinkedList <Trajet>();
 		
-		int nbSommets = graphePCC.getNbSommets();
+		nbSommets = graphePCC.getNbSommets();
 		HashMap<String,Integer> intersectionNum = new HashMap<String,Integer>();
-		HashMap<Integer,Intersection> numIntersection= new HashMap<Integer,Intersection>();
+		HashMap<Integer,Pair<Integer,Intersection>> numPtsPassages = new HashMap<Integer,Pair<Integer,Intersection>>();
+		HashMap<Pair<Integer,Intersection>, Integer> ptsPassagesNum= new HashMap<Pair<Integer,Intersection>,Integer>();
 		Trajet[][] trajets = new Trajet[nbSommets][nbSommets];
 		float[][] cout = new float[nbSommets][nbSommets];
 		float[] duree = new float[nbSommets];
-
+		
+		List<Pair<Integer,Intersection>> passages = demandeLivraison.getPtsPassage();
+		Pair<Integer,Intersection> ptEntrepot = new Pair<Integer,Intersection>(0,demandeLivraison.getEntrepot());
+		ptsPassagesNum.put(ptEntrepot, 0);
+		numPtsPassages.put(0,ptEntrepot);
+		intersectionNum.put(ptEntrepot.getValue().getId(), 0);
 		int compteur=1;
-		intersectionNum.put(demandeLivraison.getEntrepot().getId(), 0);
-		numIntersection.put(0, demandeLivraison.getEntrepot());
+		for(Pair<Integer,Intersection> p : passages){
+			ptsPassagesNum.put(p, compteur);
+			numPtsPassages.put(compteur,p);
+			intersectionNum.put(p.getValue().getId(), compteur++);
+		}
+		
+		//HashMap<Integer, Intersection> numPtPassage = new HashMap<Integer,Intersection>();
+		Boolean[] isPtEnlevement = new Boolean[nbSommets];
+		numPtAssocie = new Integer[nbSommets];
+		Boolean[] ptVisitable = new Boolean[nbSommets];
+		Boolean[] ptAssocieVus = new Boolean[nbSommets];
+
+		numPtAssocie[0]=0;
+		for(int i = 0;i<nbSommets;i++){
+			ptVisitable[i]=true;
+		}
+		
 		for(int i = 0; i<nbSommets;i++){
-			for(Trajet t : graphePCC.getListeAdjacence()[i]){
-
-				if(intersectionNum.get(t.getIntersectionOrigine().getValue().getId())==null){
-					intersectionNum.put(t.getIntersectionOrigine().getValue().getId(), compteur);
-					numIntersection.put(compteur, t.getIntersectionOrigine().getValue());
-					compteur++;
-				}
-
-				if(intersectionNum.get(t.getIntersectionDestination().getValue().getId())==null){
-					intersectionNum.put(t.getIntersectionDestination().getValue().getId(), compteur);
-					numIntersection.put(compteur, t.getIntersectionDestination().getValue());
-					compteur++;
-				}
-
-
+			for(Trajet t : graphePCC.getListeAdjacence()[i]){ 
 				cout[intersectionNum.get(t.getIntersectionOrigine().getValue().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getValue().getId())]=t.getTempsParcours();
-
+				
 
 				trajets[intersectionNum.get(t.getIntersectionOrigine().getValue().getId())]
 						[intersectionNum.get(t.getIntersectionDestination().getValue().getId())] = t;
-
-
+				
+				
 			}
 		}
-
+		
 		for(Livraison l : demandeLivraison.getLivraisons())
 		{
 			duree[intersectionNum.get(l.getAdresseDepot().getValue().getId())]=l.getDureeDepot();
 			duree[intersectionNum.get(l.getAdresseEnlevement().getValue().getId())]=l.getDureeEnlevement();
-
+			
 		}
-
+		Iterator<Pair<Integer, Intersection>> it = passages.iterator();
+		while(it.hasNext()){
+			Pair<Integer, Intersection> adresseEnlevement = it.next();
+			Pair<Integer, Intersection> adresseDepot = it.next();
+			numPtAssocie[ptsPassagesNum.get(adresseEnlevement)]=ptsPassagesNum.get(adresseDepot);
+			numPtAssocie[ptsPassagesNum.get(adresseDepot)]=ptsPassagesNum.get(adresseEnlevement);
+			ptVisitable[ptsPassagesNum.get(adresseEnlevement)]=false;
+		} 
 		tempsLimiteAtteint = false;
 		coutMeilleureSolution = Float.MAX_VALUE;
 		meilleureSolution = new Integer[nbSommets];
@@ -91,16 +120,31 @@ public class Tournee extends Observable {
 		for (int i=1; i<nbSommets; i++) nonVus.add(i);
 		ArrayList<Integer> vus = new ArrayList<Integer>(nbSommets);
 		vus.add(0); // le premier sommet visite est 0
-		branchAndBound(0, nonVus, vus, 0, cout, duree, System.currentTimeMillis(), tempsLimite);
-
+		branchAndBound(0, nonVus, vus, 0, cout, duree, ptVisitable, System.currentTimeMillis(), tempsLimite);
+		
 
 		for (int i=0; i<nbSommets-1; i++){
 			parcours.add(trajets[meilleureSolution[i]][meilleureSolution[i+1]]);
 		}
 		parcours.add(trajets[meilleureSolution[nbSommets-1]][0]);
+		
 	}
+	
 
-	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, long tpsDebut, int tempsLimite){
+	/** Methode generique d'optimisation combinatoire 
+	 * @param sommetCrt numero du sommet courant 
+	 * @param nonVus liste des numeros des sommets non vus 
+	 * @param vus liste des numeros des sommets vus 
+	 * @param coutVus somme des couts des sommets vus 
+	 * @param cout tableau des couts pour aller d'un sommet a un autre 
+	 * @param duree duree de passage a un sommet donne 
+	 * @param tpsDebut temps de calcul deja ecoule
+	 * @param tempsLimite temps total de calcul limite
+	*/
+	
+
+	private void branchAndBound(int sommetCrt, ArrayList<Integer> nonVus, ArrayList<Integer> vus, float coutVus, float [][] cout, float[] duree, Boolean[] ptVisitable, long tpsDebut, int tempsLimite){
+
 		 if (System.currentTimeMillis() - tpsDebut > tempsLimite){
 			 tempsLimiteAtteint = true;
 			 return;
@@ -110,21 +154,34 @@ public class Tournee extends Observable {
 	    	if (coutVus < coutMeilleureSolution){ // on a trouve une solution meilleure que meilleureSolution
 	    		vus.toArray(meilleureSolution);
 	    		coutMeilleureSolution = coutVus;
+
 	    	}
-	    } else if (coutVus + bound(sommetCrt, nonVus, cout) < coutMeilleureSolution){
+	    } else if ((coutVus + bound(sommetCrt, nonVus, cout) < coutMeilleureSolution)/*&& (ptEnlevement[i] == true || ptAssocieVus(ptAssocie[i]))*/){ //donner bonne valeur a i
 	    	 Iterator<Integer> iter = new IteratorSeq(nonVus);
 	    	 Integer prochainSommet;
-	        while(iter.hasNext()){
-	        	prochainSommet=iter.next();
-	        	vus.add(prochainSommet);
-	        	nonVus.remove(prochainSommet);
-	        	branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] , cout, duree, tpsDebut, tempsLimite);
-	        	vus.remove(prochainSommet);
-	        	nonVus.add(prochainSommet);
-	        }
+	    	 
+				while(iter.hasNext()){
+					prochainSommet=iter.next();
+					if(ptVisitable[prochainSommet]==true){
+						Boolean[] copiedArray = Arrays.copyOf(ptVisitable,nbSommets);
+						copiedArray[numPtAssocie[prochainSommet]]=true; 
+						vus.add(prochainSommet);
+						nonVus.remove(prochainSommet);
+						branchAndBound(prochainSommet, nonVus, vus, coutVus + cout[sommetCrt][prochainSommet] , cout, duree, copiedArray, tpsDebut, tempsLimite);
+						vus.remove(prochainSommet);
+						nonVus.add(prochainSommet);	
+					}
+					
+				}
+	    	 
 	    }
 	}
-
+	
+	/** Methode d'approximation du cout
+	 * @param sommetCrt numero du sommet courant 
+	 * @param nonVus liste des numeros des sommets non vus 
+	 * @param cout tableau des couts pour aller d'un sommet a un autre 
+	*/
 	private float bound(int SommetCrt, ArrayList<Integer> nonVus, float[][] cout){
 		float bound = 0;
 		for(Integer i : nonVus){
@@ -138,6 +195,7 @@ public class Tournee extends Observable {
 		}
 		return bound;
 	}
+	
 
 
 
@@ -312,30 +370,36 @@ public class Tournee extends Observable {
 	}
 
 	public void genererFeuilleRoute() {
-		// TODO Auto-generated method stub
-		BufferedWriter writer;
-		String res = "***Bienvenue sur la feuille de Route****\n";
-		res += "Votre ordre de passage sera : \n";
-/*		for (Map.Entry<Pair<Integer,Intersection>,String> entry : pointsPassage.entrySet())
-		{
-			res += "Passage ï¿½ l'intersection ï¿½ : "+ entry.getKey().getId()+ " ï¿½ "+ entry.getValue() +" heure\n";
-		}
-		res += "Ainsi, vous parcourerez les intersection dans l'ordre : \n";
-		for(Trajet trajet : parcours) {
-			res += trajet.getIntersectionOrigine().getId( )+ " jusqu'ï¿½ " + trajet.getIntersectionDestination().getId();
-		}
-		try {
-			writer = new BufferedWriter(new FileWriter(new File("FeuilleRoute"+Integer.toString(numeroFichier)+".txt")));
-			writer.write(res);
-			writer.close();
-			numeroFichier++;
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
-
-
-	}
+        BufferedWriter writer;
+        String res = "***Feuille de Route****\n";
+ /*       res += "Votre ordre de passage sera : \n";
+        
+        
+        for (Map.Entry<Pair<Integer,Intersection>,String> entry : pointsPassage.entrySet())
+        {
+                res += "Passage a l'intersection  : "+ entry.getKey().getValue().getId()+ " \n ";
+        }
+        */
+        res += "Vous parcourerez les intersections dans l'ordre : \n";
+        
+        for(Trajet trajet : parcours) {
+                res += "\n";
+                res += "Depart :" + trajet.getIntersectionOrigine().getValue().getId( )+"\n";
+                List<Troncon> troncs = trajet.getTrajet();
+                for(Troncon tronc : troncs) {
+                        res+=tronc.getNomRue()+"\n";
+                }
+                res +=" Arrivee: " + trajet.getIntersectionDestination().getValue().getId()+"\n";
+        }
+        try {
+                writer = new BufferedWriter(new FileWriter(new File("./Feuille_De_Route" , "FeuilleRoute"+Integer.toString(numeroFichier)+".txt")));
+                writer.write(res);
+                writer.close();
+                numeroFichier++;
+        } catch (IOException e1) {
+                e1.printStackTrace();
+        }
+}
 	
 	public boolean estInitialise() {
 		return this.initialise;
