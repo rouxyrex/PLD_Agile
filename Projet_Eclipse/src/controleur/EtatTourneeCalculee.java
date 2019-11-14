@@ -94,6 +94,7 @@ public class EtatTourneeCalculee implements Etat {
 
 	@Override
 	public void genererFeuilleRoute(Controleur c, Fenetre f, Tournee tournee) {
+		f.afficheAlerte("La feuille de route a été générée dans le dossier Feuille_De_Route");
 		tournee.genererFeuilleRoute();
 	}
 

@@ -28,6 +28,9 @@ import modele.Plan;
 import modele.Tournee;
 import modele.Trajet; 
 
+/** Contient la representation graphique textuelle : les boutons d'option pour Modifier, Ajouter, Supprimer ou inverser des livraisons,
+ *  la liste des livraisons et les informations sur celles-ci
+*/
 public class VueTextuelle extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
@@ -98,7 +101,6 @@ public class VueTextuelle extends JPanel implements Observer {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 				if(supprimer|| ajouter || ajouter2)  onMotion(e.getX(), e.getY()); 
 			}
 
@@ -109,7 +111,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		 addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) {
 	        	 if(supprimer) {
-	        		 //ici à partir de l'intersection on se débrouille pour réccupérer la livraison
+	        		 //ici à partir de l'intersection on se débrouille pour récupérer la livraison
 	        		 Livraison l = onClick2(getMousePosition().x, getMousePosition().y); 
 	        		 if(l != null) { 
 		        		controleur.supprimerLivraison(l);
@@ -121,7 +123,7 @@ public class VueTextuelle extends JPanel implements Observer {
 	        	 }
 	        	 
 	        	 if(ajouter2) {
-		        		//on stocke la deuxiï¿½me intersection
+		        		//on stocke la deuxieme intersection
 		        		interAvantDepot = onClick(getMousePosition().x, getMousePosition().y);
 		        		 if(interAvantDepot != null) { 
 			        		ajouter2 = false; 
@@ -129,7 +131,7 @@ public class VueTextuelle extends JPanel implements Observer {
 		        		 }
 		        	 }
 		        	 if(ajouter) {
-		        		 //on stocke la premiï¿½re intersection
+		        		 //on stocke la premiere intersection
 		        		 interAvantEnlevement = onClick(getMousePosition().x, getMousePosition().y);  
 		        		 if(interAvantEnlevement != null) {  
 			        		 ajouter = false;
@@ -158,7 +160,6 @@ public class VueTextuelle extends JPanel implements Observer {
 	}
 
 	protected void onMotion(int x, int y) {
-		// TODO Auto-generated method stub
 		 for (int i = 1; i < vueLivraisons.size(); i++) {
 			if(supprimer || ajouter || ajouter2) vueLivraisons.get(i).onMotion(x, y); 
 		 }
@@ -269,7 +270,6 @@ public class VueTextuelle extends JPanel implements Observer {
 	}
 
 	public void supprimerLivraison() {
-		// TODO Auto-generated method stub
 		fenetre.setAjouterValue(false);
 		supprimer = true;
 		for(JButton bouton : boutons) {
@@ -300,7 +300,6 @@ public class VueTextuelle extends JPanel implements Observer {
 	} 
 	
 	public void validerAjoutLivraison(Controleur c, boolean valider) {
-		// TODO Auto-generated method stub
 		if(!valider) {
 			boutons.get(4).setVisible(true);
 			for(JButton bouton : boutons) {

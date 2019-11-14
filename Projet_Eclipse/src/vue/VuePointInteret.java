@@ -61,7 +61,6 @@ public class VuePointInteret {
     }
 
 	public void onMotion(int x, int y) {
-		// TODO Auto-generated method stub
 		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) {
 			colorRect =  Color.GRAY; 
 		} 
@@ -71,7 +70,6 @@ public class VuePointInteret {
 	}
 
 	public Pair<Integer, Intersection> onClick(int x, int y) {
-		// TODO Auto-generated method stub
 		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) { 
 			colorRect = Color.lightGray; 
 			return new Pair<Integer, Intersection>(l.getId(), i);
@@ -79,7 +77,6 @@ public class VuePointInteret {
 	}
 	
 	public Livraison onClick2(int x, int y) {
-		// TODO Auto-generated method stub
 		if(x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) { 
 			colorRect = Color.lightGray; 
 			return l;

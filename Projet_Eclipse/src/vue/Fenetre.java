@@ -22,10 +22,12 @@ import modele.Livraison;
 import modele.Plan;
 import modele.Tournee;
 
+/** Fenetre principale de l'IHM
+*/
 public class Fenetre extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	// Intitul�s des boutons de la fen�tre
+	// Intitules des boutons de la fenetre
 	protected static final String CHARGER_PLAN = "Charger un plan";
 	protected static final String CHARGER_DEMANDE_LIVRAISON = "Charger une demande de livraison";
 	protected static final String CALCULER_TOURNEE = "Calculer la tournee";
@@ -45,9 +47,9 @@ public class Fenetre extends JFrame {
 
 
 	/**
-	 * Cree une fenetre avec des boutons, une zone graphique pour dessiner le plan p avec l'echelle e,
-	 * un cadre pour afficher des messages, une zone textuelle decrivant les formes de p,
-	 * et des ecouteurs de boutons, de clavier et de souris qui envoient des messages au controleur c
+	 * Cree une fenetre avec des boutons, une zone graphique pour le plan p avec l'echelle e,
+	 * un cadre pour afficher des messages, une zone textuelle decrivant les demandes de livraison,
+	 * et des ecouteurs de boutons, de souris qui envoient des messages au controleur c
 	 * @param plan le plan
 	 * @param echelle l'echelle
 	 * @param controleur le controleur
@@ -201,12 +203,10 @@ public class Fenetre extends JFrame {
 	}
 
 	public void supprimerLivraison() {
-		// TODO Auto-generated method stub 
 		vueTextuelle.supprimerLivraison();
 	}
 
-	public void ajouterLivraison() {
-		// TODO Auto-generated method stub 
+	public void ajouterLivraison() { 
 		vueTextuelle.ajouterLivraison();
 	}
 
@@ -215,12 +215,10 @@ public class Fenetre extends JFrame {
 	}
 
 	public void transfertIntersection(Intersection enlevement, Intersection depot) {
-		// TODO Auto-generated method stub
 		vueTextuelle.transfertIntersection(enlevement, depot);
 	}
 
 	public void validerLivraison(Controleur c) {
-		// TODO Auto-generated method stub 
 		for(JButton bouton : boutons) {
 			bouton.setEnabled(true);
 		}

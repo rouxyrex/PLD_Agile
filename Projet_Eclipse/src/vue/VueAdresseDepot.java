@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import javafx.util.Pair;
 import modele.Intersection;
 
+/** Representation graphique de l'adresse de depot d'une livraison
+*/
 class VueAdresseDepot{
     final float latitude;
     final float longitude;
@@ -33,7 +35,6 @@ class VueAdresseDepot{
     }
 
 	public Intersection onClick(int x, int y) {
-		// TODO Auto-generated method stub
 		int centrex = this.x+(tailleDepot/2);
 		int centrey = this.y+(tailleDepot/2);
 		if(Math.sqrt((x-centrex)*(x-centrex)+(y-centrey)*(y-centrey)) <= (tailleDepot/2)) return adresse.getValue();

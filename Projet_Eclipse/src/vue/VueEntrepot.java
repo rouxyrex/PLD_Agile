@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 import modele.Intersection;
 
+/** Representation graphique de l'entrept d'une demande de livraison
+*/
 class VueEntrepot{
     final float x1;
     final float y1;
@@ -29,7 +31,6 @@ class VueEntrepot{
     }
 
 	public Intersection onClick(int x, int y) {
-		// TODO Auto-generated method stub
 		if(x >= this.x && x <= (this.x+tailleEntrepot) && y >= (this.y) && y <= (this.y + tailleEntrepot)) {
 			return adresse;
 		}

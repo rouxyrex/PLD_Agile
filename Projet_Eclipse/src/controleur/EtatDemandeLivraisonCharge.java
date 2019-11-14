@@ -74,9 +74,7 @@ public class EtatDemandeLivraisonCharge implements Etat {
 		tournee.initialiserGraphePCC(graphePCC);
 		tournee.calculerUneTournee(10000, demandeLivraison);
 		
-		if(tournee.getTempsLimiteAtteint() == true) {
-			fenetre.afficheAlerte("Le calcul de la tournee a depasse le temps limite, la tournee n'est donc pas optimale.");
-		}
+		
 		
 		listeDeCdes.reset();
 

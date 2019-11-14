@@ -9,6 +9,9 @@ import javafx.util.Pair;
 import modele.Intersection;
 import modele.Livraison;
 
+/** Contient la representation graphique des adresses 
+ * d'enlevement et de depot d'une livraison
+*/
 public class VueLivraison {
     String idDepot;
     String idEnlevement;
@@ -67,7 +70,6 @@ public class VueLivraison {
     }
 
 	public void onMotion(int x, int y, int choix) {
-		// TODO Auto-generated method stub
 		if(choix == 0 && x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) {
 			colorDepot =  Color.GRAY;
 			colorEnlevement = Color.GRAY;
@@ -87,7 +89,6 @@ public class VueLivraison {
 	}
 
 	public Pair<Livraison, Intersection> onClick(int x, int y, int choix) {
-		// TODO Auto-generated method stub
 	/*	Pair<Livraison, Intersection> map = new Pair<Livraison, Intersection>();
 		if(choix== 0 && x >= xHautDroite && y >= yHautDroite && x <= width-40 && y <= yHautDroite+(int)size) {
 			map.put(l, null);

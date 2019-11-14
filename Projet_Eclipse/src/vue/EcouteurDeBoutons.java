@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import controleur.Controleur;
 
+/** Ecouteur de boutons pour l'ihm
+*/
 public class EcouteurDeBoutons implements ActionListener {
 
 	private Controleur controleur;
@@ -14,8 +16,12 @@ public class EcouteurDeBoutons implements ActionListener {
 		this.controleur = controleur;
 		this.fenetre = fenetre;
 	}
-
+	
+	/** Methode appelee par l'ecouteur de boutons a chaque fois qu'un bouton est clique
+	* Envoi au controleur du message correspondant au bouton clique
+	*/
 	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		// Methode appelee par l'ecouteur de boutons a chaque fois qu'un bouton est clique
 		// Envoi au controleur du message correspondant au bouton clique
@@ -36,13 +42,5 @@ public class EcouteurDeBoutons implements ActionListener {
 			case VueTextuelle.REDO: controleur.redo(); break;
 			case VueTextuelle.VALIDER : fenetre.validerLivraison(controleur);
 		}
-		/*case Fenetre.AJOUTER_RECTANGLE: controleur.ajouterRectangle(); break;
-		case Fenetre.SUPPRIMER: controleur.supprimer(); break;
-		case Fenetre.SAUVER: controleur.sauver(); break;
-		case Fenetre.OUVRIR: controleur.ouvrir(); break;
-		case Fenetre.DEPLACER: controleur.deplacer();break;
-		case Fenetre.DIMINUER_ECHELLE: controleur.diminuerEchelle(); break;
-		case Fenetre.AUGMENTER_ECHELLE: controleur.augmenterEchelle(); break;*/
-		}
-
+	}
 }

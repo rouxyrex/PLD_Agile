@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import javafx.util.Pair;
 import modele.Intersection;
 
+/** Representation graphique de l'adresse d'enlevement d'une livraison
+*/
 class VueAdresseEnlevement{
     final float latitude;
     final float longitude;
@@ -42,7 +44,7 @@ class VueAdresseEnlevement{
     }
 
 	public Intersection onClick(int x, int y) {
-		//on va dire que le triangle est dans un rectangle
+		//on considere que le triangle est dans un rectangle
 		if(x >= tab2[1] && x <= tab2[2] && y >= tab[0] && y <= tab[1])  return adresse.getValue();
 		else return null;
 	}

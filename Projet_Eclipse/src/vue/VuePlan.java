@@ -36,6 +36,8 @@ import modele.Trajet;
 import vue.VueTroncon;
 import modele.Troncon;
 
+/** Contient la representation graphique d'un plan : c'est a dire de l'ensemble des troncons et intersections qui le composent
+*/
 public class VuePlan extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
@@ -63,7 +65,7 @@ public class VuePlan extends JPanel implements Observer {
 	protected static final String BAS = "Bas";
 	private EcouteurDeBoutons ecouteurDeBoutons;
 	private ArrayList<JButton> boutons;
-	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS}; //, CHARGER_DEMANDE_LIVRAISON, CALCULER_TOURNEE, GENERER_FEUILLE_ROUTE};
+	private final String[] intitulesBoutons = new String[]{ZOOM, DEZOOM, DROITE, GAUCHE, HAUT, BAS};
 	private final int hauteurBouton = 50;
 	private boolean ajouter = false;
 	private boolean ajouter2 = false;
@@ -79,8 +81,8 @@ public class VuePlan extends JPanel implements Observer {
 	private Tournee tournee;
 
 	/**
-	 * Cree la vue graphique permettant de dessiner plan avec l'echelle e dans la fenetre f
-	 * @param plan leplan
+	 * Cree la vue graphique permettant d'afficher le plan avec l'echelle e dans la fenetre f
+	 * @param plan le plan
 	 * @param e l'echelle
 	 * @param f la fenetre
 	 */
@@ -115,7 +117,7 @@ public class VuePlan extends JPanel implements Observer {
         addMouseListener(new MouseAdapter() {
 	         public void mousePressed(MouseEvent me) { 
 	        	 if(ajouter2) {
-	        		//on stocke la deuxi�me intersection
+	        		//on stocke la deuxieme intersection
 	        		Intersection depot = onClick(getMousePosition().x, getMousePosition().y);
 	        		 if(depot != null) {
 		        		f.transfertIntersection(enlevement, depot);
@@ -123,7 +125,7 @@ public class VuePlan extends JPanel implements Observer {
 	        		 }
 	        	 }
 	        	 if(ajouter) {
-	        		 //on stocke la premi�re intersection
+	        		 //on stocke la premiere intersection
 	        		 enlevement = onClick(getMousePosition().x, getMousePosition().y);
 	        		 if(enlevement != null) {
 		        		 ajouter = false;
@@ -213,7 +215,6 @@ public class VuePlan extends JPanel implements Observer {
 		repaint();
 	}
 
-
 	public int getEchelle() {
 		return echelle;
 	}
@@ -224,7 +225,6 @@ public class VuePlan extends JPanel implements Observer {
 		      bouton.setVisible(true);
 		}
 
-		// TODO Auto-generated method stub
 		List<Troncon> troncons = plan.getTroncons();
 		latitudeMax = plan.getLatitudeMax();
 		latitudeMin = plan.getLatitudeMin();
@@ -271,8 +271,6 @@ public class VuePlan extends JPanel implements Observer {
 
 	/**
 	 * Methode appelee pour initialiser le vue de la tournee
-	 * Parametre : rien
-	 * Retour : rien
 	 */
 	public void initialiserVueTournee() {
 
@@ -293,8 +291,6 @@ public class VuePlan extends JPanel implements Observer {
 
 	/**
 	 * Methode appelee pour zommer sur le plan
-	 * Parametre : aucun
-	 * Retour : rien
 	 */
 	public void zoom() {
 		echelle = echelle + 1;
@@ -304,8 +300,6 @@ public class VuePlan extends JPanel implements Observer {
 
 	/**
 	 * Methode appelee pour dezoomer sur le plan
-	 * Parametre : aucun
-	 * Retour : rien
 	 */
 	public void dezoom() {
 		echelle = echelle - 1;
@@ -319,8 +313,6 @@ public class VuePlan extends JPanel implements Observer {
 
 	/**
 	 * Methodes appelees pour se deplacer a droite, gauche, haut, bas sur le plan
-	 * Parametre : aucun
-	 * Retour : rien
 	 */
 	public void droite() {
 		int memoire = (int) (modifLongitude - ((longitudeMax-longitudeMin))*getWidth());
@@ -346,9 +338,9 @@ public class VuePlan extends JPanel implements Observer {
 
 	}
 	/**
-	 * Methode appelee lors d'un click sur le plan
-	 * Parametre : les coordonnees (x et y) du point sur lequel on a clicke
-	 * Retour : rien
+	 * Methode appelee lors d'un clic sur le plan
+	 * @param x l'abscisse du point sur lequel on a clique
+	 * @param y l'ordonnee du point sur lequel on a clique
 	 */
 	public Intersection onClick(int x, int y) {
 
