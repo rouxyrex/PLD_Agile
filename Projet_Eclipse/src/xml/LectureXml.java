@@ -149,6 +149,10 @@ public class LectureXml {
 	   	float longueur = Float.parseFloat(elt.getAttribute("longueur"));
 	   	String nomRue = elt.getAttribute("nomRue");
 	   	
+	   	if( idOrigine == idDestination ) {
+	    	throw new ExceptionXml("Un troncon ne doit pas avoir la meme origine et destination.");
+	    }
+	   	
 	   	if( longueur <= 0 ) {
 	   		throw new ExceptionXml("Un troncon a une longueur négative ou nulle.");
 	   	}

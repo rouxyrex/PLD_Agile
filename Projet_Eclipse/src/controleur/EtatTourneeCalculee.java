@@ -17,10 +17,19 @@ import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
 
+/** Etat a la suite d'un calcul de tournee reussi
+*/
 public class EtatTourneeCalculee implements Etat {
 	// Etat initial
 
-
+	/** Une fois la tournée calculée, il est possible de charger un nouveau plan 
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param tournee La tournée courante calculée
+	*/
 	@Override
 	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 
@@ -47,6 +56,14 @@ public class EtatTourneeCalculee implements Etat {
 	}
 
 
+	/** Une fois la tournée calculée, il est possible de charger une nouvelle demande de livraison
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param tournee La tournée courante calculée
+	*/
 	@Override
 	public void chargerDemandeLivraison(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 
@@ -71,6 +88,14 @@ public class EtatTourneeCalculee implements Etat {
 	}
 
 
+	/** Une fois la tournée calculée, il est possible de calculer une nouvelle fois la tournée
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param tournee La tournée courante calculée
+	*/
 	@Override
 	public void calculerTournee(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, GraphePCC graphePCC, Tournee tournee) {
 		fenetre.afficheMessage("Calcul d'une tournee.");
@@ -92,6 +117,15 @@ public class EtatTourneeCalculee implements Etat {
 
 	}
 
+	/** Une fois la tournée calculée, il est possible de supprimer des livraisons de la liste
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant chargé
+	 *   @param demandeLivraison La demande de livraison courante chargée
+	 *   @param livraison La livraison à supprimer
+	 *   @param tournee La tournée courante calculée
+	*/
 	@Override
 	public void genererFeuilleRoute(Controleur c, Fenetre f, Tournee tournee) {
 		tournee.genererFeuilleRoute();

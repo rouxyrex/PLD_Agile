@@ -13,10 +13,18 @@ import vue.Fenetre;
 import xml.ExceptionXml;
 import xml.LectureXml;
 
+/** Etat initial
+*/
 public class EtatInit implements Etat {
-	// Etat initial 
-	
-	
+
+	/** A l'etat initial, il est uniquement possible de charger un plan
+	 *   @param controleur
+	 *   @param fenetre 
+	 *   @param listeDeCdes
+	 *   @param plan Le plan courant, vide
+	 *   @param demandeLivraison La demande de livraison courante, vide
+	 *   @param tournee La tournée courante, vide
+	*/
 	@Override
 	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 		

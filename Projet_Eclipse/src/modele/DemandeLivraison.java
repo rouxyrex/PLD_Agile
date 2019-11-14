@@ -7,6 +7,8 @@ import java.util.Observable;
 
 import javafx.util.Pair;
 
+/** Represente une demande de livraison
+*/
 public class DemandeLivraison extends Observable {
 
 	List<Livraison> livraisons;
@@ -22,6 +24,11 @@ public class DemandeLivraison extends Observable {
 		derniereIdLivraison = 0;
 	}
 
+	/** Initialise la demande de livraison
+	 * @param livraisonsAInserer liste des livraisons composant la demande
+	 * @param entrepot intersection correspondant a l'entrepot  
+	 * @param heureDepart heure de depart de la demande de livraison
+	*/
 	public void initialiser(List<Livraison> livraisonsAInserer, Intersection entrepot, String heureDepart) {
 
 		for(Livraison l : livraisonsAInserer) {
@@ -41,6 +48,8 @@ public class DemandeLivraison extends Observable {
 	}
 
 
+	/** Reinitialise la demande de tournee
+	*/
 	public void reset() {
 
 		Iterator<Livraison> it = livraisons.iterator();
@@ -66,6 +75,9 @@ public class DemandeLivraison extends Observable {
 	}
 
 
+	/** Ajoute une livraison a la demande
+	 * @param l La livraison à ajouter
+	*/
 	public void ajouterLivraison(Livraison l){
 
 		derniereIdLivraison++;
@@ -80,6 +92,9 @@ public class DemandeLivraison extends Observable {
 		notifyObservers();
 	}
 
+	/** Supprime une livraison de la demande
+	 * @param l La livraison a supprimer
+	*/
 	public void supprimerLivraison(Livraison l) {
 		livraisons.remove(l);
 		ptsPassage.remove(l.getAdresseDepot());
@@ -101,6 +116,8 @@ public class DemandeLivraison extends Observable {
 		return heureDepart;
 	}
 
+	/** Renvoie la liste des points de passage
+	*/
 	public List<Pair<Integer, Intersection>> getPtsPassage() {
 		return ptsPassage;
 	}
@@ -109,6 +126,8 @@ public class DemandeLivraison extends Observable {
 		return this.derniereIdLivraison;
 	}
 
+	/** Renvoie le nombre de points d'interet
+	*/
 	public int getNbPtsInteret() {
 
 		if(entrepot == null) {
