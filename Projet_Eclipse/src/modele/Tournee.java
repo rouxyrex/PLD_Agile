@@ -1,5 +1,9 @@
 package modele;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,10 +27,13 @@ public class Tournee extends Observable {
 	private boolean tempsLimiteAtteint;
 	private Integer[] meilleureSolution;
 	
+	private int numeroFichier;
+	
 	GraphePCC graphePCC;
 	
 	public Tournee() {
 		pointsPassage = new HashMap<Pair<Integer, Intersection>, String>();
+		numeroFichier = 1;
 		
 	}
 	
@@ -338,6 +345,39 @@ public class Tournee extends Observable {
 	public List <Trajet> getParcours(){
 		return this.parcours;
 	}
+	
+	public void genererFeuilleRoute() {
+		BufferedWriter writer;
+		String res = "***Feuille de Route****\n";
+		res += "Votre ordre de passage sera : \n";
+		
+		
+		for (Map.Entry<Pair<Integer,Intersection>,String> entry : pointsPassage.entrySet())
+		{
+			res += "Passage a l'intersection  : "+ entry.getKey().getValue().getId()+ " \n ";//+ entry.getValue() +" heure\n";
+		}
+		
+		res += "Ainsi, vous parcourerez les intersections dans l'ordre : \n";
+		
+		for(Trajet trajet : parcours) {
+			res += "\n";
+			res += "Depart :" + trajet.getIntersectionOrigine().getValue().getId( )+"\n";
+			List<Troncon> troncs = trajet.getTrajet();
+			for(Troncon tronc : troncs) {
+				res+=tronc.getNomRue()+"\n";
+			}
+			res +=" Arrivee: " + trajet.getIntersectionDestination().getValue().getId()+"\n";
+		}
+		try {
+			writer = new BufferedWriter(new FileWriter(new File("./Feuille_De_Route" , "FeuilleRoute"+Integer.toString(numeroFichier)+".txt")));
+			writer.write(res);
+			writer.close();
+			numeroFichier++;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	
 	public float getDuree(){
 		return this.duree;

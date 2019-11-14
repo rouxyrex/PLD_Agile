@@ -106,7 +106,7 @@ public class Plan extends Observable {
 	}
 	
 	/** Renvoie l'intersection correspondant à l'id demandee
-	 * @param l'id demandee
+	 * @param id l'id demandee
 	 * @return l'intersection correspondante
 	*/
 	public Intersection getIntersectionById(String id) {

@@ -29,7 +29,7 @@ public class OuvreurDeFichierXml extends FileFilter {// Singleton
 	/** Methode renvoyant un fichier en ouvrant ou en sauvegardant un fichier XML
 	 * @param lecture Definit le mode lecure (1) ou ecriture (0)
 	 * @return Le fichier XML en question 
-	 * @throws Souleve une exception en cas de non conformite du fichier
+	 * @throws ExceptionXml Souleve une exception en cas de non conformite du fichier
 	*/
  	public File ouvre(boolean lecture) throws ExceptionXml{
 
