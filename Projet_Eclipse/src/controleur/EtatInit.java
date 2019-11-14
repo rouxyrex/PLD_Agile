@@ -29,7 +29,7 @@ public class EtatInit implements Etat {
 	@Override
 	public void chargerPlan(Controleur controleur, Fenetre fenetre, ListeDeCdes listeDeCdes, Plan plan, DemandeLivraison demandeLivraison, Tournee tournee) {
 		
-		fenetre.afficheMessage("Chargement d'un plan : Veuillez saisir le fichier XML représentant le plan.");
+		fenetre.afficheMessage("Chargement d'un plan : Veuillez saisir le fichier XML representant le plan.");
 		
 		try {
 			LectureXml.creerPlan(plan);
@@ -39,7 +39,7 @@ public class EtatInit implements Etat {
 			controleur.setEtatCourant(controleur.etatPlanCharge);
 		
 		} catch (IOException | ParserConfigurationException | SAXException | NumberFormatException | ExceptionXml e) {
-			fenetre.afficheMessage(e.getMessage());
+			fenetre.afficheAlerte(e.getMessage());
 		}
 	}
 

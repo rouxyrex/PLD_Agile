@@ -8,7 +8,7 @@ import controleur.Controleur;
 /** Ecouteur de boutons pour l'ihm
 */
 public class EcouteurDeBoutons implements ActionListener {
-	
+
 	private Controleur controleur;
 	private Fenetre fenetre;
 
@@ -21,8 +21,8 @@ public class EcouteurDeBoutons implements ActionListener {
 	* Envoi au controleur du message correspondant au bouton clique
 	*/
 	@Override
+
 	public void actionPerformed(ActionEvent e) { 
-		
 		switch (e.getActionCommand()){
 			case Fenetre.CHARGER_PLAN: controleur.chargerPlan(); break;
 			case Fenetre.CHARGER_DEMANDE_LIVRAISON: controleur.chargerDemandeLivraison(); break;
@@ -34,16 +34,19 @@ public class EcouteurDeBoutons implements ActionListener {
 			case VuePlan.BAS: fenetre.bas(); break;
 			case VuePlan.GAUCHE: fenetre.gauche(); break;
 			case VuePlan.DROITE: fenetre.droite(); break;
+			case VueTextuelle.SUPRESSION : fenetre.supprimerLivraison(); break;
+			case VueTextuelle.AJOUT : fenetre.ajouterLivraison(); break;
+			case VueTextuelle.UNDO: controleur.undo(); break;
+			case VueTextuelle.REDO: controleur.redo(); break;
+			case VueTextuelle.VALIDER : fenetre.validerLivraison(controleur);
 		}
 		/*case Fenetre.AJOUTER_RECTANGLE: controleur.ajouterRectangle(); break;
 		case Fenetre.SUPPRIMER: controleur.supprimer(); break;
 		case Fenetre.SAUVER: controleur.sauver(); break;
 		case Fenetre.OUVRIR: controleur.ouvrir(); break;
-		case Fenetre.UNDO: controleur.undo(); break;
-		case Fenetre.REDO: controleur.redo(); break;
 		case Fenetre.DEPLACER: controleur.deplacer();break;
 		case Fenetre.DIMINUER_ECHELLE: controleur.diminuerEchelle(); break;
 		case Fenetre.AUGMENTER_ECHELLE: controleur.augmenterEchelle(); break;*/
 		}
-	
+
 }
